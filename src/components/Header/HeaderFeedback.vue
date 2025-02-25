@@ -1,8 +1,8 @@
 <template>
   <div class="header__feedback">
-    <a class="feedback__telephone" href="tel:+7 499 391-84-49"
+    <a class="feedback__telephone-btn" href="tel:+7 499 391-84-49"
       >Заказать звонок</a
     >
-    8 499 391-84-49
+    <span class="feedback__telephone-text col-yellow"> 8 499 391-84-49 </span>
   </div>
 </template>

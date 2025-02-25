@@ -1,6 +1,8 @@
 <template>
   <div class="header__info">
-    <div class="info__city">Доставка пасты <span>Москва</span></div>
+    <div class="info__city">
+      Доставка пасты <span class="col-yellow">Москва</span>
+    </div>
     <div class="info__time-stars">
       <div class="time-stars__rating">
         Яндекс еда
