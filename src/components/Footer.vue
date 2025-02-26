@@ -1,40 +1,12 @@
 <template>
   <footer class="footer">
-    <div class="footer__social">
-      <Logo />
-      <div class="social__button">
-        <a class="social__color-black" href="#">Калорийность и состав</a
-        ><a href="#" class="social__color-black">Правовая информация</a
-        ><a class="social__color-black" href="#">Мы в соцсетях</a>
-      </div>
-      <ul class="social__list">
-        <li class="list__item">YouTube</li>
-        <li class="list__item">Facebook</li>
-        <li class="list__item list__item-street">Москва ул. Проспект</li>
-        <li class="list__item">Instagram</li>
-        <li class="list__item">ВКонтакте</li>
-        <li class="list__item list__item-street">Вернадского 86В</li>
-      </ul>
-      <div class="social__pay">
-        YaBao Все праав защищены © 2021
-        <div class="pay__img">
-          <img src="/img/pay/visa.png" alt="#" />
-          <img src="/img/pay/paypal.png" alt="#" />
-          <img src="/img/pay/mastercard.png" alt="#" />
-        </div>
-      </div>
-    </div>
-    <div class="footer__social">
-      <Logo />
-      <div class="social__button">
-        <a href="#">Калорийность и состав</a><a href="#">Правовая информация</a
-        ><a href="#">Мы в соцсетях</a>
-      </div>
-    </div>
+    <FooterSocial />
+    <FooterMedia />
   </footer>
 </template>
 <script setup lang="ts">
-import Logo from "./UI/Logo.vue";
+import FooterSocial from "./Footer/FooterSocial.vue";
+import FooterMedia from "./Footer/FooterMedia.vue";
 </script>
 <style lang="scss">
 .footer {
@@ -81,9 +53,6 @@ import Logo from "./UI/Logo.vue";
       line-height: 28px;
       letter-spacing: 0%;
     }
-    &__color-black {
-      color: black;
-    }
   }
   .list {
     &__item {
@@ -102,6 +71,61 @@ import Logo from "./UI/Logo.vue";
   .pay__img {
     display: flex;
     gap: 23px;
+  }
+  &__media {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 0;
+  }
+  &__media-card {
+    border: 2px solid #e3ecf5;
+    border-radius: 13px;
+    max-width: max-content;
+    display: flex;
+    align-items: center;
+    max-width: 101px;
+    width: 100%;
+    justify-content: center;
+    height: 52px;
+  }
+  &__media-card-last-child {
+    max-width: none;
+    grid-column: 3 / 5;
+    width: auto;
+  }
+  &__media-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 14px;
+    padding-top: 33px;
+  }
+  &__media-card-text {
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 15.85px;
+  }
+  &__media-card-img {
+    max-width: 30px;
+    width: 100%;
+  }
+  &__telephone-contact {
+    flex-direction: column-reverse;
+    align-items: left !important;
+    padding-top: 25px;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 15.85px;
+  }
+  &__media-question {
+    text-transform: uppercase;
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17.07px;
+  }
+  .header__feedback--telephone-btn {
+    max-width: 180px;
   }
 }
 </style>

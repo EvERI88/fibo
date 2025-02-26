@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-@import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+@import "/node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 /* @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css'; */
 /* Reset and base styles  */
 * {
@@ -140,4 +140,16 @@ body::before {
   right: 0;
   bottom: 0;
   z-index: -1;
+}
+.col-yellow {
+  color: #f7d22d;
+}
+.col-black {
+  color: black;
+}
+.ai-center {
+  align-items: center;
+}
+.fa-star {
+  color: #ffc816;
 }
