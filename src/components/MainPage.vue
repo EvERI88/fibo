@@ -2,7 +2,7 @@
   <main>
     <Slider :sliderImg="sliderImg" />
     <MainNew />
-    <MainMenu :pizza="pizza" />
+    <MainMenu :pizzaList="pizza" />
   </main>
 </template>
 <script setup lang="ts">
