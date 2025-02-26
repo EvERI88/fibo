@@ -5,7 +5,7 @@
     <MainMenu :pizza="pizza" />
   </main>
 </template>
-<script setup>
+<script setup lang="ts">
 import MainMenu from "./Main/MainMenu.vue";
 import MainNew from "./Main/MainNew.vue";
 import Slider from "./UI/Slider.vue";

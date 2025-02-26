@@ -18,9 +18,15 @@
   </div>
 </template>
 <script setup lang="ts">
+interface pizzaList {
+  img: string;
+  title: string;
+  description: string;
+  price: number;
+  new: boolean;
+}
+
 defineProps({
-  pizza: {
-    type: Object,
-  },
+  pizza: Array<pizzaList>,
 });
 </script>

@@ -23,7 +23,6 @@
 </template>
 <script setup lang="ts">
 import emblaCarouselVue from "embla-carousel-vue";
-import EmblaCarousel from "embla-carousel";
 
 interface testImg {
   img: string;

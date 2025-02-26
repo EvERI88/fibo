@@ -18,7 +18,7 @@
     <HeaderFeedback class="footer__telephone-contact" />
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import HeaderFeedback from "../Header/HeaderFeedback.vue";
 const cards = [
   { img: "facebook" },
