@@ -17,25 +17,20 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import emblaCarouselVue from "embla-carousel-vue";
 import EmblaCarousel from "embla-carousel";
+
+defineProps({
+  sliderImg: {
+    type: Array,
+  },
+});
 
 const [emblaRef, emblaApi] = emblaCarouselVue({
   container: ".embla__container",
   loop: false,
-  dragFree: false,
-  containScroll: "trimSnaps",
-  skipSnaps: false,
 });
-
-const sliderImg = [
-  { img: "1" },
-  { img: "2" },
-  { img: "1" },
-  { img: "2" },
-  { img: "2" },
-];
 
 const scrollToPrev = () => {
   emblaApi.value.scrollPrev();

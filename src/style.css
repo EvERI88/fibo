@@ -130,7 +130,7 @@ body {
 }
 body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   background-image: url("/img/Group330.png");
   background-size: 300px;
   background-repeat: no-repeat;

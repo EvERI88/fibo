@@ -10,10 +10,6 @@ import FooterMedia from "./Footer/FooterMedia.vue";
 </script>
 <style lang="scss">
 .footer {
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  left: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 68px;
@@ -90,13 +86,11 @@ import FooterMedia from "./Footer/FooterMedia.vue";
     height: 52px;
   }
   &__media-card-last-child {
-    max-width: none;
-    grid-column: 3 / 5;
-    width: auto;
+    grid-column: 3 / span 2;
   }
   &__media-cards {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 14px;
     padding-top: 33px;
   }
