@@ -2,25 +2,11 @@
   <main>
     <Slider :sliderImg="sliderImg" />
     <MainNew />
-    <span class="col-yellow menu-main-title">Паста</span>
-    <div class="menu-main">
-      <div class="menu-main__list">
-        <div class="menu-main__list-item" v-for="piz in pizza">
-          <img :src="`/img/pizza/${piz.img}.png`" alt="piz.img" />
-          <p class="menu-main__list-item-title">{{ piz.title }}</p>
-          <p class="menu-main__list-item-description">
-            {{ piz.description }}
-          </p>
-          <div class="menu-main__list-item-price">
-            от {{ piz.price }} ₽
-            <button class="menu-main__list-item-buy">В корзину</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <MainMenu :pizza="pizza" />
   </main>
 </template>
 <script setup>
+import MainMenu from "./Main/MainMenu.vue";
 import MainNew from "./Main/MainNew.vue";
 import Slider from "./UI/Slider.vue";
 
@@ -124,28 +110,38 @@ const pizza = [
 </script>
 
 <style lang="scss">
-.read-the-docs {
-  color: #888;
+.newPush::before {
+  content: "NEW";
+  width: 50px;
+  height: 20px;
+  position: absolute;
+  right: 40px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: red;
+  border-radius: 10px;
+  font-size: 14px;
 }
 .embla {
   position: relative;
   overflow: hidden;
 }
-.embla__viewport {
-}
 .embla__container {
   display: flex;
-  gap: 30px;
+  gap: 15px;
 }
 .embla__slide {
-  flex: 0 0 50%;
-
+  flex: 0 0 calc(50% - 15px);
   min-width: 0;
 }
 .embla_slide-img {
   height: 100%;
   object-fit: cover;
   object-position: left;
+  border-radius: 15px;
 }
 
 .embla__btn {
@@ -204,6 +200,7 @@ const pizza = [
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
   }
   &__list-item-title {
     font-weight: 800;

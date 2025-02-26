@@ -6,19 +6,21 @@
     <HeaderInfo />
     <HeaderFeedback class="ai-center" />
   </header>
+  <BurgerMenu />
 </template>
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 import Logo from "./UI/Logo.vue";
 import HeaderInfo from "./Header/HeaderInfo.vue";
 import HeaderFeedback from "./Header/HeaderFeedback.vue";
+import BurgerMenu from "./Header/BurgerMenu.vue";
 </script>
 <style lang="scss">
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding-top: 1rem;
   flex-wrap: wrap;
 
   .main-logo {
