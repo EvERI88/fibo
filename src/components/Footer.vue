@@ -13,6 +13,7 @@ import FooterMedia from "./Footer/FooterMedia.vue";
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 68px;
+  position: relative;
   .main-logo {
     min-width: 90px;
     min-height: 66px;
@@ -73,26 +74,6 @@ import FooterMedia from "./Footer/FooterMedia.vue";
     flex-direction: column;
     justify-content: center;
     padding: 50px 0;
-  }
-  &__media-card {
-    border: 2px solid #e3ecf5;
-    border-radius: 13px;
-    max-width: max-content;
-    display: flex;
-    align-items: center;
-    max-width: 101px;
-    width: 100%;
-    justify-content: center;
-    height: 52px;
-  }
-  &__media-card-last-child {
-    grid-column: 3 / span 2;
-  }
-  &__media-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    padding-top: 33px;
   }
   &__media-card-text {
     font-weight: 700;

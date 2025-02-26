@@ -1,22 +1,24 @@
 <template>
-  <Slider :sliderImg="sliderImg" />
-  <MainNew />
-  <span class="col-yellow menu-main-title">Паста</span>
-  <div class="menu-main">
-    <div class="menu-main__list">
-      <div class="menu-main__list-item" v-for="piz in pizza">
-        <img :src="`/img/pizza/${piz.img}.png`" alt="piz.img" />
-        <p class="menu-main__list-item-title">{{ piz.title }}</p>
-        <p class="menu-main__list-item-description">
-          {{ piz.description }}
-        </p>
-        <div class="menu-main__list-item-price">
-          от {{ piz.price }} ₽
-          <button class="menu-main__list-item-buy">В корзину</button>
+  <main>
+    <Slider :sliderImg="sliderImg" />
+    <MainNew />
+    <span class="col-yellow menu-main-title">Паста</span>
+    <div class="menu-main">
+      <div class="menu-main__list">
+        <div class="menu-main__list-item" v-for="piz in pizza">
+          <img :src="`/img/pizza/${piz.img}.png`" alt="piz.img" />
+          <p class="menu-main__list-item-title">{{ piz.title }}</p>
+          <p class="menu-main__list-item-description">
+            {{ piz.description }}
+          </p>
+          <div class="menu-main__list-item-price">
+            от {{ piz.price }} ₽
+            <button class="menu-main__list-item-buy">В корзину</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 <script setup>
 import MainNew from "./Main/MainNew.vue";

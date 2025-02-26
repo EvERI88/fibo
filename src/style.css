@@ -113,8 +113,8 @@ legend {
 }
 #app {
   width: 100%;
-  position: relative;
-  height: 100vh;
+  max-width: 1110px;
+  margin: 0 auto;
 }
 body {
   font-family: "Montserrat", serif;
@@ -122,15 +122,15 @@ body {
   font-weight: 700;
   font-style: normal;
   display: flex;
-  max-width: 1110px;
   margin: 0 auto;
+  position: relative;
 }
 .main-logo {
   max-width: 59px;
 }
 body::before {
   content: "";
-  position: fixed;
+  position: absolute;
   background-image: url("/img/Group330.png");
   background-size: 300px;
   background-repeat: no-repeat;
