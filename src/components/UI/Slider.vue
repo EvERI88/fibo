@@ -3,7 +3,7 @@
     <div class="embla__viewport">
       <div class="embla__container">
         <div class="embla__slide" v-for="slider in sliderImg">
-          <img :src="`/img/sliderImg/slide${slider.img}.png`" alt="" />
+          <img class="embla_slide-img" :src="`/img/sliderImg/slide${slider.img}.png`" alt="" />
         </div>
       </div>
       <div class="embla__btn">

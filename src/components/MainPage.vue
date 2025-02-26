@@ -133,11 +133,17 @@ const pizza = [
 }
 .embla__container {
   display: flex;
+  gap: 30px;
 }
 .embla__slide {
   flex: 0 0 50%;
 
   min-width: 0;
+}
+.embla_slide-img {
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
 }
 
 .embla__btn {
