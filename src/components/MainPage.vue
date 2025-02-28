@@ -2,7 +2,7 @@
   <main>
     <Slider :sliderImg="sliderImg" />
     <MainNew />
-    <MainMenu :pizzaList="pizza" />
+    <MainMenu :pizzaList="pizzaList" />
   </main>
 </template>
 <script setup lang="ts">
@@ -10,101 +10,106 @@ import MainMenu from "./Main/MainMenu.vue";
 import MainNew from "./Main/MainNew.vue";
 import Slider from "./UI/Slider.vue";
 
-const sliderImg = [
+interface SliderImg {
+  img: string;
+}
+
+const sliderImg: SliderImg[] = [
+  { img: "1" },
   { img: "1" },
   { img: "2" },
   { img: "1" },
   { img: "2" },
   { img: "2" },
 ];
-const pizza = [
+const pizzaList = [
   {
     img: "pizza1",
-    new: 0,
+    new: false,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 1,
+    new: true,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 1,
+    new: true,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 1,
+    new: true,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 0,
+    new: false,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 0,
+    new: false,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 0,
+    new: false,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 1,
+    new: true,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 0,
+    new: false,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 0,
+    new: false,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
   {
     img: "pizza1",
-    new: 1,
+    new: true,
     title: "С креветками и трюфелями",
     description:
       "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: "600",
+    price: 600,
   },
 ];
 </script>
@@ -133,6 +138,9 @@ const pizza = [
   display: flex;
   gap: 15px;
 }
+.embla__viewport {
+  transform: scale(0.7);
+}
 .embla__slide {
   flex: 0 0 calc(50% - 15px);
   min-width: 0;
@@ -154,9 +162,15 @@ const pizza = [
 
 .main-new {
   display: flex;
-  justify-content: space-between;
-  gap: 30px;
+  justify-content: center;
   padding-bottom: 46px;
+  &__wrapper {
+    max-width: 1110px;
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    gap: 30px;
+  }
   &__new-product {
     display: flex;
     flex-direction: row;
@@ -182,14 +196,25 @@ const pizza = [
   line-height: 29.26px;
   padding-top: 71px;
   padding-bottom: 33px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 .menu-main-title {
   font-family: Montserrat;
   font-weight: 800;
   font-size: 32px;
   line-height: 39.01px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 .menu-main {
+  display: flex;
+  justify-content: center;
+  &__wrapper {
+    display: flex;
+    max-width: 1110px;
+    width: 100%;
+  }
   &__list {
     padding-top: 26px;
     display: grid;

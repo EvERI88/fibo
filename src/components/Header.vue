@@ -1,10 +1,12 @@
 <template>
   <header class="header">
-    <RouterLink to="/" class="header__logo">
-      <Logo />
-    </RouterLink>
-    <HeaderInfo />
-    <HeaderFeedback class="ai-center" />
+    <div class="header__wrapper">
+      <RouterLink to="/" class="header__logo">
+        <Logo />
+      </RouterLink>
+      <HeaderInfo />
+      <HeaderFeedback class="ai-center" />
+    </div>
   </header>
   <BurgerMenu />
 </template>
@@ -18,11 +20,13 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
 <style lang="scss">
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
   padding-top: 1rem;
-  flex-wrap: wrap;
-
+  &__wrapper {
+    max-width: 1110px;
+    width: 100%;
+    display: flex;
+  }
   .main-logo {
     min-width: 80px;
     min-height: 60px;
@@ -123,5 +127,63 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
       }
     }
   }
+}
+.burger-menu {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 41px;
+  &__wrapper {
+    max-width: 1110px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__list {
+    display: flex;
+    gap: 15px;
+  }
+
+  &__list-item {
+    color: #000;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18.29px;
+  }
+  &__function {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  &__function-signin {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 28px;
+    color: hsla(219, 7%, 45%, 1);
+    padding-right: 31px;
+  }
+  &__function-basket {
+    background-color: hsla(49, 93%, 57%, 1);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 28px;
+    color: hsla(345, 6%, 13%, 1);
+    padding: 7px 25px;
+  }
+}
+.count-product-in-basket {
+  padding-left: 25px;
+  position: relative;
+}
+.count-product-in-basket::after {
+  content: "";
+  width: 2px;
+  height: 23px;
+  background-color: hsla(345, 6%, 13%, 1);
+  position: absolute;
+  left: 7px;
+  top: 0;
 }
 </style>

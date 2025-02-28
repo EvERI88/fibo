@@ -112,9 +112,9 @@ legend {
   display: block;
 }
 #app {
-  width: 100%;
-  max-width: 1110px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 body {
   font-family: "Montserrat", serif;
