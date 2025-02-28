@@ -35,18 +35,18 @@ interface SliderImage {
   img: string;
 }
 
-const props = defineProps<{
+defineProps<{
   sliderImg: SliderImage[];
 }>();
 
 const [emblaRef, emblaApi] = emblaCarouselVue({
   container: ".embla__container",
   loop: false,
-  containScroll: false,
   align: "start",
+  startIndex: 1,
 });
 
-const selectedIndex = ref<number>(0);
+const selectedIndex = ref<number>(1);
 
 const isSlideSelected = (index: number): boolean => {
   const start = selectedIndex.value;
