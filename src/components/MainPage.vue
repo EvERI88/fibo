@@ -133,16 +133,18 @@ const pizzaList = [
 .embla {
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 .embla__container {
   display: flex;
   gap: 15px;
 }
 .embla__viewport {
-  transform: scale(0.7);
+  width: 1100px;
+  margin: 0 auto;
 }
 .embla__slide {
-  flex: 0 0 calc(50% - 15px);
+  flex: 0 0 calc(50% - 5px);
   min-width: 0;
 }
 .embla_slide-img {
@@ -154,10 +156,11 @@ const pizzaList = [
 
 .embla__btn {
   position: absolute;
-  top: 50%;
-  width: 100%;
+  top: 150px;
+  left: 123px;
   display: flex;
   justify-content: space-between;
+  right: 123px;
 }
 
 .main-new {

@@ -27,28 +27,28 @@
   </div>
 </template>
 
-<script setup>
-import emblaCarouselVue from "embla-carousel-vue";
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
+import emblaCarouselVue from "embla-carousel-vue";
 
-defineProps({
-  sliderImg: {
-    type: Array,
-    required: true,
-  },
-});
+interface SliderImage {
+  img: string;
+}
+
+const props = defineProps<{
+  sliderImg: SliderImage[];
+}>();
 
 const [emblaRef, emblaApi] = emblaCarouselVue({
   container: ".embla__container",
   loop: false,
   containScroll: false,
   align: "start",
-  // slidesToScroll: 2,
 });
 
-const selectedIndex = ref(0);
+const selectedIndex = ref<number>(0);
 
-const isSlideSelected = (index) => {
+const isSlideSelected = (index: number): boolean => {
   const start = selectedIndex.value;
   const end = selectedIndex.value + 1;
 
@@ -58,22 +58,22 @@ const isSlideSelected = (index) => {
 onMounted(() => {
   if (emblaApi.value) {
     emblaApi.value.on("select", () => {
-      selectedIndex.value = emblaApi.value.selectedScrollSnap();
+      selectedIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
     });
   }
 });
 
-const scrollToPrev = () => {
+const scrollToPrev = (): void => {
   if (emblaApi.value) {
     emblaApi.value.scrollPrev();
-    selectedIndex.value = emblaApi.value.selectedScrollSnap();
+    selectedIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
   }
 };
 
-const scrollToNext = () => {
+const scrollToNext = (): void => {
   if (emblaApi.value) {
     emblaApi.value.scrollNext();
-    selectedIndex.value = emblaApi.value.selectedScrollSnap();
+    selectedIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
   }
 };
 </script>
@@ -81,9 +81,9 @@ const scrollToNext = () => {
 <style scoped>
 .embla__slide {
   transform: scale(0.9);
+  transition: 1000ms;
 }
 .selected {
-  border: 5px solid red;
   transform: scale(1);
   transition: 1000ms;
 }
