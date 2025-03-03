@@ -41,12 +41,15 @@ import Logo from "../UI/Logo.vue";
 </script>
 
 <style lang="scss" scoped>
-.social {
+.footer__social {
   max-width: 1110px;
   display: flex;
   padding: 50px 0;
   justify-content: left;
   flex-direction: column;
+  padding: 50px 0;
+}
+.social {
   &__button {
     display: grid;
     grid-template-columns: 1fr 1fr;

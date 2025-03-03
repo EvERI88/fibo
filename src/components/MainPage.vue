@@ -136,14 +136,14 @@ const pizzaList: PizzaList[] = [
 ];
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 main::after {
   background-image: url("/img/background-male/body-male.png");
   content: "";
   position: absolute;
   left: 0;
   height: 402px;
-  width: 100%;
+  width: 168px;
   background-repeat: no-repeat;
   top: 20%;
 }
