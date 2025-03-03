@@ -107,8 +107,10 @@ import FooterMedia from "./Footer/FooterMedia.vue";
     font-size: 14px;
     line-height: 17.07px;
   }
-  .header__feedback--telephone-btn {
-    max-width: 180px;
+  .feedback {
+    &__telephone-btn {
+      max-width: 180px;
+    }
   }
 }
 </style>

@@ -77,32 +77,6 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
   &__time-stars--time {
     padding-left: 7px;
   }
-  &__feedback {
-    display: flex;
-    flex: 0 0 auto;
-    gap: 1rem;
-  }
-  &__feedback--telephone-btn {
-    background: #f3f3f7;
-    color: #696f7a;
-    border-radius: 28px;
-    padding: 0 1.5rem;
-    font-weight: 700;
-    font-size: 0.9rem;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-  }
-
-  &__feedback--telephone-text {
-    font-family: Montserrat, sans-serif;
-    font-weight: 700;
-    font-size: 1.5rem;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -115,11 +89,6 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
     &__info {
       padding: 0;
       margin-bottom: 1rem;
-    }
-
-    &__feedback {
-      width: 100%;
-      justify-content: space-between;
     }
   }
 
@@ -194,4 +163,5 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
     top: 0;
   }
 }
+
 </style>

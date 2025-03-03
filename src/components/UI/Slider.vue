@@ -6,7 +6,7 @@
           class="embla__slide"
           v-for="(slider, index) in sliderImg"
           :key="index"
-          :class="{ selected: isSlideSelected(index) }"
+          :class="{ embla__selected: isSlideSelected(index) }"
         >
           <img
             class="embla_slide-img"
@@ -78,15 +78,3 @@ const scrollToNext = (): void => {
 };
 </script>
 
-<style scoped>
-.embla__slide {
-  transform: scale(0.9);
-  transition: 1000ms;
-  opacity: 0.6;
-}
-.selected {
-  opacity: 1;
-  transform: scale(1);
-  transition: 1000ms;
-}
-</style>

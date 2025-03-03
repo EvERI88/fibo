@@ -154,35 +154,54 @@ const pizzaList: menuProduct[] = [
   position: relative;
   overflow: hidden;
   width: 100%;
+  &__container {
+    display: flex;
+    gap: 15px;
+  }
+  &__viewport {
+    width: 1100px;
+    margin: 0 auto;
+  }
+  &__slide {
+    flex: 0 0 calc(50% - 5px);
+    min-width: 0;
+  }
+  &_slide-img {
+    height: 100%;
+    object-fit: cover;
+    object-position: left;
+    border-radius: 15px;
+  }
+  &__btn {
+    position: absolute;
+    top: 150px;
+    left: 123px;
+    display: flex;
+    justify-content: space-between;
+    right: 123px;
+  }
+  &__slide {
+    transform: scale(0.9);
+    transition: 1000ms;
+    opacity: 0.6;
+  }
+  &__selected {
+    opacity: 1;
+    transform: scale(1);
+    transition: 1000ms;
+  }
 }
-.embla__container {
-  display: flex;
-  gap: 15px;
-}
-.embla__viewport {
-  width: 1100px;
-  margin: 0 auto;
-}
-.embla__slide {
-  flex: 0 0 calc(50% - 5px);
-  min-width: 0;
-}
-.embla_slide-img {
-  height: 100%;
-  object-fit: cover;
-  object-position: left;
-  border-radius: 15px;
-}
-
-.embla__btn {
+main::after {
+  background-image: url("/img/background-male/body-male.png");
+  content: "";
   position: absolute;
-  top: 150px;
-  left: 123px;
-  display: flex;
-  justify-content: space-between;
-  right: 123px;
+  left: 0;
+  height: 402px;
+  width: 100%;
+  background-repeat: no-repeat;
+  top: 20%;
+  z-index: 0;
 }
-
 .main-new {
   display: flex;
   justify-content: center;
