@@ -156,21 +156,23 @@ const pizzaList: menuProduct[] = [
   width: 100%;
   &__container {
     display: flex;
-    gap: 15px;
+    gap: 30px;
   }
   &__viewport {
     width: 1100px;
     margin: 0 auto;
   }
   &__slide {
-    flex: 0 0 calc(50% - 5px);
+    flex: 0 0 calc(50% - 15px);
     min-width: 0;
+    width: 100%;
   }
   &_slide-img {
     height: 100%;
     object-fit: cover;
     object-position: left;
     border-radius: 15px;
+    box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.26);
   }
   &__btn {
     position: absolute;

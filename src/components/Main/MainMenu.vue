@@ -3,7 +3,11 @@
   <div class="menu-main">
     <div class="menu-main__wrapper">
       <div class="menu-main__list">
-        <div class="menu-main__list-item" v-for="piz in pizzaList">
+        <div
+          class="menu-main__list-item"
+          v-for="(piz, index) in pizzaList"
+          :key="index"
+        >
           <img :src="`/img/pizza/${piz.img}.png`" alt="piz.img" />
           <div :class="{ newPush: piz.new }" v-if="piz.new">NEW</div>
           <h3 class="menu-main__list-item-title">{{ piz.title }}</h3>

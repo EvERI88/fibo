@@ -3,7 +3,11 @@
 
   <div class="main-new">
     <div class="main-new__wrapper">
-      <div class="main-new__new-product" v-for="product in newProducts">
+      <div
+        class="main-new__new-product"
+        v-for="(product, index) in newProducts"
+        :key="index"
+      >
         <div class="main-new__new-product-img">
           <img :src="`/img/pizza/${product.img}.png`" :alt="product.title" />
         </div>
