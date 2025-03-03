@@ -11,5 +11,7 @@
             "email": "volktyt202@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "phalcon/ide-stubs": "^5.8"
+    }
 }
