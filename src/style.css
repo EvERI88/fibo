@@ -2,6 +2,12 @@
 @import "/node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 /* @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css'; */
 /* Reset and base styles  */
+:root {
+  --fa-yellow: #ffc816; 
+  --col-yellow: #f7d22d; 
+  --black-yellow: #000; 
+}
+
 * {
   padding: 0px;
   margin: 0px;
@@ -145,16 +151,4 @@ body::before {
   right: 0;
   bottom: 0;
   z-index: -1;
-}
-.col-yellow {
-  color: #f7d22d;
-}
-.col-black {
-  color: black;
-}
-.ai-center {
-  align-items: center;
-}
-.fa-star {
-  color: #ffc816;
 }

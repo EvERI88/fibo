@@ -2,7 +2,9 @@
   <div class="feedback">
     <button class="feedback__telephone-btn">Заказать звонок</button>
     <span class="feedback__telephone-text">
-      <a href="tel:+7 499 391-84-49" class="col-yellow"> 8 499 391-84-49 </a>
+      <a href="tel:+7 499 391-84-49" class="feedback__telephone-text-yellow">
+        8 499 391-84-49
+      </a>
     </span>
   </div>
 </template>
@@ -31,6 +33,9 @@
     font-size: 1.5rem;
     line-height: 1.2;
     white-space: nowrap;
+  }
+  &__telephone-text-yellow {
+    color: var(--col-yellow);
   }
 }
 </style>

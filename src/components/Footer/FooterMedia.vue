@@ -30,21 +30,58 @@ const cards = [
 ];
 </script>
 <style lang="scss">
-.footer__media-cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  padding-top: 33px;
-}
-.footer__media-card {
-  border: 2px solid hsla(210, 47%, 93%, 1);
-  padding: 11px 36px;
-  border-radius: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.footer__media-card-last-child {
-  grid-column: 3 / 5;
+.footer {
+  &__media {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 0;
+  }
+  &__media-card-text {
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 15.85px;
+  }
+  &__media-card-img {
+    max-width: 30px;
+    width: 100%;
+  }
+  &__telephone-contact {
+    flex-direction: column-reverse;
+    align-items: left !important;
+    padding-top: 25px;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 15.85px;
+  }
+  &__media-question {
+    text-transform: uppercase;
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17.07px;
+  }
+  .feedback {
+    &__telephone-btn {
+      max-width: 180px;
+    }
+  }
+  &__media-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    padding-top: 33px;
+  }
+  &__media-card {
+    border: 2px solid hsla(210, 47%, 93%, 1);
+    padding: 11px 36px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__media-card-last-child {
+    grid-column: 3 / 5;
+  }
 }
 </style>

@@ -58,7 +58,7 @@ const isSlideSelected = (index: number): boolean => {
 onMounted(() => {
   if (emblaApi.value) {
     emblaApi.value.on("select", () => {
-      selectedIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
+      selectedIndex.value = emblaApi.value?.selectedScrollSnap() ?? 0;
     });
   }
 });
@@ -66,15 +66,59 @@ onMounted(() => {
 const scrollToPrev = (): void => {
   if (emblaApi.value) {
     emblaApi.value.scrollPrev();
-    selectedIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
+    selectedIndex.value = emblaApi.value?.selectedScrollSnap() ?? 0;
   }
 };
 
 const scrollToNext = (): void => {
   if (emblaApi.value) {
     emblaApi.value.scrollNext();
-    selectedIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
+    selectedIndex.value = emblaApi.value?.selectedScrollSnap() ?? 0;
   }
 };
 </script>
-
+<style scoped lang="scss">
+.embla {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  &__container {
+    display: flex;
+    gap: 30px;
+  }
+  &__viewport {
+    width: 1100px;
+    margin: 0 auto;
+  }
+  &__slide {
+    flex: 0 0 calc(50% - 15px);
+    min-width: 0;
+    width: 100%;
+  }
+  &_slide-img {
+    height: 100%;
+    object-fit: cover;
+    object-position: left;
+    border-radius: 15px;
+    box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.26);
+  }
+  &__btn {
+    position: absolute;
+    top: 150px;
+    left: 123px;
+    display: flex;
+    justify-content: space-between;
+    right: 123px;
+  }
+  &__slide {
+    transform: scale(0.9);
+    transition: 1000ms;
+    opacity: 0.6;
+  }
+  &__selected {
+    opacity: 1;
+    transform: scale(1);
+    transition: 1000ms;
+  }
+}
+</style>
