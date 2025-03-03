@@ -8,7 +8,7 @@
       <Feedback class="header__feedback" />
     </div>
   </header>
-  <BurgerMenu />
+  <BurgerMenu :listNavigation="listNavigation" />
 </template>
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
@@ -16,6 +16,26 @@ import Logo from "./UI/Logo.vue";
 import HeaderInfo from "./Header/HeaderInfo.vue";
 import Feedback from "./UI/Feedback.vue";
 import BurgerMenu from "./Header/BurgerMenu.vue";
+
+interface navigation {
+  id: number;
+  name: string;
+  anchor: string;
+}
+
+const listNavigation: navigation[] = [
+  { id: 0, name: "Пицца", anchor: "Пицца" },
+  { id: 1, name: "Паста", anchor: "Паста" },
+  { id: 2, name: "Супы", anchor: "Супы" },
+  { id: 3, name: "Салаты", anchor: "Салаты" },
+  { id: 4, name: "Напитки", anchor: "Напитки" },
+  { id: 5, name: "Десерты", anchor: "Десерты" },
+  { id: 6, name: "Бакалея", anchor: "Бакалея" },
+  { id: 7, name: "Антипасти", anchor: "Антипасти" },
+  { id: 8, name: "Акции", anchor: "Акции" },
+  { id: 9, name: "Комбо", anchor: "Комбо" },
+  { id: 10, name: "Контакты", anchor: "Контакты" },
+];
 </script>
 <style lang="scss">
 .header {

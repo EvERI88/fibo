@@ -2,25 +2,25 @@
   <h2 id="pizza" class="menu-main-title">Паста</h2>
   <div class="menu-main">
     <div class="menu-main__wrapper">
-      <div class="menu-main__list">
+      <div class="menu-main__list" v-for="menus in listMenu" :key="menus.id">
         <div
           class="menu-main__list-item"
-          v-for="(piz, index) in pizzaList"
-          :key="index"
+          v-for="product in menus.products"
+          :key="product.id"
         >
-          <img :src="`/img/pizza/${piz.img}.png`" alt="piz.img" />
+          <img :src="`/img/pizza/${product.image}.png`" alt="piz.img" />
           <div
-            :class="{ 'menu-main__list-item-is-new': piz.new }"
-            v-if="piz.new"
+            :class="{ 'menu-main__list-item-is-new': product.is_new }"
+            v-if="product.is_new"
           >
             NEW
           </div>
-          <h3 class="menu-main__list-item-title">{{ piz.title }}</h3>
+          <h3 class="menu-main__list-item-title">{{ product.name }}</h3>
           <p class="menu-main__list-item-description">
-            {{ piz.description }}
+            {{ product.description }}
           </p>
           <div class="menu-main__list-item-price">
-            от {{ piz.price }} ₽
+            от {{ product.price }} ₽
             <button class="menu-main__list-item-buy">В корзину</button>
           </div>
         </div>
@@ -28,17 +28,25 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
-interface PizzaList {
-  img: string;
-  title: string;
-  description: string;
+interface Product {
+  id: number;
+  name: string;
   price: number;
-  new: boolean;
+  image: string;
+  is_new: boolean;
+  description: string;
+}
+
+interface ListMenu {
+  id: number;
+  name: string;
+  products: Product[];
 }
 
 defineProps<{
-  pizzaList: PizzaList[];
+  listMenu: ListMenu[];
 }>();
 </script>
 

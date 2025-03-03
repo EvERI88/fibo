@@ -5,14 +5,14 @@
     <div class="main-new__wrapper">
       <div
         class="main-new__new-product"
-        v-for="(product, index) in newProducts"
-        :key="index"
+        v-for="product in newProducts"
+        :key="product.id"
       >
         <div class="main-new__new-product-img">
-          <img :src="`/img/pizza/${product.img}.png`" :alt="product.title" />
+          <img :src="`/img/pizza/${product.img}.png`" :alt="product.name" />
         </div>
         <div class="main-new__new-product-info">
-          {{ product.title }}
+          {{ product.name }}
           <div class="main-new__new-product-info-price">
             от {{ product.price }} ₽
           </div>
@@ -22,14 +22,15 @@
   </div>
 </template>
 <script setup lang="ts">
-interface NewPizza {
-  title: string;
+interface NewProducts {
+  id: number;
+  name: string;
   img: string;
   price: number;
 }
 
 defineProps<{
-  newProducts: NewPizza[];
+  newProducts: NewProducts[];
 }>();
 </script>
 <style scoped lang="scss">

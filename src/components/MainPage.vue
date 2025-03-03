@@ -2,7 +2,7 @@
   <main>
     <Slider :sliderImg="sliderImg" />
     <MainNew :newProducts="newProducts" />
-    <MainMenu :pizzaList="pizzaList" />
+    <MainMenu :listMenu="listMenu" />
   </main>
 </template>
 <script setup lang="ts">
@@ -14,25 +14,32 @@ interface SliderImg {
   img: string;
 }
 
-interface NewProduct {
-  title: string;
-  img: string;
-  price: number;
+interface blocks {
+  new: {
+    id: number;
+    name: string;
+    img: string;
+    price: number;
+  }[];
+  menu: {
+    id: number;
+    name: string;
+    products: {
+      id: number;
+      name: string;
+      price: number;
+      image: string;
+      is_new: boolean;
+      description: string;
+    }[];
+  }[];
 }
 
-interface PizzaList {
-  img: string;
-  new: boolean;
-  title: string;
-  description: string;
-  price: number;
-}
-
-const newProducts: NewProduct[] = [
-  { title: "Карбонара", img: "newPizza", price: 120 },
-  { title: "Карбонара", img: "newPizza", price: 120 },
-  { title: "Карбонара", img: "newPizza", price: 120 },
-  { title: "Карбонара", img: "newPizza", price: 120 },
+const newProducts: blocks["new"] = [
+  { id: 1, name: "Карбонара", img: "newPizza", price: 120 },
+  { id: 2, name: "Карбонара", img: "newPizza", price: 120 },
+  { id: 3, name: "Карбонара", img: "newPizza", price: 120 },
+  { id: 4, name: "Карбонара", img: "newPizza", price: 120 },
 ];
 
 const sliderImg: SliderImg[] = [
@@ -44,94 +51,102 @@ const sliderImg: SliderImg[] = [
   { img: "2" },
 ];
 
-const pizzaList: PizzaList[] = [
+const listMenu: blocks["menu"] = [
   {
-    img: "pizza1",
-    new: false,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: true,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: true,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: true,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: false,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: false,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: false,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: true,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: false,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: false,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
-  },
-  {
-    img: "pizza1",
-    new: true,
-    title: "С креветками и трюфелями",
-    description:
-      "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-    price: 600,
+    id: 1,
+    name: "Паста",
+    products: [
+      {
+        id: 10,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 11,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+      {
+        id: 12,
+        name: "С креветками и трюфелями",
+        price: 600,
+        image: "pizza1",
+        is_new: true,
+        description:
+          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
+      },
+    ],
   },
 ];
 </script>
