@@ -15,11 +15,11 @@
         <p class="footer__media-card-text">Написать нам</p>
       </div>
     </div>
-    <HeaderFeedback class="footer__telephone-contact" />
+    <Feedback class="footer__telephone-contact" />
   </div>
 </template>
 <script setup lang="ts">
-import HeaderFeedback from "../Header/HeaderFeedback.vue";
+import Feedback from "../UI/Feedback.vue";
 const cards = [
   { img: "facebook" },
   { img: "hz" },

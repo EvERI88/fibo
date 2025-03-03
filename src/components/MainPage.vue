@@ -1,7 +1,7 @@
 <template>
   <main>
     <Slider :sliderImg="sliderImg" />
-    <MainNew />
+    <MainNew :newProducts="newProducts" />
     <MainMenu :pizzaList="pizzaList" />
   </main>
 </template>
@@ -14,6 +14,27 @@ interface SliderImg {
   img: string;
 }
 
+interface NewProduct {
+  title: string;
+  img: string;
+  price: number;
+}
+
+interface menuProduct {
+  img: string;
+  new: boolean;
+  title: string;
+  description: string;
+  price: number;
+}
+
+const newProducts: NewProduct[] = [
+  { title: "Карбонара", img: "newPizza", price: 120 },
+  { title: "Карбонара", img: "newPizza", price: 120 },
+  { title: "Карбонара", img: "newPizza", price: 120 },
+  { title: "Карбонара", img: "newPizza", price: 120 },
+];
+
 const sliderImg: SliderImg[] = [
   { img: "1" },
   { img: "1" },
@@ -22,7 +43,7 @@ const sliderImg: SliderImg[] = [
   { img: "2" },
   { img: "2" },
 ];
-const pizzaList = [
+const pizzaList: menuProduct[] = [
   {
     img: "pizza1",
     new: false,
@@ -115,8 +136,7 @@ const pizzaList = [
 </script>
 
 <style lang="scss">
-.newPush::before {
-  content: "NEW";
+.newPush {
   width: 50px;
   height: 20px;
   position: absolute;

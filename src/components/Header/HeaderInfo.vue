@@ -13,7 +13,7 @@
       <div class="header__time-stars--time header__info-time-stars-circle">
         Время доставки<span> </span>
       </div>
-      от 31 мин
+      <div class="header__time-stars--time-minutes">от 31 мин</div>
     </div>
   </div>
 </template>

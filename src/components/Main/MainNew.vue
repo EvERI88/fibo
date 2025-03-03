@@ -3,42 +3,28 @@
 
   <div class="main-new">
     <div class="main-new__wrapper">
-      <div class="main-new__new-product">
+      <div class="main-new__new-product" v-for="product in newProducts">
         <div class="main-new__new-product-img">
-          <img src="/img/pizza/newPizza.png" alt="newPizza" />
+          <img :src="`/img/pizza/${product.img}.png`" :alt="product.title" />
         </div>
         <div class="main__new-product-info">
-          Карбонара
-          <div class="col-yellow">от 120 ₽</div>
-        </div>
-      </div>
-      <div class="main-new__new-product">
-        <div class="main-new__new-product-img">
-          <img src="/img/pizza/newPizza.png" alt="newPizza" />
-        </div>
-        <div class="main-new__new-product-info">
-          Карбонара
-          <div class="col-yellow">от 120 ₽</div>
-        </div>
-      </div>
-      <div class="main-new__new-product">
-        <div class="main-new__new-product-img">
-          <img src="/img/pizza/newPizza.png" alt="newPizza" />
-        </div>
-        <div class="main-new__new-product-info">
-          Карбонара
-          <div class="col-yellow">от 120 ₽</div>
-        </div>
-      </div>
-      <div class="main-new__new-product">
-        <div class="main-new__new-product-img">
-          <img src="/img/pizza/newPizza.png" alt="newPizza" />
-        </div>
-        <div class="main-new__new-product-info">
-          Карбонара
-          <div class="col-yellow">от 120 ₽</div>
+          {{ product.title }}
+          <div class="col-yellow">от {{ product.price }} ₽</div>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+interface NewPizza {
+  title: string;
+  img: string;
+  price: number;
+}
+
+defineProps({
+  newProducts: {
+    type: Array as () => NewPizza[],
+  },
+});
+</script>

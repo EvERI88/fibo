@@ -17,7 +17,7 @@
       <div class="burger-menu__function">
         <button class="burger-menu__function-signin">Войти</button>
         <div class="burger-menu__function-basket">
-          Корзина <span class="count-product-in-basket">1</span>
+          Корзина <span class="burger-menu__count-product-in-basket">1</span>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@
         <Logo />
       </RouterLink>
       <HeaderInfo />
-      <HeaderFeedback class="ai-center" />
+      <Feedback class="ai-center" />
     </div>
   </header>
   <BurgerMenu />
@@ -14,7 +14,7 @@
 import { RouterLink } from "vue-router";
 import Logo from "./UI/Logo.vue";
 import HeaderInfo from "./Header/HeaderInfo.vue";
-import HeaderFeedback from "./Header/HeaderFeedback.vue";
+import Feedback from "./UI/Feedback.vue";
 import BurgerMenu from "./Header/BurgerMenu.vue";
 </script>
 <style lang="scss">
@@ -26,6 +26,9 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
     max-width: 1110px;
     width: 100%;
     display: flex;
+  }
+  &__time-stars--time-minutes {
+    padding-left: 12px;
   }
   .main-logo {
     min-width: 80px;
@@ -48,13 +51,12 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
   &__info-time-stars {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
-    font-size: 0.9rem;
+    gap: 7px;
+    font-size: 13px;
     align-items: center;
   }
   &__info-time-stars-ya {
     max-width: 18px;
-    border-radius: 10px;
   }
   &__info-time-stars-circle {
     position: relative;
@@ -66,10 +68,15 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
     height: 4px;
     background-color: #ff2e65;
     border-radius: 50%;
-    right: -10px;
+    right: -12px;
     top: 50%;
   }
-
+  &__time-stars-star {
+    padding-left: 12px;
+  }
+  &__time-stars--time {
+    padding-left: 7px;
+  }
   &__feedback {
     display: flex;
     flex: 0 0 auto;
@@ -171,19 +178,20 @@ import BurgerMenu from "./Header/BurgerMenu.vue";
     line-height: 28px;
     color: hsla(345, 6%, 13%, 1);
     padding: 7px 25px;
+    cursor: pointer;
   }
-}
-.count-product-in-basket {
-  padding-left: 25px;
-  position: relative;
-}
-.count-product-in-basket::after {
-  content: "";
-  width: 2px;
-  height: 23px;
-  background-color: hsla(345, 6%, 13%, 1);
-  position: absolute;
-  left: 7px;
-  top: 0;
+  &__count-product-in-basket {
+    padding-left: 25px;
+    position: relative;
+  }
+  &__count-product-in-basket::after {
+    content: "";
+    width: 2px;
+    height: 23px;
+    background-color: hsla(345, 6%, 13%, 1);
+    position: absolute;
+    left: 7px;
+    top: 0;
+  }
 }
 </style>

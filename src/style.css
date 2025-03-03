@@ -117,10 +117,11 @@ legend {
   flex-direction: column;
   width: 100%;
 }
-main{
+main {
   width: 100%;
 }
 body {
+  scroll-behavior: smooth;
   font-family: "Montserrat", serif;
   font-optical-sizing: auto;
   font-weight: 700;
@@ -157,4 +158,3 @@ body::before {
 .fa-star {
   color: #ffc816;
 }
-
