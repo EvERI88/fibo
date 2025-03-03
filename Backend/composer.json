@@ -1,17 +1,17 @@
 {
-    "name": "valery/backend",
-    "autoload": {
-        "psr-4": {
-            "Valery\\Backend\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "EvERI88",
-            "email": "volktyt202@gmail.com"
-        }
-    ],
-    "require-dev": {
-        "phalcon/ide-stubs": "^5.8"
+  "name": "valery/backend",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "EvERI88",
+      "email": "volktyt202@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "phalcon/ide-stubs": "^5.8"
+  }
 }

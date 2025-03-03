@@ -1,6 +1,2 @@
 <?php
-
-namespace App;
-
-use Phalcon\Mvc\Application;
-use Phalcon\Mvc\Micro;
+echo '<h1>FIBO</h1>';
