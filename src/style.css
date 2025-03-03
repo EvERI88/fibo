@@ -3,9 +3,9 @@
 /* @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css'; */
 /* Reset and base styles  */
 :root {
-  --fa-yellow: #ffc816; 
-  --col-yellow: #f7d22d; 
-  --black-yellow: #000; 
+  --fa-yellow: #ffc816;
+  --col-yellow: #f7d22d;
+  --col-black: #000;
 }
 
 * {
