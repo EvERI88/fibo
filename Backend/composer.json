@@ -1,0 +1,15 @@
+{
+    "name": "valery/backend",
+    "autoload": {
+        "psr-4": {
+            "Valery\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "EvERI88",
+            "email": "volktyt202@gmail.com"
+        }
+    ],
+    "require": {}
+}

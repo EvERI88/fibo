@@ -33,6 +33,7 @@
   }
   &__wrapper-image-map {
     width: 100%;
+    border-radius: 14px;
   }
   &__title {
   }
