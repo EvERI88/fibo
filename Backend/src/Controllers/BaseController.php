@@ -2,7 +2,5 @@
 
 use Phalcon\Mvc\Controller;
 
-class BaseController extends Controller
-{
-    
+abstract class BaseController extends Controller {
 }

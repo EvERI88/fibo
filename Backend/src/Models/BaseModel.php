@@ -2,4 +2,8 @@
 
 use Phalcon\Mvc\Model;
 
-class Base extends Model {}
+abstract class BaseModel extends Model
+{
+    public $created_at;
+    public $updated_at;
+}
