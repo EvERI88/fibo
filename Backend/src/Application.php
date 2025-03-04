@@ -10,8 +10,6 @@ use Phalcon\Di\FactoryDefault;
 
 use Phalcon\Http\Response;
 
-
-
 class Application
 {
     private Micro $app;
