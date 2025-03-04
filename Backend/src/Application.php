@@ -26,5 +26,6 @@ class Application
         $response->setStatusCode(404, 'NOT FOUND');
         $factory = new FactoryDefault;
         $factory->setDi($response);
+        // DI protected function
     }
 }
