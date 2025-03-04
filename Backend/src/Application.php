@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App;
+
 use Phalcon\Mvc\Micro;
 
 use Phalcon\Di\FactoryDefault;
 
 use Phalcon\Http\Response;
 
+
+
 class Application
 {
-    private $app;
+    private Micro $app;
     public function run(): void
     {
         $this->app = new Micro();
