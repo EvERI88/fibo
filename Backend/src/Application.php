@@ -12,7 +12,8 @@ class Application
     public function run(): void
     {
         $this->app = new Micro();
-
+        $this->setDi();
+        $this->setRoutes();
         $this->app->get('/health-check', function (): string {
             return json_encode(['status' => 'ok']);
         });
@@ -22,8 +23,9 @@ class Application
     private function setDi(): void
     {
         $di = new FactoryDefault();
-        $this->setDi($di);
+        $this->app->setDI($di);
     }
+
     private function setRoutes(): void
     {
         $response = new Response();
@@ -32,7 +34,6 @@ class Application
 
     public function init(): void
     {
-        $this->setDi();
-        $this->setRoutes();
+        $this->run();
     }
 }
