@@ -24,12 +24,15 @@ class Application
         $di = new FactoryDefault();
         $this->setDi($di);
     }
+    private function setResponse(): void
+    {
+        $response = new Response();
+        $response->setStatusCode(404, 'NOT FOUND');
+    }
 
     public function init(): void
     {
         $this->setDi();
-
-        $response = new Response();
-        $response->setStatusCode(404, 'NOT FOUND');
+        $this->setResponse();
     }
 }
