@@ -4,7 +4,6 @@ use Phalcon\Mvc\Micro;
 
 use Phalcon\Di\FactoryDefault;
 
-
 class Application
 {
     private $app;
