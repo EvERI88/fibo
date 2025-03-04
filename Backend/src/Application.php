@@ -12,6 +12,6 @@ class Application
         $this->app->get('/health-check', function () {
             return json_encode(['status' => 'ok']);
         });
-        $this->app->handle($_SERVER['REQUEST_URI']);
+        $this->app->handle($_SERVER["REQUEST_URI"]);
     }
 }

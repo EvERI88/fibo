@@ -1,2 +1,2 @@
 <?php
-echo '<h1>FIBO</h1>';
+require('../src/Application.php');
