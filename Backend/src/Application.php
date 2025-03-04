@@ -10,7 +10,7 @@ class Application
         $this->app = new Micro();
 
         $this->app->get('/health-check', function () {
-            return json_encode(['status' => 'ok']);
+            return json_encode(array('status' => 'ok'));
         });
         $this->app->handle($_SERVER["REQUEST_URI"]);
     }
