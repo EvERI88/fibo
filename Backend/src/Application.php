@@ -24,7 +24,7 @@ class Application
         $di = new FactoryDefault();
         $this->setDi($di);
     }
-    private function setResponse(): void
+    private function setRoutes(): void
     {
         $response = new Response();
         $response->setStatusCode(404, 'NOT FOUND');
@@ -33,6 +33,6 @@ class Application
     public function init(): void
     {
         $this->setDi();
-        $this->setResponse();
+        $this->setRoutes();
     }
 }
