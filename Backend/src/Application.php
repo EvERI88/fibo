@@ -1,7 +1,5 @@
 <?php
 
-// require __DIR__ . '../vendor/autoload.php';
-
 use Phalcon\Mvc\Micro;
 
 use Phalcon\Di\FactoryDefault;
@@ -20,12 +18,18 @@ class Application
         });
         $this->app->handle($_SERVER["REQUEST_URI"]);
     }
+
+    private function setDi(): void
+    {
+        $di = new FactoryDefault();
+        $this->setDi($di);
+    }
+
     public function init(): void
     {
+        $this->setDi();
+
         $response = new Response();
         $response->setStatusCode(404, 'NOT FOUND');
-        $factory = new FactoryDefault;
-        $factory->setDi($response);
-        // DI protected function
     }
 }
