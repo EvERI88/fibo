@@ -2,7 +2,7 @@
   "name": "valery/backend",
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "App\\": "vendor/"
     }
   },
   "authors": [

@@ -1,8 +1,12 @@
 <?php
 
+// require __DIR__ . '../vendor/autoload.php';
+
 use Phalcon\Mvc\Micro;
 
 use Phalcon\Di\FactoryDefault;
+
+use Phalcon\Http\Response;
 
 class Application
 {
@@ -18,10 +22,9 @@ class Application
     }
     public function init(): void
     {
+        $response = new Response();
+        $response->setStatusCode(404, 'NOT FOUND');
         $factory = new FactoryDefault;
-        $factory->notFound(function () {
-            http_response_code(404);
-            return json_encode(['status' => 'NOT FOUND']);
-        });
+        $factory->setDi($response);
     }
 }
