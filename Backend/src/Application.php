@@ -24,10 +24,8 @@ class Application
         $this->app->handle($_SERVER["REQUEST_URI"]);
 
         $this->app->mount((new ProductsRoutes())->get());
-        
-        $this->app->after(function () {
-            new ResponseMiddleware()->afterUpdate($this->app);
-        });
+
+        $this->app->after((new ResponseMiddleware())->afterUpdate($this->app));
     }
 
     private function setDi(): void
@@ -45,7 +43,7 @@ class Application
         $this->app->notFound(function () {
             $response = new Response();
             $response->setStatusCode(404, 'NOT FOUND');
-            $response->setJsonContent(['key' => 'Not Found']);
+            $response->setJsonContent(['error' => 'Not found']);
             return $response;
         });
     }

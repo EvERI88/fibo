@@ -36,7 +36,6 @@ class ResponseMiddleware
         $response->setContentType('application/json', 'UTF-8');
 
         if (!is_array($data) && !is_object($data)) {
-
             $data = ['data' => $data];
             $response->setJsonContent($data);
         }

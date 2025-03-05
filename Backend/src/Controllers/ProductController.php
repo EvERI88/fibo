@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Phalcon\Tag;
-use App\Models\ProductModel;
-use Phalcon\Http\Request;
+// use Phalcon\Tag;
+// use App\Models\ProductModel;
+// use Phalcon\Http\Request;
 
 class ProductController extends BaseController
 {
@@ -14,7 +14,7 @@ class ProductController extends BaseController
 
     public function init(): void
     {
-        $this->tag->title()->set('Products');
+        // $this->tag->title()->set('Products');
     }
     public function createAction(): void {}
 
