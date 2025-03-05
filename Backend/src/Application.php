@@ -23,8 +23,6 @@ class Application
 
         $this->app->handle($_SERVER["REQUEST_URI"]);
 
-        $this->app->mount((new ProductsRoutes())->get());
-
         $this->app->after((new ResponseMiddleware())->afterUpdate($this->app));
     }
 
@@ -36,6 +34,14 @@ class Application
 
     private function setRoutes(): void
     {
+
+        /** @var IRoutes[] */
+        $routes = [
+            new ProductsRoutes()
+        ];
+        foreach ($routes as $route) {
+            $this->app->mount($route->get());
+        }
         $this->app->get('/health-check', function (): string {
             return json_encode(['status' => 'ok']);
         });

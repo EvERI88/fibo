@@ -7,7 +7,7 @@ namespace App\Routes;
 use App\Controllers\ProductController;
 use Phalcon\Mvc\Micro\Collection;
 
-final class ProductsRoutes
+final class ProductsRoutes implements IRoutes
 {
     public function  get(): Collection
     {
