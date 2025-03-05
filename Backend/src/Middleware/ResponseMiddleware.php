@@ -12,6 +12,7 @@ class ResponseMiddleware implements MiddlewareInterface
 {
     public function call(Micro $application)
     {
+
         $data = $application->getReturnedValue();
 
         $responseHeaders = [
@@ -39,6 +40,7 @@ class ResponseMiddleware implements MiddlewareInterface
         if (!is_array($data) && !is_object($data)) {
             $data = ['data' => $data];
             $response->setJsonContent($data);
+            $response->send($data);
         }
     }
 }

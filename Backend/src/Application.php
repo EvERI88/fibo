@@ -22,9 +22,11 @@ class Application
         $this->setDi();
         $this->setRoutes();
 
-        $this->app->handle($_SERVER["REQUEST_URI"]);
 
-        $this->app->after((new ResponseMiddleware())->call($this->app));
+
+        $this->app->after(new ResponseMiddleware());
+
+        $this->app->handle($_SERVER["REQUEST_URI"]);
     }
 
     private function setDi(): void
