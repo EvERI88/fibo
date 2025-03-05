@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Middleware\ResponseMiddleware;
+use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
@@ -37,8 +38,10 @@ class Application
 
         /** @var IRoutes[] */
         $routes = [
-            new ProductsRoutes()
+            new ProductsRoutes(),
+            new CategoriesRoutes(),
         ];
+        
         foreach ($routes as $route) {
             $this->app->mount($route->get());
         }
