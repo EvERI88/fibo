@@ -8,8 +8,8 @@ use Phalcon\Mvc\Model;
 
 abstract class BaseModel extends Model
 {
-    public $created_at;
-    public $updated_at;
+    public ?string $created_at;
+    public ?string $updated_at;
 
     public function beforeUpdate(): void
     {
