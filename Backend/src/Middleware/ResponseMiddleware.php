@@ -7,7 +7,7 @@ namespace App\Middleware;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Micro;
 
-class ResponseMiddleware
+final class ResponseMiddleware
 {
     public function afterUpdate(Micro $app): void
     {

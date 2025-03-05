@@ -4,24 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-// use Phalcon\Tag;
-// use App\Models\ProductModel;
-// use Phalcon\Http\Request;
 
 class ProductController extends BaseController
 {
     public array $products = null;
 
-    public function init(): void
-    {
-        // $this->tag->title()->set('Products');
-    }
-    public function createAction(): void {}
-
-    public function indexAction(): void {}
-
-    public function updateAction(): void {}
-    public function deleteAction(): void {}
+    public function index(): void {}
+    public function create(): void {}
+    public function update(): void {}
+    public function delete(): void {}
 }
 
 
