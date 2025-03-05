@@ -34,13 +34,8 @@ class ResponseMiddleware implements MiddlewareInterface
             ->setHeader("Access-Control-Allow-Methods", 'GET,POST,PUT,DELETE')
             ->setHeader("Access-Control-Allow-Headers", implode(",", $responseHeaders))
             ->setHeader("Access-Control-Allow-Credentials", true)
-            ->setHeader("Access-Control-Max-Age", 3600);
-        $response->setContentType('application/json', 'UTF-8');
-
-        if (!is_array($data) && !is_object($data)) {
-            $data = ['data' => $data];
-            $response->setJsonContent($data);
-            $response->send($data);
-        }
+            ->setHeader("Access-Control-Max-Age", 3600)
+            ->setContentType('application/json', 'UTF-8')
+            ->send($data);
     }
 }
