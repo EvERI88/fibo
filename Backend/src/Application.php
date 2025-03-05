@@ -15,7 +15,7 @@ class Application
     public function run(): void
     {
         $this->app = new Micro();
-        
+
         $this->setDi();
         $this->setRoutes();
 
@@ -37,7 +37,7 @@ class Application
         $this->app->notFound(function () {
             $response = new Response();
             $response->setStatusCode(404, 'NOT FOUND');
-            $response->setContent('Not Found');
+            $response->setJsonContent(['key' => 'Not Found']);
             return $response;
         });
     }
