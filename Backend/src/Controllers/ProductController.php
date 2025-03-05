@@ -5,20 +5,32 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\ProductModel;
+use Phalcon\Http\Response;
 
 class ProductController extends BaseController
 {
-    public array $products = null;
+    private object $products = null;
 
-    public function index(): array
+    public function index(): object
     {
-        return $this->products;
+        $this->products = new ProductModel();
+        $response = $this->products->find();
+        if (!(count($response))) {
+            $response = [
+                "success" => "false",
+                "code" => "404",
+                "message" => "Not Found"
+            ];
+        }
+        return $response;
     }
+
     public function create(array $data): bool
     {
         $this->products[] = $data;
         return true;
     }
+
     public function update(): void {}
     public function delete(): void {}
 }
