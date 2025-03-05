@@ -10,7 +10,7 @@ use Phalcon\Http\Request;
 
 class ProductController extends BaseController
 {
-    public $products = null;
+    public array $products = null;
 
     public function init(): void
     {
