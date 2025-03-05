@@ -7,11 +7,12 @@ namespace App\Middleware;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\MiddlewareInterface;
-class ResponseMiddleware extends MiddlewareInterface
+
+class ResponseMiddleware implements MiddlewareInterface
 {
-    public function afterUpdate(Micro $app): void
+    public function call(Micro $application)
     {
-        $data = $app->getReturnedValue();
+        $data = $application->getReturnedValue();
 
         $responseHeaders = [
             'Origin',

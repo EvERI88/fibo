@@ -24,7 +24,7 @@ class Application
 
         $this->app->handle($_SERVER["REQUEST_URI"]);
 
-        $this->app->after((new ResponseMiddleware())->afterUpdate($this->app));
+        $this->app->after((new ResponseMiddleware())->call($this->app));
     }
 
     private function setDi(): void
@@ -41,7 +41,7 @@ class Application
             new ProductsRoutes(),
             new CategoriesRoutes(),
         ];
-        
+
         foreach ($routes as $route) {
             $this->app->mount($route->get());
         }
