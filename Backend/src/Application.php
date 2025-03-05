@@ -22,8 +22,6 @@ class Application
         $this->setDi();
         $this->setRoutes();
 
-
-
         $this->app->after(new ResponseMiddleware());
 
         $this->app->handle($_SERVER["REQUEST_URI"]);
