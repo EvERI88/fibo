@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Middleware\ResponseMiddleware;
 use App\Routes\ProductsRoutes;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
@@ -21,9 +22,12 @@ class Application
         $this->setRoutes();
 
         $this->app->handle($_SERVER["REQUEST_URI"]);
-        
-        $this->app->mount((new ProductsRoutes())->get());
 
+        $this->app->mount((new ProductsRoutes())->get());
+        
+        $this->app->after(function () {
+            new ResponseMiddleware()->afterUpdate($this->app);
+        });
     }
 
     private function setDi(): void
