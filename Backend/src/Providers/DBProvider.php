@@ -6,40 +6,32 @@ namespace App\Providers;
 
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\DiInterface;
-use Phalcon\Di\FactoryDefault;
 use Phalcon\Di\ServiceProviderInterface;
 
 class DBProvider implements ServiceProviderInterface
 {
     public function register(DiInterface $di): void
     {
-        $services = [
-            new ConfigProvider(),
-            new DBProvider(),
-        ];
-        $di = new FactoryDefault();
-        foreach ($services as $service) {
-            $di->register($service);
-        }
         $di->setShared('db', function () use ($di) {
-            // $config = $di->get('config')->db;
-            $eventsManager = $di->getShared('eventsManager');
-            $options = [
-                'host' => $config->host ?? 'localhost',
-                'username' => $config->username ?? 'root',
-                'password' => $config->password ?? '123qwe',
-                'dbname' => $config->name ?? 'fibo'
-            ];
-
-            $connection = new Mysql($options);
-            $connection->setEventsManager($eventsManager);
+            $dbConfig = $di->getShared('config')->db;
             return new Mysql([
-                'host' => $config->host ?? 'localhost',
-                'username' => $config->username ?? 'root',
-                'password' => $config->password ?? '123qwe',
-                'dbname' => $config->name ?? 'fibo'
+                'adapter' => $dbConfig->adapter ?? 'mysql',
+                'host' => $dbConfig->host ?? 'localhost',
+                'username' => $dbConfig->username ?? 'root',
+                'password' => $dbConfig->password ?? '123qwe',
+                'dbname' => $dbConfig->dbname ?? 'fibo',
+                'charset' => $dbConfig->charset ?? 'utf-8',
+                'dbname' => $dbConfig->name ?? 'fibo',
+                'dbname' => $dbConfig->name ?? 'fibo',
             ]);
-            return $connection;
         });
     }
 }
+
+
+// 'adapter'  => 'mysql',
+// 'host' => 'localhost',
+// 'username' => 'root',
+// 'password' => '123qwe',
+// 'dbname' => 'fibo',
+// 'charset'  => 'utf8',

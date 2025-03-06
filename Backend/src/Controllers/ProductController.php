@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\ProductModel;
+use App\Models\Products;
 use Phalcon\Http\Response;
 
 class ProductController extends BaseController
 {
-    private object $products = null;
-
     public function index(): Response
     {
-        $this->products = ProductModel::find();
-        return $this->response->setJsonContent(['123' => '123']);
+        $products = Products::find();
+        return $this->response->setJsonContent($products);
     }
 
     public function create(array $data): void {}

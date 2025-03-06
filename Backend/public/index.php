@@ -4,5 +4,10 @@ use App\Application;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$app = new Application();
-$app->run();
+try {
+    $app = new Application();
+    $app->run();
+} catch (\Throwable $th) {
+    var_dump($th->getMessage());
+    var_dump($th->getTraceAsString());
+}

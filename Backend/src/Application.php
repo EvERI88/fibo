@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App;
 
 use App\Middleware\ResponseMiddleware;
+use App\Providers\ConfigProvider;
+use App\Providers\DBProvider;
 use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
 use Phalcon\Di\DiInterface;
@@ -19,6 +21,15 @@ class Application
     public function run(): void
     {
         $this->app = new Micro();
+
+        $services = [
+            new ConfigProvider(),
+            new DBProvider(),
+        ];
+        $di = new FactoryDefault();
+        foreach ($services as $service) {
+            $di->register($service);
+        }
 
         $this->init();
 

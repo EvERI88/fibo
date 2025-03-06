@@ -1,4 +1,3 @@
-
 <?php
 
 declare(strict_types=1);
@@ -18,10 +17,12 @@ class ConfigProvider implements ServiceProviderInterface
             fn() => new Config(
                 [
                     'db' => [
+                        'adapter'  => 'mysql',
+                        'host' => 'localhost',
                         'username' => 'root',
                         'password' => '123qwe',
-                        'name' => 'fibo',
-                        'host' => 'localhost',
+                        'dbname' => 'fibo',
+                        'charset'  => 'utf8',
                     ]
                 ]
             )
