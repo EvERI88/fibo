@@ -6,8 +6,6 @@ namespace App\Controllers;
 
 use App\Models\Products;
 use Phalcon\Http\Response;
-use Phalcon\Di\DiInterface;
-use Phalcon\Events\Manager;
 
 class ProductController extends BaseController
 {
@@ -24,10 +22,6 @@ class ProductController extends BaseController
         $products = new Products();
         $data['is_new'] = true;
         $products->assign($data);
-
-
-        $di = new DiInterface();
-        $di->setShared("eventsManager", fn() => new Manager());
 
         if ($products->create()) {
             return $this->response->setJsonContent([

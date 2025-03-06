@@ -7,12 +7,14 @@ namespace App;
 use App\Middleware\ResponseMiddleware;
 use App\Providers\ConfigProvider;
 use App\Providers\DBProvider;
+use App\Providers\EventsManagerProvider;
 use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
+use Phalcon\Events\Manager;
 
 class Application
 {
@@ -25,11 +27,14 @@ class Application
         $services = [
             new ConfigProvider(),
             new DBProvider(),
+            new EventsManagerProvider(),
         ];
         $di = new FactoryDefault();
         foreach ($services as $service) {
             $di->register($service);
         }
+
+        $di->setShared("eventsManager", fn() => new Manager());
 
         $this->init();
 
