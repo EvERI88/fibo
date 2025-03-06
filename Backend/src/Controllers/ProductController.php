@@ -11,25 +11,13 @@ class ProductController extends BaseController
 {
     private object $products = null;
 
-    public function index(): object
+    public function index(): Response
     {
-        $this->products = new ProductModel();
-        $response = $this->products->find();
-        if (!(count($response))) {
-            $response = [
-                "success" => "false",
-                "code" => "404",
-                "message" => "Not Found"
-            ];
-        }
-        return $response;
+        $this->products = ProductModel::find();
+        return $this->response->setJsonContent(['123' => '123']);
     }
 
-    public function create(array $data): bool
-    {
-        $this->products[] = $data;
-        return true;
-    }
+    public function create(array $data): void {}
 
     public function update(): void {}
     public function delete(): void {}

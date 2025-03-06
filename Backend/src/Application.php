@@ -7,6 +7,7 @@ namespace App;
 use App\Middleware\ResponseMiddleware;
 use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
@@ -19,8 +20,7 @@ class Application
     {
         $this->app = new Micro();
 
-        $this->setDi();
-        $this->setRoutes();
+        $this->init();
 
         $this->app->after(new ResponseMiddleware());
 
@@ -60,6 +60,7 @@ class Application
     public function init(): void
     {
         $this->setDi();
+
         $this->setRoutes();
     }
 }
