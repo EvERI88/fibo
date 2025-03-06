@@ -11,12 +11,12 @@ abstract class BaseModel extends Model
     public ?string $created_at = null;
     public ?string $updated_at = null;
 
-    public function beforeUpdate(): void
+    public function beforeValidationOnUpdate(): void
     {
         $this->updated_at = date("Y-m-d H:i:s");
     }
 
-    public function beforeCreate(): void
+    public function beforeValidationOnCreate(): void
     {
         $this->created_at = date("Y-m-d H:i:s");
         $this->updated_at = date("Y-m-d H:i:s");

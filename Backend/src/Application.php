@@ -23,29 +23,24 @@ class Application
     public function run(): void
     {
         $this->app = new Micro();
+        $this->init();
+        $this->app->after(new ResponseMiddleware());
+        $this->app->handle($_SERVER["REQUEST_URI"]);
+    }
+
+    private function setDi(): void
+    {
 
         $services = [
+            new EventsManagerProvider(),
             new ConfigProvider(),
             new DBProvider(),
-            new EventsManagerProvider(),
         ];
         $di = new FactoryDefault();
         foreach ($services as $service) {
             $di->register($service);
         }
 
-        $di->setShared("eventsManager", fn() => new Manager());
-
-        $this->init();
-
-        $this->app->after(new ResponseMiddleware());
-
-        $this->app->handle($_SERVER["REQUEST_URI"]);
-    }
-
-    private function setDi(): void
-    {
-        $di = new FactoryDefault();
         $this->app->setDI($di);
     }
 

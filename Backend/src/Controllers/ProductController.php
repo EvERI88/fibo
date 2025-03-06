@@ -40,15 +40,12 @@ class ProductController extends BaseController
 
 
 
-    public function update(): Response
+    public function update($id): Response
     {
-        $idProduct = $this->request->getQuery('id');
-
-        $product = Products::findFirst($idProduct);
-
+        $product = Products::findFirst($id);
         $data = $this->request->getJsonRawBody(true);
 
-        $data['is_new'] = (int)true;
+        $data['is_new'] = (int)$data['is_new'];
         if ($product) {
             $product->assign($data);
 
@@ -63,7 +60,6 @@ class ProductController extends BaseController
                     'status' => 'error',
                     'message' => 'Ошибка при обновлении',
                     'errors' => $product->getMessages(),
-                    'Products' => $data['is_new'],
                 ]);
             }
         } else {
@@ -75,5 +71,15 @@ class ProductController extends BaseController
     }
 
 
-    public function delete(): void {}
+    public function delete($id): Response
+    {
+        $product = Products::find($id);
+        $product->delete();
+
+        return $this->response->setJsonContent([
+            'status' => 'success',
+            'message' => 'Продукт успешно удален',
+            'ID' => $id,
+        ]);
+    }
 }

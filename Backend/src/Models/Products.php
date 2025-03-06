@@ -13,7 +13,7 @@ class Products extends BaseModel
     public ?string $name = null;
     public ?int $price = null;
     public ?string $image = null;
-    public ?bool $is_new = null;
+    public ?int $is_new = null;
     public ?string $description = null;
     public ?string $created_at = null;
     public ?string $updated_at = null;
