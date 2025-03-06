@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Products;
-use App\Providers\EventsManagerProvider;
 use Phalcon\Http\Response;
+use Phalcon\Di\DiInterface;
+use Phalcon\Events\Manager;
 
 class ProductController extends BaseController
 {
@@ -23,6 +24,10 @@ class ProductController extends BaseController
         $products = new Products();
         $data['is_new'] = true;
         $products->assign($data);
+
+
+        $di = new DiInterface();
+        $di->setShared("eventsManager", fn() => new Manager());
 
         if ($products->create()) {
             return $this->response->setJsonContent([
@@ -48,9 +53,6 @@ class ProductController extends BaseController
         $product = Products::findFirst($idProduct);
 
         $data = $this->request->getJsonRawBody(true);
-
-        $eventsProvide = new EventsManagerProvider();
-        $eventsProvide->run();
 
         $data['is_new'] = (int)true;
         if ($product) {
