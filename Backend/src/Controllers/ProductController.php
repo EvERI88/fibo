@@ -20,7 +20,6 @@ class ProductController extends BaseController
         $data = $this->request->getJsonRawBody(true);
 
         $products = new Products();
-        $data['is_new'] = true;
         $products->assign($data);
 
         if ($products->create()) {
@@ -79,7 +78,6 @@ class ProductController extends BaseController
         return $this->response->setJsonContent([
             'status' => 'success',
             'message' => 'Продукт успешно удален',
-            'ID' => $id,
         ]);
     }
 }

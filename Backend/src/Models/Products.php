@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Phalcon\Filter\Validation;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-
 class Products extends BaseModel
 {
     public ?int $id = null;
