@@ -27,11 +27,3 @@ class DBProvider implements ServiceProviderInterface
         });
     }
 }
-
-
-// 'adapter'  => 'mysql',
-// 'host' => 'localhost',
-// 'username' => 'root',
-// 'password' => '123qwe',
-// 'dbname' => 'fibo',
-// 'charset'  => 'utf8',

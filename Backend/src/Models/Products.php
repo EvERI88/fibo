@@ -18,20 +18,4 @@ class Products extends BaseModel
     public ?string $created_at = null;
     public ?string $updated_at = null;
     public ?int $category_id = null;
-
-    public function validation()
-    {
-        $validation = new Validation();
-        $validation->add(
-            'issueName',
-            new PresenceOf(
-                [
-                    'field' => 'name',
-                    'message' => 'Название не может быть пустым'
-                ]
-            )
-        );
-
-        return $this->validate($validation);
-    }
 }
