@@ -17,19 +17,11 @@ class ProductController extends BaseController
 
     public function create(): Response
     {
-
-        $data = [
-            'name' => $this->request->getPost('name', 'string'),
-            'price' => $this->request->getPost('price', 'int'),
-            'image' => $this->request->getPost('image', 'string'),
-            'is_new' => $this->request->getPost('is_new', 'boolean'),
-            'description' => $this->request->getPost('description', 'string'),
-            'category_id' => $this->request->getPost('category_id', 'int'),
-        ];
-
+        $data = $this->request->getJsonRawBody(true);
 
         $products = new Products();
         $products->beforeCreate();
+        $data['is_new'] = true;
         $products->assign($data);
 
         if ($products->save()) {
@@ -57,17 +49,12 @@ class ProductController extends BaseController
 
         $data = $this->request->getJsonRawBody(true);
 
+        $data['is_new'] = true;
         if ($product) {
-            $product->assign([
-                'name' => $data['name'] ?? null,
-                'price' => $data['price'] ?? null,
-                'image' => $data['image'] ?? null,
-                'is_new' => $data['is_new'] ?? null,
-                'description' => $data['description'] ?? null,
-                'category_id' => $data['category_id'] ?? null,
-            ]);
+            $product->assign($data);
 
             if ($product->update()) {
+                $product->beforeUpdate();
                 return $this->response->setJsonContent([
                     'status' => 'success',
                     'message' => 'Продукт успешно обновлен',
