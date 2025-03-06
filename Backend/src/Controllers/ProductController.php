@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Products;
+use App\Providers\EventsManagerProvider;
 use Phalcon\Http\Response;
 
 class ProductController extends BaseController
@@ -20,11 +21,10 @@ class ProductController extends BaseController
         $data = $this->request->getJsonRawBody(true);
 
         $products = new Products();
-        $products->beforeCreate();
         $data['is_new'] = true;
         $products->assign($data);
 
-        if ($products->save()) {
+        if ($products->create()) {
             return $this->response->setJsonContent([
                 'status' => 'success',
                 'message' => 'Продукт успешно создан',
@@ -49,12 +49,14 @@ class ProductController extends BaseController
 
         $data = $this->request->getJsonRawBody(true);
 
-        $data['is_new'] = true;
+        $eventsProvide = new EventsManagerProvider();
+        $eventsProvide->run();
+
+        $data['is_new'] = (int)true;
         if ($product) {
             $product->assign($data);
 
             if ($product->update()) {
-                $product->beforeUpdate();
                 return $this->response->setJsonContent([
                     'status' => 'success',
                     'message' => 'Продукт успешно обновлен',
@@ -65,7 +67,7 @@ class ProductController extends BaseController
                     'status' => 'error',
                     'message' => 'Ошибка при обновлении',
                     'errors' => $product->getMessages(),
-                    'Products' => $product,
+                    'Products' => $data['is_new'],
                 ]);
             }
         } else {
