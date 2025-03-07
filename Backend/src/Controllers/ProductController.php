@@ -53,9 +53,8 @@ class ProductController extends BaseController
     public function update($id): Response
     {
         $product = Products::findFirst($id);
-
-        $data = $this->request->getJsonRawBody(true);
         $requestValidate = new ProductsCreateRequest($this->request);
+        $data = $this->request->getJsonRawBody(true);
 
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
