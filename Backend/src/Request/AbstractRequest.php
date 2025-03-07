@@ -28,6 +28,4 @@ abstract class AbstractRequest
     {
         return $this->errors;
     }
-
-    abstract public function validate(): void;
 }
