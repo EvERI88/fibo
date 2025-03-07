@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Categories;
+use App\Request\CategoryCreateRequest;
 use Phalcon\Http\Response;
 
 class CategoryController extends BaseController
@@ -17,6 +18,15 @@ class CategoryController extends BaseController
     public function create(): Response
     {
         $data = $this->request->getJsonRawBody(true);
+        $requestValidate = new CategoryCreateRequest($this->request);
+
+        if (!empty($requestValidate->getErrors())) {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка валидации',
+                'errors' => $requestValidate->getErrors(),
+            ]);
+        }
 
         $categories = new Categories();
         $categories->assign($data);
@@ -40,7 +50,17 @@ class CategoryController extends BaseController
         $category = Categories::findFirst($id);
         $data = $this->request->getJsonRawBody(true);
 
+        $requestValidate = new CategoryCreateRequest($this->request);
+
         if ($category) {
+            if (!empty($requestValidate->getErrors())) {
+                return $this->response->setJsonContent([
+                    'status' => 'error',
+                    'message' => 'Ошибка валидации',
+                    'errors' => $requestValidate->getErrors(),
+                ]);
+            }
+
             $category->assign($data);
 
             if ($category->update()) {

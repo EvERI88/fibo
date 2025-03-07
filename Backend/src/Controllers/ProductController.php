@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Products;
+use App\Request\ProductsCreateRequest;
 use Phalcon\Http\Response;
 
 class ProductController extends BaseController
@@ -18,7 +19,15 @@ class ProductController extends BaseController
     public function create(): Response
     {
         $data = $this->request->getJsonRawBody(true);
+        $requestValidate = new ProductsCreateRequest($this->request);
 
+        if (!empty($requestValidate->getErrors())) {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка валидации',
+                'errors' => $requestValidate->getErrors(),
+            ]);
+        }
         $products = new Products();
         $products->assign($data);
 
@@ -43,9 +52,20 @@ class ProductController extends BaseController
     {
         $product = Products::findFirst($id);
         $data = $this->request->getJsonRawBody(true);
+        $requestValidate = new ProductsCreateRequest($this->request);
 
         $data['is_new'] = (int)$data['is_new'];
+        
         if ($product) {
+
+            if (!empty($requestValidate->getErrors())) {
+                return $this->response->setJsonContent([
+                    'status' => 'error',
+                    'message' => 'Ошибка валидации',
+                    'errors' => $requestValidate->getErrors(),
+                ]);
+            }
+
             $product->assign($data);
 
             if ($product->update()) {
