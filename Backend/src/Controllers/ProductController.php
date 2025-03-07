@@ -28,20 +28,53 @@ class ProductController extends BaseController
                 'errors' => $requestValidate->getErrors(),
             ]);
         }
-        $products = new Products();
-        $products->assign($data);
 
-        if ($products->create()) {
+        $product = new Products();
+        $product->assign($data);
+
+        if ($this->request->hasFiles()) {
+
+            $uploadedFiles = $this->request->getUploadedFiles();
+
+            foreach ($uploadedFiles as $file) {
+
+                if (
+                    $file->getError() === 0 &&
+                    $file->getExtension() === 'png' ||
+                    $file->getExtension() === 'jpg' ||
+                    $file->getExtension() === 'jpeg'
+                ) {
+                    $filePath = 'public/images/products/' . $file->getName();
+                    $file->moveTo($filePath);
+                    $filePaths[] = $filePath;
+                } else if ($file->getName()) {
+                    return $this->response->setJsonContent([
+                        'status' => 'error',
+                        'message' => 'Файл уже загружен',
+                    ]);
+                } else {
+                    return $this->response->setJsonContent([
+                        'status' => 'error',
+                        'message' => 'Ошибка при загрузке файла',
+                    ]);
+                }
+
+                $product->image = json_encode($uploadedFiles);
+            }
+        }
+
+
+        if ($product->create()) {
             return $this->response->setJsonContent([
                 'status' => 'success',
                 'message' => 'Продукт успешно создан',
-                'data' => $products,
+                'data' => $product,
             ]);
         } else {
             return $this->response->setJsonContent([
                 'status' => 'error',
                 'message' => 'Ошибка при создании продукта',
-                'errors' => $products->getMessages(),
+                'errors' => $product->getMessages(),
             ]);
         }
     }
@@ -55,7 +88,7 @@ class ProductController extends BaseController
         $requestValidate = new ProductsCreateRequest($this->request);
 
         $data['is_new'] = (int)$data['is_new'];
-        
+
         if ($product) {
 
             if (!empty($requestValidate->getErrors())) {
@@ -67,6 +100,32 @@ class ProductController extends BaseController
             }
 
             $product->assign($data);
+
+            $filePaths = [];
+
+            if ($this->request->hasFiles()) {
+                $uploadedFiles = $this->request->getUploadedFiles();
+
+                foreach ($uploadedFiles as $file) {
+                    if (
+                        $file->getError() === 0 &&
+                        $file->getExtension() === 'png' ||
+                        $file->getExtension() === 'jpg' ||
+                        $file->getExtension() === 'jpeg'
+                    ) {
+                        $filePath = 'public/images/products/' . $file->getName();
+                        $file->moveTo($filePath);
+                        $filePaths[] = $filePath;
+                    } else {
+                        return $this->response->setJsonContent([
+                            'status' => 'error',
+                            'message' => 'Ошибка при загрузке файла: ' . $file->getName(),
+                        ]);
+                    }
+                }
+
+                $product->photos = json_encode($filePaths);
+            }
 
             if ($product->update()) {
                 return $this->response->setJsonContent([

@@ -10,7 +10,7 @@ class CategoryCreateRequest extends AbstractRequest
 {
     public function __construct(Request $request)
     {
-        parent::__construct($request);
+        parent::__construct($request, 'post');
         $this->validate();
     }
 

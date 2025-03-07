@@ -18,7 +18,29 @@ abstract class AbstractRequest
 
     protected function parse(Request $request): void
     {
-        $this->data = $request->getJsonRawBody(true);
+        if (json_validate(json_encode($request->getJsonRawBody(true)))) {
+            $this->data = $request->getJsonRawBody(true);
+        } else {
+            switch ($request->getMethod()){
+                case 'POST':
+                    $this->data = $request->getPost();
+                    break;
+                case 'PUT':
+                    $this->data = $request->getPut();
+                    break;
+                case 'GET':
+                    $this->data = $request->get();
+                    break;
+                case 'DELETE':
+                    $this->data = $request->isDelete();
+                    break;
+
+            }
+            $this->data = $request->getMethod();
+        }
+        if($request->hasFiles()){
+            $this->data['files'] = $request->getUploadedFiles();
+        }
     }
 
     public function getData(): array
