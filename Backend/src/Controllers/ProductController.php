@@ -32,6 +32,8 @@ class ProductController extends BaseController
         $product = new Products();
         $product->assign($data);
 
+        $filePaths = [];
+
         if ($this->request->hasFiles()) {
 
             $uploadedFiles = $this->request->getUploadedFiles();
@@ -59,7 +61,7 @@ class ProductController extends BaseController
                     ]);
                 }
 
-                $product->image = json_encode($uploadedFiles);
+                $product->image = json_encode($filePaths);
             }
         }
 
@@ -89,61 +91,60 @@ class ProductController extends BaseController
 
         $data['is_new'] = (int)$data['is_new'];
 
-        if ($product) {
-
-            if (!empty($requestValidate->getErrors())) {
-                return $this->response->setJsonContent([
-                    'status' => 'error',
-                    'message' => 'Ошибка валидации',
-                    'errors' => $requestValidate->getErrors(),
-                ]);
-            }
-
-            $product->assign($data);
-
-            $filePaths = [];
-
-            if ($this->request->hasFiles()) {
-                $uploadedFiles = $this->request->getUploadedFiles();
-
-                foreach ($uploadedFiles as $file) {
-                    if (
-                        $file->getError() === 0 &&
-                        $file->getExtension() === 'png' ||
-                        $file->getExtension() === 'jpg' ||
-                        $file->getExtension() === 'jpeg'
-                    ) {
-                        $filePath = 'public/images/products/' . $file->getName();
-                        $file->moveTo($filePath);
-                        $filePaths[] = $filePath;
-                    } else {
-                        return $this->response->setJsonContent([
-                            'status' => 'error',
-                            'message' => 'Ошибка при загрузке файла: ' . $file->getName(),
-                        ]);
-                    }
-                }
-
-                $product->photos = json_encode($filePaths);
-            }
-
-            if ($product->update()) {
-                return $this->response->setJsonContent([
-                    'status' => 'success',
-                    'message' => 'Продукт успешно обновлен',
-                    'data' => $product,
-                ]);
-            } else {
-                return $this->response->setJsonContent([
-                    'status' => 'error',
-                    'message' => 'Ошибка при обновлении',
-                    'errors' => $product->getMessages(),
-                ]);
-            }
-        } else {
+        if (!$product) {
             return $this->response->setJsonContent([
                 'status' => 'error',
                 'message' => 'Продукт не найден',
+            ]);
+        }
+
+        if (!empty($requestValidate->getErrors())) {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка валидации',
+                'errors' => $requestValidate->getErrors(),
+            ]);
+        }
+
+        $product->assign($data);
+
+        $filePaths = [];
+
+        if ($this->request->hasFiles()) {
+            $uploadedFiles = $this->request->getUploadedFiles();
+
+            foreach ($uploadedFiles as $file) {
+                if (
+                    $file->getError() === 0 &&
+                    $file->getExtension() === 'png' ||
+                    $file->getExtension() === 'jpg' ||
+                    $file->getExtension() === 'jpeg'
+                ) {
+                    $filePath = 'public/images/products/' . $file->getName();
+                    $file->moveTo($filePath);
+                    $filePaths[] = $filePath;
+                } else {
+                    return $this->response->setJsonContent([
+                        'status' => 'error',
+                        'message' => 'Ошибка при загрузке файла: ' . $file->getName(),
+                    ]);
+                }
+            }
+
+            $product->photos = json_encode($filePaths);
+        }
+
+        if ($product->update()) {
+            return $this->response->setJsonContent([
+                'status' => 'success',
+                'message' => 'Продукт успешно обновлен',
+                'data' => $product,
+            ]);
+        } else {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка при обновлении',
+                'errors' => $product->getMessages(),
             ]);
         }
     }
