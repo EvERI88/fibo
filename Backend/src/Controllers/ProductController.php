@@ -46,7 +46,7 @@ class ProductController extends BaseController
                     $file->getExtension() === 'jpg' ||
                     $file->getExtension() === 'jpeg'
                 ) {
-                    $filePath = 'public/images/products/' . $file->getName();
+                    $filePath = 'images/products/' . $file->getName();
                     $file->moveTo($filePath);
                     $filePaths[] = $filePath;
                 } else if ($file->getName()) {
@@ -120,7 +120,7 @@ class ProductController extends BaseController
                     $file->getExtension() === 'jpg' ||
                     $file->getExtension() === 'jpeg'
                 ) {
-                    $filePath = 'public/images/products/' . $file->getName();
+                    $filePath = 'images/products/' . $file->getName();
                     $file->moveTo($filePath);
                     $filePaths[] = $filePath;
                 } else {
