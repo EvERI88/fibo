@@ -18,7 +18,7 @@ class CategoryCreateRequest extends AbstractRequest
     {
         if (empty($this->data['name'])) {
             $this->errors['name'] = 'Наименование категории не может быть пустым';
-        } else if (strlen($this->data['name']) < 4) {
+        } else if (strlen($this->data['name']) < 8) {
             $this->errors['name'] = 'Короткое наименование категории';
         }
     }

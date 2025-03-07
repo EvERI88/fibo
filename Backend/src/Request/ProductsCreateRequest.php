@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace App\Request;
 
 use Phalcon\Http\Request;
+use Phalcon\Http\Response;
 
 class ProductsCreateRequest extends AbstractRequest
 {
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->validate();
+        $this->validate($request);
     }
 
-    public function validate(): void
+    public function validate($request): void
     {
         if (empty($this->data['name'])) {
             $this->errors['name'] = 'Имя продукта не может быть пустым';
-        } else if (strlen($this->data['name']) < 4) {
-            $this->errors['name'] = 'Короткое имя продукта';
+        } else if (strlen($this->data['name']) < 8) {
+            $this->errors['name'] = 'Короткое имя продукта: ' . strlen($this->data['name']);
         }
 
         if (empty($this->data['price']) || !is_numeric($this->data['price'])) {
@@ -34,6 +35,28 @@ class ProductsCreateRequest extends AbstractRequest
 
         if (empty($this->data['category_id'])) {
             $this->errors['category_id'] = 'Категория не может быть пустой';
+        }
+
+
+        if ($request->hasFiles()) {
+            $filePaths = [];
+            $uploadedFiles = $request->getUploadedFiles();
+
+            foreach ($uploadedFiles as $file) {
+                if (
+                    $file->getError() === 0 &&
+                    $file->getExtension() === 'png' ||
+                    $file->getExtension() === 'jpg' ||
+                    $file->getExtension() === 'jpeg'
+                ) {
+                    $filePath = 'images/products/' . $file->getName();
+                    $file->moveTo($filePath);
+                    $filePaths[] = $filePath;
+                } else {
+                    $this->errors['image'] = 'Ошибка при загрузке файла';
+                }
+            }
+            $this->data['image'] = json_encode($filePaths);
         }
     }
 }

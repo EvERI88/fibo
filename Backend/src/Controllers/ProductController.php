@@ -29,42 +29,9 @@ class ProductController extends BaseController
             ]);
         }
 
+
         $product = new Products();
         $product->assign($data);
-
-        $filePaths = [];
-
-        if ($this->request->hasFiles()) {
-
-            $uploadedFiles = $this->request->getUploadedFiles();
-
-            foreach ($uploadedFiles as $file) {
-
-                if (
-                    $file->getError() === 0 &&
-                    $file->getExtension() === 'png' ||
-                    $file->getExtension() === 'jpg' ||
-                    $file->getExtension() === 'jpeg'
-                ) {
-                    $filePath = 'images/products/' . $file->getName();
-                    $file->moveTo($filePath);
-                    $filePaths[] = $filePath;
-                } else if ($file->getName()) {
-                    return $this->response->setJsonContent([
-                        'status' => 'error',
-                        'message' => 'Файл уже загружен',
-                    ]);
-                } else {
-                    return $this->response->setJsonContent([
-                        'status' => 'error',
-                        'message' => 'Ошибка при загрузке файла',
-                    ]);
-                }
-
-                $product->image = json_encode($filePaths);
-            }
-        }
-
 
         if ($product->create()) {
             return $this->response->setJsonContent([
@@ -86,8 +53,17 @@ class ProductController extends BaseController
     public function update($id): Response
     {
         $product = Products::findFirst($id);
+
         $data = $this->request->getJsonRawBody(true);
         $requestValidate = new ProductsCreateRequest($this->request);
+
+        if (!empty($requestValidate->getErrors())) {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка валидации',
+                'errors' => $requestValidate->getErrors(),
+            ]);
+        }
 
         $data['is_new'] = (int)$data['is_new'];
 
@@ -95,14 +71,6 @@ class ProductController extends BaseController
             return $this->response->setJsonContent([
                 'status' => 'error',
                 'message' => 'Продукт не найден',
-            ]);
-        }
-
-        if (!empty($requestValidate->getErrors())) {
-            return $this->response->setJsonContent([
-                'status' => 'error',
-                'message' => 'Ошибка валидации',
-                'errors' => $requestValidate->getErrors(),
             ]);
         }
 
