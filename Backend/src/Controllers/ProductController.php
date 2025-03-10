@@ -62,12 +62,11 @@ class ProductController extends BaseController
 
         $requestValidate = new ProductsUpdateRequest($this->request);
 
-        if ($contentType === 'application/json') {
-            $data = $this->request->getJsonRawBody(true);
-        } else {
-            $data = $this->request->getRawBody();
-        }
+        $data = json_encode($requestValidate->getData());
 
+        if ($contentType === 'application/json') {
+            $data = $this->request->getJsonRawBody();
+        }
 
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([

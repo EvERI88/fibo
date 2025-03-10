@@ -43,6 +43,7 @@ class ProductsUpdateRequest extends AbstractRequest
         }
 
         if ($request->hasFiles()) {
+
             $filePaths = [];
             $uploadedFiles = $request->getUploadedFiles();
 
