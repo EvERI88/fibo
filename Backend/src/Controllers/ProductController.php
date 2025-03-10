@@ -23,7 +23,6 @@ class ProductController extends BaseController
 
         $product = new Products();
 
-
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
                 'status' => 'error',
@@ -31,8 +30,8 @@ class ProductController extends BaseController
                 'errors' => $requestValidate->getErrors(),
             ]);
         }
-        $data = $requestValidate->getData();
 
+        $data = $requestValidate->getData();
 
         if ($this->request->hasFiles()) {
             $files = $this->request->getUploadedFiles();
@@ -50,10 +49,7 @@ class ProductController extends BaseController
             ]);
         }
 
-
         $product->assign($data);
-
-
 
         if ($product->create()) {
 
@@ -70,8 +66,6 @@ class ProductController extends BaseController
             ]);
         }
     }
-
-
 
     public function update($id): Response
     {
@@ -95,7 +89,6 @@ class ProductController extends BaseController
         $data = $requestValidate->getData();
 
         if ($this->request->hasFiles()) {
-
             $files = $this->request->getUploadedFiles();
             foreach ($files as $file) {
                 $filePath = 'images/products/' . $file->getName();

@@ -35,7 +35,6 @@ abstract class AbstractRequest
                     $this->data = $request->isDelete();
                     break;
             }
-            // $this->data = $request->getMethod();
         }
         if ($request->hasFiles()) {
             $this->data['files'] = $request->getUploadedFiles();

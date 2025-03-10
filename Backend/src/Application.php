@@ -10,11 +10,9 @@ use App\Providers\DBProvider;
 use App\Providers\EventsManagerProvider;
 use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
-use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
-use Phalcon\Events\Manager;
 
 class Application
 {
@@ -30,7 +28,6 @@ class Application
 
     private function setDi(): void
     {
-
         $services = [
             new EventsManagerProvider(),
             new ConfigProvider(),
