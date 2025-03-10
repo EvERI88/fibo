@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\Products;
 use App\Request\ProductsCreateRequest;
+use App\Request\ProductsUpdateRequest;
 use Phalcon\Http\Response;
 
 class ProductController extends BaseController
@@ -53,20 +54,20 @@ class ProductController extends BaseController
     public function update($id): Response
     {
 
-        $data = $this->request->getRawBody(true);
-
-
-        // $contentType = $this->request->getContentType();
-
-        // if($contentType === 'application/json'){
-
-        //     $data = json_decode(($this->request->getRawBody()))
-
-
-        // }
+        $data = $this->request->getRawBody();
 
         $product = Products::findFirst($id);
-        $requestValidate = new ProductsCreateRequest($this->request);
+
+        $contentType = $this->request->getContentType();
+
+        $requestValidate = new ProductsUpdateRequest($this->request);
+
+        if ($contentType === 'application/json') {
+            $data = $this->request->getJsonRawBody(true);
+        } else {
+            $data = $this->request->getRawBody();
+        }
+
 
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
@@ -86,32 +87,6 @@ class ProductController extends BaseController
         }
 
         $product->assign($data);
-
-        $filePaths = [];
-
-        if ($this->request->hasFiles()) {
-            $uploadedFiles = $this->request->getUploadedFiles();
-
-            foreach ($uploadedFiles as $file) {
-                if (
-                    $file->getError() === 0 &&
-                    $file->getExtension() === 'png' ||
-                    $file->getExtension() === 'jpg' ||
-                    $file->getExtension() === 'jpeg'
-                ) {
-                    $filePath = 'images/products/' . $file->getName();
-                    $file->moveTo($filePath);
-                    $filePaths[] = $filePath;
-                } else {
-                    return $this->response->setJsonContent([
-                        'status' => 'error',
-                        'message' => 'Ошибка при загрузке файла: ' . $file->getName(),
-                    ]);
-                }
-            }
-
-            $product->photos = json_encode($filePaths);
-        }
 
         if ($product->update()) {
             return $this->response->setJsonContent([

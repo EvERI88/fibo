@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Request;
 
 use Phalcon\Http\Request;
-use Phalcon\Http\Response;
 
 class ProductsCreateRequest extends AbstractRequest
 {
