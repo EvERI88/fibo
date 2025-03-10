@@ -19,7 +19,6 @@ abstract class AbstractRequest
     protected function parse(Request $request): void
     {
         if (json_validate($request->getRawBody())) {
-            var_dump(123);
             $this->data = $request->getJsonRawBody(true);
         } else {
             switch ($request->getMethod()) {

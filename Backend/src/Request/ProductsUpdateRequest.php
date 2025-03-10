@@ -19,7 +19,7 @@ class ProductsUpdateRequest extends AbstractRequest
         if (isset($this->data['name'])) {
             if (strlen($this->data['name']) > 255) {
                 $this->errors['name'] = 'Имя продукта не может превышать 255 символов';
-            } elseif (strlen($this->data['name']) < 1) {
+            } elseif (strlen($this->data['name']) < 10) {
                 $this->errors['name'] = 'Короткое имя для продукта';
             }
         }
@@ -41,8 +41,6 @@ class ProductsUpdateRequest extends AbstractRequest
                 $this->errors['category_id'] = 'Категория не может быть пустой';
             }
         }
-
-        var_dump($request->hasFiles);
 
         if ($request->hasFiles()) {
             $uploadedFiles = $request->getUploadedFiles();

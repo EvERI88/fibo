@@ -16,7 +16,7 @@ final class ProductsRoutes implements IRoutes
         $collection->setPrefix('/products');
         $collection->get('/', 'index');
         $collection->post('/', 'create');
-        $collection->put('/{id:.+}', 'update');
+        $collection->post('/{id:.+}', 'update');
         $collection->delete('/{id:.+}', 'delete');
         return $collection;
     }

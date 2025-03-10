@@ -20,6 +20,7 @@ class ProductController extends BaseController
     public function create(): Response
     {
         $requestValidate = new ProductsCreateRequest($this->request);
+
         $product = new Products();
 
 
@@ -74,6 +75,7 @@ class ProductController extends BaseController
 
     public function update($id): Response
     {
+        var_dump(123);
         $product = Products::findFirst($id);
         $requestValidate = new ProductsUpdateRequest($this->request);
 
@@ -92,6 +94,7 @@ class ProductController extends BaseController
         }
 
         $data = $requestValidate->getData();
+
         if ($this->request->hasFiles()) {
 
             $files = $this->request->getUploadedFiles();
