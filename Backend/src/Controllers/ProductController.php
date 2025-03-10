@@ -53,20 +53,8 @@ class ProductController extends BaseController
 
     public function update($id): Response
     {
-
-        $data = $this->request->getRawBody();
-
         $product = Products::findFirst($id);
-
-        $contentType = $this->request->getContentType();
-
         $requestValidate = new ProductsUpdateRequest($this->request);
-
-        $data = json_encode($requestValidate->getData());
-
-        if ($contentType === 'application/json') {
-            $data = $this->request->getJsonRawBody();
-        }
 
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
@@ -76,14 +64,17 @@ class ProductController extends BaseController
             ]);
         }
 
-        $data['is_new'] = (int)$data['is_new'];
+        // if (!$product) {
+        //     return $this->response->setJsonContent([
+        //         'status' => 'error',
+        //         'message' => 'Продукт не найден',
+        //     ]);
+        // }
 
-        if (!$product) {
-            return $this->response->setJsonContent([
-                'status' => 'error',
-                'message' => 'Продукт не найден',
-            ]);
-        }
+        $data = $requestValidate->getData();
+        // $data['is_new'] = (int)$data['is_new'];
+
+
 
         $product->assign($data);
 
@@ -91,7 +82,7 @@ class ProductController extends BaseController
             return $this->response->setJsonContent([
                 'status' => 'success',
                 'message' => 'Продукт успешно обновлен',
-                'data' => $product,
+                'data' => $data,
             ]);
         } else {
             return $this->response->setJsonContent([
@@ -101,6 +92,7 @@ class ProductController extends BaseController
             ]);
         }
     }
+
 
 
     public function delete($id): Response
