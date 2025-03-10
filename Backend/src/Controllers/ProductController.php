@@ -75,7 +75,6 @@ class ProductController extends BaseController
 
     public function update($id): Response
     {
-        var_dump(123);
         $product = Products::findFirst($id);
         $requestValidate = new ProductsUpdateRequest($this->request);
 

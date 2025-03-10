@@ -27,6 +27,8 @@ class ProductsUpdateRequest extends AbstractRequest
         if (isset($this->data['price'])) {
             if (!is_numeric($this->data['price'])) {
                 $this->errors['price'] = 'Цена должна быть числом';
+            } else if (strlen($this->data['price']) < 3) {
+                $this->errors['price'] = 'Цена должна содержать не менее 3 символов';
             }
         }
 
