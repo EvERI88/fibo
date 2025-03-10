@@ -42,6 +42,8 @@ class ProductsUpdateRequest extends AbstractRequest
             }
         }
 
+        var_dump($request->hasFiles);
+
         if ($request->hasFiles()) {
             $uploadedFiles = $request->getUploadedFiles();
             foreach ($uploadedFiles as $file) {

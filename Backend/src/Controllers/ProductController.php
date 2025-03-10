@@ -74,9 +74,15 @@ class ProductController extends BaseController
 
     public function update($id): Response
     {
-        $requestValidate = new ProductsUpdateRequest($this->request);
         $product = Products::findFirst($id);
+        $requestValidate = new ProductsUpdateRequest($this->request);
 
+        if (!$product) {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Продукт не найден',
+            ]);
+        }
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
                 'status' => 'error',
@@ -86,8 +92,8 @@ class ProductController extends BaseController
         }
 
         $data = $requestValidate->getData();
-
         if ($this->request->hasFiles()) {
+
             $files = $this->request->getUploadedFiles();
             foreach ($files as $file) {
                 $filePath = 'images/products/' . $file->getName();
