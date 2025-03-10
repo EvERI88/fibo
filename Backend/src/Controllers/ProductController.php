@@ -19,8 +19,9 @@ class ProductController extends BaseController
 
     public function create(): Response
     {
-        $data = $this->request->getJsonRawBody(true);
         $requestValidate = new ProductsCreateRequest($this->request);
+        $product = new Products();
+
 
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
@@ -29,12 +30,32 @@ class ProductController extends BaseController
                 'errors' => $requestValidate->getErrors(),
             ]);
         }
+        $data = $requestValidate->getData();
 
 
-        $product = new Products();
+        if ($this->request->hasFiles()) {
+            $files = $this->request->getUploadedFiles();
+            foreach ($files as $file) {
+                $filePath = 'images/products/' . $file->getName();
+                $file->moveTo($filePath);
+                $file->product_id = $product->id;
+                $file->path = $filePath;
+                $data['image'] = $filePath;
+            }
+        } else {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка при загрузке файла',
+            ]);
+        }
+
+
         $product->assign($data);
 
+
+
         if ($product->create()) {
+
             return $this->response->setJsonContent([
                 'status' => 'success',
                 'message' => 'Продукт успешно создан',
@@ -53,8 +74,8 @@ class ProductController extends BaseController
 
     public function update($id): Response
     {
-        $product = Products::findFirst($id);
         $requestValidate = new ProductsUpdateRequest($this->request);
+        $product = Products::findFirst($id);
 
         if (!empty($requestValidate->getErrors())) {
             return $this->response->setJsonContent([
@@ -64,17 +85,23 @@ class ProductController extends BaseController
             ]);
         }
 
-        // if (!$product) {
-        //     return $this->response->setJsonContent([
-        //         'status' => 'error',
-        //         'message' => 'Продукт не найден',
-        //     ]);
-        // }
-
         $data = $requestValidate->getData();
-        // $data['is_new'] = (int)$data['is_new'];
 
-
+        if ($this->request->hasFiles()) {
+            $files = $this->request->getUploadedFiles();
+            foreach ($files as $file) {
+                $filePath = 'images/products/' . $file->getName();
+                $file->moveTo($filePath);
+                $file->product_id = $product->id;
+                $file->path = $filePath;
+                $data['image'] = $filePath;
+            }
+        } else {
+            return $this->response->setJsonContent([
+                'status' => 'error',
+                'message' => 'Ошибка при загрузке файла',
+            ]);
+        }
 
         $product->assign($data);
 
@@ -82,7 +109,7 @@ class ProductController extends BaseController
             return $this->response->setJsonContent([
                 'status' => 'success',
                 'message' => 'Продукт успешно обновлен',
-                'data' => $data,
+                'data' => $product,
             ]);
         } else {
             return $this->response->setJsonContent([
@@ -92,8 +119,6 @@ class ProductController extends BaseController
             ]);
         }
     }
-
-
 
     public function delete($id): Response
     {

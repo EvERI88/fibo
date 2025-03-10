@@ -43,25 +43,13 @@ class ProductsUpdateRequest extends AbstractRequest
         }
 
         if ($request->hasFiles()) {
-            $filePaths = [];
             $uploadedFiles = $request->getUploadedFiles();
-
             foreach ($uploadedFiles as $file) {
                 if (
-                    $file->getError() === 0 &&
-                    ($file->getExtension() === 'png' ||
-                        $file->getExtension() === 'jpg' ||
-                        $file->getExtension() === 'jpeg')
+                    $file->getError() !== 0 || !in_array($file->getExtension(), ['png', 'jpg', 'jpeg'])
                 ) {
-                    $filePath = 'images/products/' . $file->getName();
-                    $file->moveTo($filePath);
-                    $filePaths[] = $filePath;
-                } else {
-                    $this->errors['image'] = 'Ошибка при загрузке файла';
+                    $this->errors['image'] = 'Ошибка при загрузке файла ' . $file->getName();
                 }
-            }
-            if (!empty($filePaths)) {
-                $this->data['image'] = json_encode($filePaths);
             }
         }
     }
