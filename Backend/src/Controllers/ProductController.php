@@ -8,13 +8,25 @@ use App\Models\Products;
 use App\Request\ProductsCreateRequest;
 use App\Request\ProductsUpdateRequest;
 use Phalcon\Http\Response;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+
 
 class ProductController extends BaseController
 {
     public function index(): Response
     {
-        $products = Products::find();
-        return $this->response->setJsonContent($products);
+        $currentPage = $this->request->getQuery('page', 'int', 1);
+        $limitPerPage = $this->request->getQuery('limit', 'int', 24);
+        $paginator = new PaginatorModel(
+            [
+                'model'  => Products::class,
+                'limit' => $limitPerPage,
+                'page'  => $currentPage,
+            ]
+        );
+
+        $page = $paginator->paginate();
+        return $this->response->setJsonContent($page);
     }
 
     public function create(): Response
@@ -35,6 +47,14 @@ class ProductController extends BaseController
 
         if ($this->request->hasFiles()) {
             $files = $this->request->getUploadedFiles();
+
+            if (count($files) > 1) {
+                return $this->response->setJsonContent([
+                    'status' => 'error',
+                    'message' => 'Выберите один файл',
+                ]);
+            }
+
             foreach ($files as $file) {
                 $filePath = 'images/products/' . $file->getName();
                 $file->moveTo($filePath);
@@ -89,7 +109,16 @@ class ProductController extends BaseController
         $data = $requestValidate->getData();
 
         if ($this->request->hasFiles()) {
+
             $files = $this->request->getUploadedFiles();
+
+            if (count($files) > 1) {
+                return $this->response->setJsonContent([
+                    'status' => 'error',
+                    'message' => 'Выберите один файл',
+                ]);
+            }
+
             foreach ($files as $file) {
                 $filePath = 'images/products/' . $file->getName();
                 $file->moveTo($filePath);
