@@ -55,8 +55,8 @@ class CommonController extends BaseController
         $visibleData = (object) array(
             'menu' => array(
                 'id' => $categoryId,
-                'name' => $nameMenuCategory,
-                'products' => $paginator->paginate(),
+                'name' => $nameMenuCategory ? $nameMenuCategory : 'Несуществующая категория',
+                'products' => $nameMenuCategory ? $paginator->paginate() : '',
             )
         );
 
