@@ -7,7 +7,6 @@ namespace App\Controllers;
 use App\Models\Products;
 use App\Request\ProductsCreateRequest;
 use App\Request\ProductsUpdateRequest;
-use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 
