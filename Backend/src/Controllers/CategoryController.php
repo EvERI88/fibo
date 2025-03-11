@@ -39,7 +39,7 @@ class CategoryController extends BaseController
         } else {
             return $this->response->setJsonContent([
                 'status' => 'error',
-                'message' => 'Ошибка при создании продукта',
+                'message' => 'Ошибка при создании категории',
                 'errors' => $categories->getMessages(),
             ]);
         }
@@ -71,7 +71,7 @@ class CategoryController extends BaseController
             } else {
                 return $this->response->setJsonContent([
                     'status' => 'error',
-                    'message' => 'Ошибка при обновлении',
+                    'message' => 'Ошибка при обновлении категории',
                     'errors' => $category->getMessages(),
                 ]);
             }

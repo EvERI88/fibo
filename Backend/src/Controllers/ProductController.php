@@ -134,7 +134,7 @@ class ProductController extends BaseController
         } else {
             return $this->response->setJsonContent([
                 'status' => 'error',
-                'message' => 'Ошибка при обновлении',
+                'message' => 'Ошибка при обновлении продукта',
                 'errors' => $product->getMessages(),
             ]);
         }
