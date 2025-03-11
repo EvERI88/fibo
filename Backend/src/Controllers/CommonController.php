@@ -12,8 +12,6 @@ class CommonController extends BaseController
 {
     public function navigation(): mixed
     {
-
-
         $categories = $this
             ->modelsManager
             ->createBuilder()
