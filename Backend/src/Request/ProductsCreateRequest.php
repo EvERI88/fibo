@@ -18,17 +18,19 @@ class ProductsCreateRequest extends AbstractRequest
     {
         if (empty($this->data['name'])) {
             $this->errors['name'] = 'Имя продукта не может быть пустым';
-        } else if (strlen($this->data['name']) < 8) {
+        } else if (mb_strlen($this->data['name']) < 8) {
             $this->errors['name'] = 'Короткое имя продукта: ' . strlen($this->data['name']);
         }
 
         if (empty($this->data['price']) || !is_numeric($this->data['price'])) {
             $this->errors['price'] = 'Цена не может быть пустой и должна быть числом';
+        } else if (mb_strlen((string)$this->data['price']) < 3) {
+            $this->errors['price'] = 'Цена должна содержать не менее 3 символов';
         }
 
         if (empty($this->data['description'])) {
             $this->errors['description'] = 'Описание не может быть пустым';
-        } else if (strlen($this->data['description']) < 10) {
+        } else if (mb_strlen($this->data['description']) < 10) {
             $this->errors['description'] = 'Короткое описание';
         }
 

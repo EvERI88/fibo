@@ -62,11 +62,6 @@ class ProductController extends BaseController
                 $file->path = $filePath;
                 $data['image'] = $filePath;
             }
-        } else {
-            return $this->response->setJsonContent([
-                'status' => 'error',
-                'message' => 'Ошибка при загрузке файла',
-            ]);
         }
 
         $product->assign($data);
@@ -126,11 +121,6 @@ class ProductController extends BaseController
                 $file->path = $filePath;
                 $data['image'] = $filePath;
             }
-        } else {
-            return $this->response->setJsonContent([
-                'status' => 'error',
-                'message' => 'Ошибка при загрузке файла',
-            ]);
         }
 
         $product->assign($data);
