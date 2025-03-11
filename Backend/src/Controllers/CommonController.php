@@ -50,13 +50,23 @@ class CommonController extends BaseController
             ]
         );
 
-        $visibleData = (object) array(
-            'menu' => array(
-                'id' => $categoryId,
-                'name' => $nameMenuCategory ? $nameMenuCategory : 'Несуществующая категория',
-                'products' => $nameMenuCategory ? $paginator->paginate() : '',
-            )
-        );
+        if ($nameMenuCategory) {
+            $visibleData = (object) [
+
+                'menu' => array(
+                    'id' => $categoryId,
+                    'name' => $nameMenuCategory,
+                    'products' => $paginator->paginate()
+                )
+
+
+            ];
+        } else {
+            $visibleData = (object) array(
+                'error' => 'Несуществующая категория: ' . $categoryId
+            );
+        }
+
 
         return $visibleData;
     }
