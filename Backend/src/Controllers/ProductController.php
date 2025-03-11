@@ -42,13 +42,13 @@ class ProductController extends BaseController
             ];
         }
         if ($this->request->hasFiles()) {
-            $files = $this->request->getUploadedFiles()[0];
-            $filePath = 'images/products/' . $files->getName();
-            $files->moveTo($filePath);
-            $files['product_id'] = $product->id;
-            $files->path = $filePath;
+            $files = $this->request->getUploadedFiles();
+            $file = $files[0];
+            $filePath = 'images/products/' . $file->getName();
+            $file->moveTo($filePath);
             $data['image'] = $filePath;
         }
+
 
         $product->assign($data);
 
@@ -87,11 +87,10 @@ class ProductController extends BaseController
             ];
         }
         if ($this->request->hasFiles()) {
-            $files = $this->request->getUploadedFiles()[0];
-            $filePath = 'images/products/' . $files->getName();
-            $files->moveTo($filePath);
-            $files['product_id'] = $product->id;
-            $files->path = $filePath;
+            $files = $this->request->getUploadedFiles();
+            $file = $files[0];
+            $filePath = 'images/products/' . $file->getName();
+            $file->moveTo($filePath);
             $data['image'] = $filePath;
         }
         $product->assign($data);
