@@ -17,7 +17,6 @@ class CategoryController extends BaseController
     }
     public function create(): Response
     {
-        $data = $this->request->getJsonRawBody(true);
         $requestValidate = new CategoryCreateRequest($this->request);
 
         if (!empty($requestValidate->getErrors())) {
@@ -27,6 +26,7 @@ class CategoryController extends BaseController
                 'errors' => $requestValidate->getErrors(),
             ]);
         }
+        $data = $requestValidate->getData();
 
         $categories = new Categories();
         $categories->assign($data);
@@ -34,8 +34,7 @@ class CategoryController extends BaseController
         if ($categories->create()) {
             return $this->response->setJsonContent([
                 'status' => 'success',
-                'message' => 'Продукт успешно создан',
-                'data' => $data,
+                'message' => 'Категория успешно создана',
             ]);
         } else {
             return $this->response->setJsonContent([
@@ -48,7 +47,6 @@ class CategoryController extends BaseController
     public function update($id): Response
     {
         $category = Categories::findFirst($id);
-        $data = $this->request->getJsonRawBody(true);
 
         $requestValidate = new CategoryCreateRequest($this->request);
 
@@ -60,13 +58,14 @@ class CategoryController extends BaseController
                     'errors' => $requestValidate->getErrors(),
                 ]);
             }
+            $data = $requestValidate->getData();
 
             $category->assign($data);
 
             if ($category->update()) {
                 return $this->response->setJsonContent([
                     'status' => 'success',
-                    'message' => 'Категория успешно обновлен',
+                    'message' => 'Категория успешно обновлена',
                     'data' => $category,
                 ]);
             } else {
@@ -79,7 +78,7 @@ class CategoryController extends BaseController
         } else {
             return $this->response->setJsonContent([
                 'status' => 'error',
-                'message' => 'Категория не найден',
+                'message' => 'Категория не найдена',
             ]);
         }
     }
