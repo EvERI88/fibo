@@ -40,6 +40,9 @@ class ProductsCreateRequest extends AbstractRequest
 
         if ($request->hasFiles()) {
             $uploadedFiles = $request->getUploadedFiles();
+            if (count($uploadedFiles) > 1) {
+                $this->errors['image'] = 'Выберите один файл';
+            }
             foreach ($uploadedFiles as $file) {
                 if (
                     $file->getError() !== 0 || !in_array($file->getExtension(), ['png', 'jpg', 'jpeg'])

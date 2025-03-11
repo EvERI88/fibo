@@ -48,13 +48,6 @@ class ProductController extends BaseController
         if ($this->request->hasFiles()) {
             $files = $this->request->getUploadedFiles();
 
-            if (count($files) > 1) {
-                return $this->response->setJsonContent([
-                    'status' => 'error',
-                    'message' => 'Выберите один файл',
-                ]);
-            }
-
             foreach ($files as $file) {
                 $filePath = 'images/products/' . $file->getName();
                 $file->moveTo($filePath);
@@ -104,15 +97,7 @@ class ProductController extends BaseController
         $data = $requestValidate->getData();
 
         if ($this->request->hasFiles()) {
-
             $files = $this->request->getUploadedFiles();
-
-            if (count($files) > 1) {
-                return $this->response->setJsonContent([
-                    'status' => 'error',
-                    'message' => 'Выберите один файл',
-                ]);
-            }
 
             foreach ($files as $file) {
                 $filePath = 'images/products/' . $file->getName();
