@@ -13,7 +13,7 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ProductController extends BaseController
 {
-    public function index(): Response
+    public function index(): mixed
     {
         $currentPage = $this->request->getQuery('page', 'int', 1);
         $limitPerPage = $this->request->getQuery('limit', 'int', 24);
@@ -24,115 +24,101 @@ class ProductController extends BaseController
                 'page'  => $currentPage,
             ]
         );
-
         $page = $paginator->paginate();
-        return $this->response->setJsonContent($page);
+        return $page;
     }
 
-    public function create(): Response
+    public function create(): array
     {
         $requestValidate = new ProductsCreateRequest($this->request);
-
         $product = new Products();
+        $data = $requestValidate->getData();
 
         if (!empty($requestValidate->getErrors())) {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Ошибка валидации',
                 'errors' => $requestValidate->getErrors(),
-            ]);
+            ];
         }
-
-        $data = $requestValidate->getData();
-
         if ($this->request->hasFiles()) {
-            $files = $this->request->getUploadedFiles();
-
-            foreach ($files as $file) {
-                $filePath = 'images/products/' . $file->getName();
-                $file->moveTo($filePath);
-                $file->product_id = $product->id;
-                $file->path = $filePath;
-                $data['image'] = $filePath;
-            }
+            $files = $this->request->getUploadedFiles()[0];
+            $filePath = 'images/products/' . $files->getName();
+            $files->moveTo($filePath);
+            $files['product_id'] = $product->id;
+            $files->path = $filePath;
+            $data['image'] = $filePath;
         }
 
         $product->assign($data);
 
         if ($product->create()) {
-
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'success',
                 'message' => 'Продукт успешно создан',
                 'data' => $product,
-            ]);
+            ];
         } else {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Ошибка при создании продукта',
                 'errors' => $product->getMessages(),
-            ]);
+            ];
         }
     }
 
-    public function update($id): Response
+    public function update($id): array
     {
         $product = Products::findFirst($id);
         $requestValidate = new ProductsUpdateRequest($this->request);
+        $data = $requestValidate->getData();
 
         if (!$product) {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Продукт не найден',
-            ]);
+            ];
         }
         if (!empty($requestValidate->getErrors())) {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Ошибка валидации',
                 'errors' => $requestValidate->getErrors(),
-            ]);
+            ];
         }
-
-        $data = $requestValidate->getData();
-
         if ($this->request->hasFiles()) {
-            $files = $this->request->getUploadedFiles();
-
-            foreach ($files as $file) {
-                $filePath = 'images/products/' . $file->getName();
-                $file->moveTo($filePath);
-                $file->product_id = $product->id;
-                $file->path = $filePath;
-                $data['image'] = $filePath;
-            }
+            $files = $this->request->getUploadedFiles()[0];
+            $filePath = 'images/products/' . $files->getName();
+            $files->moveTo($filePath);
+            $files['product_id'] = $product->id;
+            $files->path = $filePath;
+            $data['image'] = $filePath;
         }
-
         $product->assign($data);
 
         if ($product->update()) {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'success',
                 'message' => 'Продукт успешно обновлен',
                 'data' => $product,
-            ]);
+            ];
         } else {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Ошибка при обновлении продукта',
                 'errors' => $product->getMessages(),
-            ]);
+            ];
         }
     }
 
-    public function delete($id): Response
+    public function delete($id): array
     {
         $product = Products::find($id);
         $product->delete();
 
-        return $this->response->setJsonContent([
+        return [
             'status' => 'success',
             'message' => 'Продукт успешно удален',
-        ]);
+        ];
     }
 }

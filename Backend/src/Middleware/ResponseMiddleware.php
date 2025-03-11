@@ -29,6 +29,7 @@ class ResponseMiddleware implements MiddlewareInterface
             "Set-Cookie"
         ];
 
+
         $response = new Response();
         $response->setHeader("Access-Control-Allow-Origin", '*')
             ->setHeader("Access-Control-Allow-Methods", 'GET,POST,PUT,DELETE')
@@ -36,6 +37,7 @@ class ResponseMiddleware implements MiddlewareInterface
             ->setHeader("Access-Control-Allow-Credentials", true)
             ->setHeader("Access-Control-Max-Age", 3600)
             ->setContentType('application/json', 'UTF-8')
+            ->setJsonContent($data)
             ->send($data);
     }
 }

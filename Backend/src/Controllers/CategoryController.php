@@ -6,90 +6,88 @@ namespace App\Controllers;
 
 use App\Models\Categories;
 use App\Request\CategoryCreateRequest;
-use Phalcon\Http\Response;
 
 class CategoryController extends BaseController
 {
-    public function index(): Response
+    public function index(): mixed
     {
         $categories = Categories::find();
-        return $this->response->setJsonContent($categories);
+        return $categories;
     }
-    public function create(): Response
+    public function create(): array
     {
         $requestValidate = new CategoryCreateRequest($this->request);
+        $data = $requestValidate->getData();
+        $categories = new Categories();
 
         if (!empty($requestValidate->getErrors())) {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Ошибка валидации',
                 'errors' => $requestValidate->getErrors(),
-            ]);
+            ];
         }
-        $data = $requestValidate->getData();
 
-        $categories = new Categories();
         $categories->assign($data);
 
         if ($categories->create()) {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'success',
                 'message' => 'Категория успешно создана',
-            ]);
+            ];
         } else {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Ошибка при создании категории',
                 'errors' => $categories->getMessages(),
-            ]);
+            ];
         }
     }
-    public function update($id): Response
+    public function update($id): array
     {
         $category = Categories::findFirst($id);
-
         $requestValidate = new CategoryCreateRequest($this->request);
+        $data = $requestValidate->getData();
 
         if ($category) {
             if (!empty($requestValidate->getErrors())) {
-                return $this->response->setJsonContent([
+                return [
                     'status' => 'error',
                     'message' => 'Ошибка валидации',
                     'errors' => $requestValidate->getErrors(),
-                ]);
+                ];
             }
-            $data = $requestValidate->getData();
 
             $category->assign($data);
 
             if ($category->update()) {
-                return $this->response->setJsonContent([
+                return [
                     'status' => 'success',
                     'message' => 'Категория успешно обновлена',
                     'data' => $category,
-                ]);
+                ];
             } else {
-                return $this->response->setJsonContent([
+                return [
                     'status' => 'error',
                     'message' => 'Ошибка при обновлении категории',
                     'errors' => $category->getMessages(),
-                ]);
+                ];
             }
         } else {
-            return $this->response->setJsonContent([
+            return [
                 'status' => 'error',
                 'message' => 'Категория не найдена',
-            ]);
+            ];
         }
     }
-    public function delete($id): Response
+    public function delete($id): array
     {
-        $category = Categories::find($id);
+        $category = Categories::findFirst($id);
         $category->delete();
 
-        return $this->response->setJsonContent([
+        return [
             'status' => 'success',
             'message' => 'Категория успешно удалена'
-        ]);
+        ];
     }
 }

@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace App\Request;
 
 use Phalcon\Http\Request;
+use Phalcon\Http\Response;
 
 class ProductsCreateRequest extends AbstractRequest
 {
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->validate($request);
     }
-
-    public function validate($request): void
+    protected function validate(Request $request): void
     {
         if (empty($this->data['name'])) {
             $this->errors['name'] = 'Имя продукта не может быть пустым';

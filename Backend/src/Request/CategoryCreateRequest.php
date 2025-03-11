@@ -10,11 +10,10 @@ class CategoryCreateRequest extends AbstractRequest
 {
     public function __construct(Request $request)
     {
-        parent::__construct($request, 'post');
-        $this->validate();
+        parent::__construct($request);
     }
 
-    public function validate(): void
+    public function validate(Request $request): void
     {
         if (empty($this->data['name'])) {
             $this->errors['name'] = 'Наименование категории не может быть пустым';

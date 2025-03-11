@@ -11,10 +11,9 @@ class ProductsUpdateRequest extends AbstractRequest
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->validate($request);
     }
 
-    public function validate($request): void
+    public function validate(Request $request): void
     {
         if (isset($this->data['name'])) {
             if (strlen($this->data['name']) > 255) {
