@@ -52,14 +52,11 @@ class CommonController extends BaseController
 
         if ($nameMenuCategory) {
             $visibleData = (object) [
-
                 'menu' => array(
                     'id' => $categoryId,
                     'name' => $nameMenuCategory,
                     'products' => $paginator->paginate()
                 )
-
-
             ];
         } else {
             $visibleData = (object) array(
