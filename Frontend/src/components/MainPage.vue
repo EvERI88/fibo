@@ -6,6 +6,7 @@
   </main>
 </template>
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import MainMenu from "./Main/MainMenu.vue";
 import MainNew from "./Main/MainNew.vue";
 import Slider from "./UI/Slider.vue";
@@ -18,7 +19,7 @@ interface blocks {
   new: {
     id: number;
     name: string;
-    img: string;
+    image: string;
     price: number;
   }[];
   menu: {
@@ -35,12 +36,7 @@ interface blocks {
   }[];
 }
 
-const newProducts: blocks["new"] = [
-  { id: 1, name: "Карбонара", img: "newPizza", price: 120 },
-  { id: 2, name: "Карбонара", img: "newPizza", price: 120 },
-  { id: 3, name: "Карбонара", img: "newPizza", price: 120 },
-  { id: 4, name: "Карбонара", img: "newPizza", price: 120 },
-];
+const baseUrl: string = "http://api.fibo.local/";
 
 const sliderImg: SliderImg[] = [
   { img: "1" },
@@ -51,104 +47,54 @@ const sliderImg: SliderImg[] = [
   { img: "2" },
 ];
 
-const listMenu: blocks["menu"] = [
-  {
-    id: 1,
-    name: "Паста",
-    products: [
-      {
-        id: 10,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 11,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-      {
-        id: 12,
-        name: "С креветками и трюфелями",
-        price: 600,
-        image: "pizza1",
-        is_new: true,
-        description:
-          "Домашнаяя паста феттуччине, сливочный соус, креветки, трюфельное масло, черный перец, пармезан.350 г",
-      },
-    ],
-  },
-];
+const newProducts = ref<blocks["new"]>([]);
+
+const listMenu = ref<blocks["menu"]>([]);
+
+const getAllMenu = async () => {
+  try {
+    await fetch(`${baseUrl}common/menu`)
+      .then((response) => {
+        console.log(response);
+
+        return response.json();
+      })
+      .then((data) => {
+        const products = data.menu;
+        for (let i = 0; i < products.length; i++) {
+          const el = products[i];
+          listMenu.value.push(el);
+        }
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getNewProduct = async () => {
+  try {
+    await fetch(`${baseUrl}common/new`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+
+        const products = data.new.products;
+        for (let i = 0; i < products.length; i++) {
+          const el = products[i];
+          newProducts.value.push(el);
+        }
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+onMounted(() => {
+  getNewProduct();
+  getAllMenu();
+});
 </script>
 
 <style lang="scss" scoped>

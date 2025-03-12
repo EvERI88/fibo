@@ -16,6 +16,7 @@ final class CommonRoutes implements IRoutes
         $collection->setPrefix('/common');
         $collection->get('/navigation', 'navigation');
         $collection->get('/menu', 'menu');
+        $collection->get('/new', 'new');
         return $collection;
     }
 }

@@ -9,7 +9,10 @@
         :key="product.id"
       >
         <div class="main-new__new-product-img">
-          <img :src="`/img/pizza/${product.img}.png`" :alt="product.name" />
+          <img
+            :src="`http://api.fibo.local/images/products/newPizza.png`"
+            :alt="`http://api.fibo.local/images/products/newPizza.jpg`"
+          />
         </div>
         <div class="main-new__new-product-info">
           {{ product.name }}
@@ -25,7 +28,7 @@
 interface NewProducts {
   id: number;
   name: string;
-  img: string;
+  image: string;
   price: number;
 }
 

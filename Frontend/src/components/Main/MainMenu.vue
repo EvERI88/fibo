@@ -1,27 +1,38 @@
 <template>
-  <h2 id="pizza" class="menu-main-title">Паста</h2>
   <div class="menu-main">
     <div class="menu-main__wrapper">
-      <div class="menu-main__list" v-for="menus in listMenu" :key="menus.id">
-        <div
-          class="menu-main__list-item"
-          v-for="product in menus.products"
-          :key="product.id"
-        >
-          <img :src="`/img/pizza/${product.image}.png`" alt="piz.img" />
+      <div v-for="menus in listMenu" :key="menus.id">
+        <h2 id="pizza" class="menu-main-title">{{ menus.name }}</h2>
+        <div class="menu-main__list">
           <div
-            :class="{ 'menu-main__list-item-is-new': product.is_new }"
-            v-if="product.is_new"
+            class="menu-main__list-item"
+            v-for="product in menus.products"
+            :key="product.id"
           >
-            NEW
-          </div>
-          <h3 class="menu-main__list-item-title">{{ product.name }}</h3>
-          <p class="menu-main__list-item-description">
-            {{ product.description }}
-          </p>
-          <div class="menu-main__list-item-price">
-            от {{ product.price }} ₽
-            <button class="menu-main__list-item-buy">В корзину</button>
+            <img
+              :src="
+                product.image === 'none'
+                  ? `http://api.fibo.local/images/products/none.jpg`
+                  : `http://api.fibo.local/${product.image}`
+              "
+              :alt="`http://api.fibo.local/images/products/none.jpg`"
+            />
+            <div
+              :class="{ 'menu-main__list-item-is-new': product.is_new }"
+              v-if="product.is_new"
+            >
+              NEW
+            </div>
+            <h3 class="menu-main__list-item-title">{{ product.name }}</h3>
+            <p class="menu-main__list-item-description">
+              {{ product.description }}
+            </p>
+            <div class="menu-main__list-item-price">
+              <div class="menu-main__list-item-price-text">
+                от {{ product.price }} ₽
+              </div>
+              <button class="menu-main__list-item-buy">В корзину</button>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +75,7 @@ defineProps<{
   display: flex;
   justify-content: center;
   &__wrapper {
-    display: flex;
+    display: grid;
     max-width: 1110px;
     width: 100%;
   }
@@ -77,7 +88,7 @@ defineProps<{
   &__list-item {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     position: relative;
   }
   &__list-item-title {
@@ -99,6 +110,9 @@ defineProps<{
     padding-top: 25px;
     align-items: center;
     font-size: 22px;
+  }
+  &__list-item-price-text {
+    white-space: nowrap;
   }
   &__list-item-buy {
     background: #f7d22d;

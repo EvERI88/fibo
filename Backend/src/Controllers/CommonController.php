@@ -54,10 +54,29 @@ class CommonController extends BaseController
                 'id' => $category->id,
                 'name' => $category->name,
                 'products' => $products,
-
             ];
         }
-
+        return $visibleData;
+    }
+    public function new(): array
+    {
+        $products = $this
+            ->modelsManager
+            ->createBuilder()
+            ->columns([
+                'id',
+                'name',
+                'image',
+                'price',
+            ])
+            ->from(Products::class)
+            ->where('is_new = 1')
+            ->limit(4)
+            ->getQuery()
+            ->execute();
+        $visibleData['new'] = [
+            'products' => $products,
+        ];
         return $visibleData;
     }
 
