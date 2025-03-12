@@ -31,8 +31,8 @@ class CommonController extends BaseController
     public function menu(): array
     {
         $visibleCategories = $this->navigation();
-        $visibleData = [];
-        $visibleData['menu'] = [];
+        $visibleData = ['menu' => []];
+
         foreach ($visibleCategories as $category) {
             $products = $this
                 ->modelsManager
@@ -50,16 +50,16 @@ class CommonController extends BaseController
                 ->getQuery()
                 ->execute();
 
-            $category_id = $category->id;
-            $visibleData['menu'][$category_id] = [
+            $visibleData['menu'][] = array(
                 'id' => $category->id,
                 'name' => $category->name,
-                'products' => $products
-            ];
+                'products' => $products,
+            );
         }
 
         return $visibleData;
     }
+
 
     // public function menuGetCategory(): object
     // {
