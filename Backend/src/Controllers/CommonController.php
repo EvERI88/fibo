@@ -16,6 +16,7 @@ class CommonController extends BaseController
             ->modelsManager
             ->createBuilder()
             ->columns([
+                'c.id',
                 'c.name',
                 'COUNT(*) AS cnt'
             ])
@@ -29,16 +30,33 @@ class CommonController extends BaseController
     }
     public function menu(): object
     {
+        $categoryId = $this->request->getQuery('category_id', 'int', 0);
         $visibleCategories = $this->navigation();
-        $products = Products::find();
+
+        $nameMenuCategory = '';
+
+        foreach ($visibleCategories as $category) {
+            if ($category->id === $categoryId) {
+                $nameMenuCategory = $category->name;
+            }
+        }
+
+        $products = $this
+            ->modelsManager
+            ->createBuilder()
+            ->from(Products::class)
+            ->where('category_id = ' . $categoryId)
+            ->getQuery()
+            ->execute();
+
 
         $visibleData = (object) [
             'menu' => array(
-                'category' => $visibleCategories,
+                'id' => $categoryId,
+                'name' => $nameMenuCategory,
                 'products' => $products
             )
         ];
-
 
         return $visibleData;
     }
