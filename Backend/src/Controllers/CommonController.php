@@ -15,56 +15,77 @@ class CommonController extends BaseController
         $categories = $this
             ->modelsManager
             ->createBuilder()
-            ->from(Categories::class)
-            ->orderBy('is_visible')
+            ->columns([
+                'c.name',
+                'COUNT(*) AS cnt'
+            ])
+            ->from(['p' => Products::class])
+            ->innerJoin(Categories::class, 'p.category_id = c.id', 'c')
+            ->groupBy('c.id')
+            ->where('is_visible = 1')
             ->getQuery()
             ->execute();
         return $categories;
     }
-    public function menuProduct(): object
+    public function menu(): object
     {
-        $categoryId = $this->request->getQuery('category_id', 'int', 0);
-        $currentPage = $this->request->getQuery('page', 'int', 1);
-        $limitPerPage = $this->request->getQuery('limit', 'int', 24);
         $visibleCategories = $this->navigation();
+        $products = Products::find();
 
-        $nameMenuCategory = '';
-
-        foreach ($visibleCategories as $category) {
-            if ($category->id === $categoryId) {
-                $nameMenuCategory = $category->name;
-            }
-        }
-
-        $paginator = new PaginatorModel(
-            [
-                'model'  => Products::class,
-                'limit' => $limitPerPage,
-                'page'  => $currentPage,
-                "parameters" => [
-                    "category_id = :cst_id:",
-                    "bind" => [
-                        "cst_id" => $categoryId
-                    ],
-                ],
-            ]
-        );
-
-        if ($nameMenuCategory) {
-            $visibleData = (object) [
-                'menu' => array(
-                    'id' => $categoryId,
-                    'name' => $nameMenuCategory,
-                    'products' => $paginator->paginate()
-                )
-            ];
-        } else {
-            $visibleData = (object) array(
-                'error' => 'Несуществующая категория: ' . $categoryId
-            );
-        }
+        $visibleData = (object) [
+            'menu' => array(
+                'category' => $visibleCategories,
+                'products' => $products
+            )
+        ];
 
 
         return $visibleData;
     }
+    // public function menuGetCategory(): object
+    // {
+    //     $categoryId = $this->request->getQuery('category_id', 'int', 0);
+    //     $currentPage = $this->request->getQuery('page', 'int', 1);
+    //     $limitPerPage = $this->request->getQuery('limit', 'int', 24);
+    //     $visibleCategories = $this->navigation();
+
+    //     $nameMenuCategory = '';
+
+    //     foreach ($visibleCategories as $category) {
+    //         if ($category->id === $categoryId) {
+    //             $nameMenuCategory = $category->name;
+    //         }
+    //     }
+
+    //     $paginator = new PaginatorModel(
+    //         [
+    //             'model'  => Products::class,
+    //             'limit' => $limitPerPage,
+    //             'page'  => $currentPage,
+    //             "parameters" => [
+    //                 "category_id = :cst_id:",
+    //                 "bind" => [
+    //                     "cst_id" => $categoryId
+    //                 ],
+    //             ],
+    //         ]
+    //     );
+
+    //     if ($nameMenuCategory) {
+    //         $visibleData = (object) [
+    //             'menu' => array(
+    //                 'id' => $categoryId,
+    //                 'name' => $nameMenuCategory,
+    //                 'products' => $paginator->paginate()
+    //             )
+    //         ];
+    //     } else {
+    //         $visibleData = (object) array(
+    //             'error' => 'Несуществующая категория: ' . $categoryId
+    //         );
+    //     }
+
+
+    //     return $visibleData;
+    // }
 }
