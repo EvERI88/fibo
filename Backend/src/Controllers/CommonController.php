@@ -50,11 +50,12 @@ class CommonController extends BaseController
                 ->getQuery()
                 ->execute();
 
-            $visibleData['menu'][] = array(
+            $visibleData['menu'][] = [
                 'id' => $category->id,
                 'name' => $category->name,
                 'products' => $products,
-            );
+
+            ];
         }
 
         return $visibleData;
