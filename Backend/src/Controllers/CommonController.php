@@ -28,38 +28,39 @@ class CommonController extends BaseController
             ->execute();
         return $categories;
     }
-    public function menu(): object
+    public function menu(): array
     {
-        $categoryId = $this->request->getQuery('category_id', 'int', 0);
         $visibleCategories = $this->navigation();
-
-        $nameMenuCategory = '';
-
+        $visibleData = [];
+        $visibleData['menu'] = [];
         foreach ($visibleCategories as $category) {
-            if ($category->id === $categoryId) {
-                $nameMenuCategory = $category->name;
-            }
-        }
+            $products = $this
+                ->modelsManager
+                ->createBuilder()
+                ->columns([
+                    'id',
+                    'name',
+                    'image',
+                    'price',
+                    'description',
+                    'is_new'
+                ])
+                ->from(Products::class)
+                ->where('category_id = ' . $category->id)
+                ->getQuery()
+                ->execute();
 
-        $products = $this
-            ->modelsManager
-            ->createBuilder()
-            ->from(Products::class)
-            ->where('category_id = ' . $categoryId)
-            ->getQuery()
-            ->execute();
-
-
-        $visibleData = (object) [
-            'menu' => array(
-                'id' => $categoryId,
-                'name' => $nameMenuCategory,
+            $category_id = $category->id;
+            $visibleData['menu'][$category_id] = [
+                'id' => $category->id,
+                'name' => $category->name,
                 'products' => $products
-            )
-        ];
+            ];
+        }
 
         return $visibleData;
     }
+
     // public function menuGetCategory(): object
     // {
     //     $categoryId = $this->request->getQuery('category_id', 'int', 0);
