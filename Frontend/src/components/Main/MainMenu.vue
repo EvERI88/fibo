@@ -70,6 +70,8 @@ defineProps<{
   max-width: 1100px;
   margin: 0 auto;
   color: var(--col-yellow);
+  padding-top: 46px;
+  padding-bottom: 25px;
 }
 .menu-main {
   display: flex;
@@ -80,7 +82,6 @@ defineProps<{
     width: 100%;
   }
   &__list {
-    padding-top: 26px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 25px;

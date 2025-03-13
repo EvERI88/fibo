@@ -6,7 +6,7 @@
   </main>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import MainMenu from "./Main/MainMenu.vue";
 import MainNew from "./Main/MainNew.vue";
 import Slider from "./UI/Slider.vue";
@@ -87,9 +87,19 @@ const getNewProduct = async () => {
   }
 };
 
-onMounted(() => {
-  getNewProduct();
-  getAllMenu();
+const scrollTop = () => {
+  window.scrollTo(0, 0);
+};
+
+onMounted(async () => {
+  await getNewProduct();
+  await getAllMenu();
+  await nextTick(() => {
+    document.body.classList.add("scroll-hidden");
+  }).then(() => {
+    document.body.classList.remove("scroll-hidden");
+    scrollTop;
+  });
 });
 </script>
 

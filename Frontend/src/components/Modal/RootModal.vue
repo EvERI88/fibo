@@ -18,6 +18,7 @@ const closeModal = () => {
 </script>
 <style lang="scss">
 .modal {
+  position: relative;
   &__wrapper {
     max-width: 668px;
     background-color: #fff;

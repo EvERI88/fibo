@@ -49,7 +49,6 @@ defineProps<{
 .main-new {
   display: flex;
   justify-content: center;
-  padding-bottom: 46px;
   &__wrapper {
     max-width: 1110px;
     width: 100%;
