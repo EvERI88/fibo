@@ -20,6 +20,7 @@ class UserController extends BaseController
         $data = $registerValidate->getData();
         $security = new Security();
         $data['password'] = $security->hash((string)$data['password']);
+
         $user = new User();
 
         if (!empty($registerValidate->getErrors())) {
@@ -36,7 +37,12 @@ class UserController extends BaseController
             return [
                 'status' => 'success',
                 'message' => 'Регистрация прошла успешно',
-                'data' => $user
+                'user' => (object)[
+                    'id' =>  $user->id,
+                    'name' =>  $user->name,
+                    'telephone' =>  $user->telephone,
+                    'is_admin' =>  $user->is_admin,
+                ]
             ];
         } else {
             return [
@@ -84,14 +90,14 @@ class UserController extends BaseController
                 $user->assign($data);
                 if ($user) {
                     $builder
-                        ->setAudience('http://api.fibo.local/user/auth') 
+                        ->setAudience('http://api.fibo.local/user/auth')
                         ->setContentType('application/json')
                         ->setExpirationTime($expires)
                         ->setId((string)$user->id)
                         ->setIssuedAt($issued)
-                        ->setIssuer('http://api.fibo.local') 
+                        ->setIssuer('http://api.fibo.local')
                         ->setNotBefore($notBefore)
-                        ->setSubject((string)$user->id) 
+                        ->setSubject((string)$user->id)
                         ->setPassphrase($passphrase);
 
                     $tokenObject = $builder->getToken();
@@ -118,7 +124,7 @@ class UserController extends BaseController
         } else {
             return [
                 'status' => 'error',
-                'message' => 'Проблема с поиском юзера'
+                'message' => 'Попробуйте еще раз'
             ];
         }
     }

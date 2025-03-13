@@ -23,6 +23,12 @@
         <button @click="toggleModalAuth" class="burger-menu__function-signin">
           Войти
         </button>
+        <button
+          @click="toggleModalRegister"
+          class="burger-menu__function-signin"
+        >
+          Регистрация
+        </button>
         <div class="burger-menu__function-basket">
           Корзина <span class="burger-menu__count-product-in-basket">1</span>
         </div>
@@ -63,7 +69,91 @@
                 type="button"
                 @click="auth"
               >
-                Выслать код
+                Войти
+              </button>
+              <div class="modal__row-footer-policy">
+                Продолжая, вы соглашаетесь со сбором и обработкой персональных
+                данных и пользовательским соглашением
+              </div>
+            </div>
+          </div>
+        </template>
+      </RootModal>
+      <RootModal
+        @close="toggleModalRegister"
+        v-if="openRegister"
+        class="modal"
+        :class="{ open: openRegister }"
+      >
+        <template v-slot:header>
+          <div class="modal__header" id="header">
+            <h2 class="modal__title">Регистрация</h2>
+          </div>
+        </template>
+        <template v-slot:body>
+          <div class="modal__body">
+            <div class="modal__row-input">
+              Номер телефона
+              <input
+                @input="checkNumber"
+                v-model.number="userAuthData.telephone"
+                class="modal__row-input-border"
+                type="tel"
+              />
+              <BlockError v-if="getAllErrors['telephone']">
+                <template v-slot:body>
+                  <p class="body__error-text">
+                    {{ getAllErrors["telephone"] }}
+                  </p>
+                </template>
+              </BlockError>
+            </div>
+            <div class="modal__row-input">
+              Имя пользователя
+              <input
+                @input="checkNumber"
+                v-model.number="userAuthData.telephone"
+                class="modal__row-input-border"
+                type="tel"
+              />
+              <BlockError v-if="getAllErrors['name']">
+                <template v-slot:body>
+                  <p class="body__error-text">
+                    {{ getAllErrors["name"] }}
+                  </p>
+                </template>
+              </BlockError>
+            </div>
+            <div class="modal__row-input">
+              Пароль
+              <input
+                v-model="userAuthData.password"
+                class="modal__row-input-border"
+                type="password"
+              />
+              <BlockError v-if="getAllErrors['password']">
+                <template v-slot:body>
+                  <p class="body__error-text">
+                    {{ getAllErrors["password"] }}
+                  </p>
+                </template>
+              </BlockError>
+            </div>
+            <div class="modal__row-input">
+              Подтверждение пароля
+              <input
+                v-model="userAuthData.password"
+                class="modal__row-input-border"
+                type="password"
+              />
+            </div>
+            <div class="modal__row-footer">
+              <button
+                class="modal__row-footer-button"
+                type="button"
+                @click="register"
+              >
+                Регистрация
               </button>
               <div class="modal__row-footer-policy">
                 Продолжая, вы соглашаетесь со сбором и обработкой персональных
@@ -77,20 +167,35 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import RootModal from "../Modal/RootModal.vue";
+import BlockError from "../UI/BlockError.vue";
 
 interface Navigation {
   id: number;
   name: string;
   anchor: string;
 }
-interface User {
+interface UserAuth {
   telephone: string;
   password: string;
 }
+interface UserRegister {
+  telephone: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
+interface Errors {
+  telephone: string;
+  name: string;
+  password: string;
+  passwordValidate: string;
+}
+[];
 
 const openAuth = ref(false);
+const openRegister = ref(false);
 
 defineProps<{
   listNavigation: Navigation[];
@@ -98,9 +203,15 @@ defineProps<{
 
 const baseUrl: string = "http://api.fibo.local/";
 
-const userAuthData = ref<User>({
+const userAuthData = ref<UserAuth>({
   telephone: "",
   password: "",
+});
+const userRegisterData = ref<UserRegister>({
+  telephone: "",
+  name: "",
+  password: "",
+  confirmPassword: "",
 });
 
 const checkNumber = () => {
@@ -126,6 +237,22 @@ const toggleModalAuth = () => {
     document.body.classList.remove("scroll-hidden");
   }
 };
+const toggleModalRegister = () => {
+  openRegister.value = !openRegister.value;
+  if (openRegister.value) {
+    document.body.classList.add("scroll-hidden");
+    window.scrollTo(0, 0);
+  } else {
+    document.body.classList.remove("scroll-hidden");
+  }
+};
+
+const getAllErrors = ref<Errors>({
+  telephone: "",
+  name: "",
+  password: "",
+  validatePassword: "",
+});
 
 const auth = async () => {
   console.log(userAuthData.value);
@@ -141,6 +268,27 @@ const auth = async () => {
       .then((data) => {
         console.log(data);
         document.cookie = `token=${data.token}`;
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
+const register = async () => {
+  console.log(userRegisterData.value);
+
+  try {
+    await fetch(`${baseUrl}user/register`, {
+      method: "POST",
+      body: JSON.stringify(userRegisterData.value),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status === "error") {
+          getAllErrors.value;
+          getAllErrors.value = data.error;
+        }
       });
   } catch (err) {
     console.log(err);
@@ -182,7 +330,6 @@ const auth = async () => {
     font-size: 16px;
     line-height: 28px;
     color: hsla(219, 7%, 45%, 1);
-    padding-right: 31px;
   }
   &__function-basket {
     background-color: hsla(49, 93%, 57%, 1);
@@ -247,7 +394,7 @@ const auth = async () => {
     letter-spacing: 0%;
     color: rgba(104, 100, 102, 1);
     display: grid;
-    grid-template-columns: 118px 1fr;
+    grid-template-columns: 158px 1fr;
     align-items: center;
   }
   &__row-input-border {

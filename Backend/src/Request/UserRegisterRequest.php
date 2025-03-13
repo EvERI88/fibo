@@ -20,11 +20,11 @@ class UserRegisterRequest extends AbstractRequest
         if (mb_strlen($this->data['telephone']) !== 11) {
             $this->errors['telephone'] = 'Неверная длина телефона';
         }
-        if (mb_strlen($this->data['telephone']) < 4) {
-            $this->errors['telephone'] = 'Короткое имя';
+        if (mb_strlen($this->data['name']) < 4) {
+            $this->errors['name'] = 'Короткое имя';
         }
         if (mb_strlen($this->data['password']) < 6) {
-            $this->errors['telephone'] = 'Короткий пароль';
+            $this->errors['password'] = 'Короткий пароль';
         }
     }
 }
