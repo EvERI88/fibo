@@ -83,7 +83,7 @@ defineProps<{
   }
   &__list {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 256px 256px 256px 256px;
     gap: 25px;
   }
   &__list-item {
@@ -111,9 +111,12 @@ defineProps<{
     padding-top: 25px;
     align-items: center;
     font-size: 22px;
+    text-wrap: nowrap;
   }
   &__list-item-price-text {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__list-item-buy {
     background: #f7d22d;

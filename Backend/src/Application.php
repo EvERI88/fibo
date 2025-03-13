@@ -11,6 +11,7 @@ use App\Providers\EventsManagerProvider;
 use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
 use App\Routes\CommonRoutes;
+use App\Routes\UserRoutes;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
@@ -50,6 +51,7 @@ class Application
             new ProductsRoutes(),
             new CategoriesRoutes(),
             new CommonRoutes(),
+            new UserRoutes(),
         ];
 
         foreach ($routes as $route) {

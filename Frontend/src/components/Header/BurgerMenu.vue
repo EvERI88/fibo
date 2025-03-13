@@ -51,7 +51,11 @@
             </div>
             <div class="modal__row-input">
               Пароль
-              <input class="modal__row-input-border" type="password" />
+              <input
+                v-model="userAuthData.password"
+                class="modal__row-input-border"
+                type="password"
+              />
             </div>
             <div class="modal__row-footer">
               <button
@@ -127,7 +131,7 @@ const auth = async () => {
   console.log(userAuthData.value);
 
   try {
-    await fetch(`${baseUrl}auth`, {
+    await fetch(`${baseUrl}user/auth`, {
       method: "POST",
       body: JSON.stringify(userAuthData.value),
     })
@@ -136,6 +140,8 @@ const auth = async () => {
       })
       .then((data) => {
         console.log(data);
+        document.cookie = `token=${data.token}`;
+        alert(document.cookie);
       });
   } catch (err) {
     console.log(err);
