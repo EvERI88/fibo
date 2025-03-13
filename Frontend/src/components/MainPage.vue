@@ -87,7 +87,7 @@ const getNewProduct = async () => {
   }
 };
 
-onMounted(async () => {
+onMounted(() => {
   getNewProduct();
   getAllMenu();
 });
