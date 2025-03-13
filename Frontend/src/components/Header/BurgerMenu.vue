@@ -101,8 +101,11 @@ const userAuthData = ref<User>({
 
 const checkNumber = () => {
   if (typeof userAuthData.value.telephone === "string") {
+    const regExp = new RegExp(
+      `^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$`
+    );
     userAuthData.value.telephone = userAuthData.value.telephone.replace(
-      /[^0-9]/g,
+      regExp,
       ""
     );
     if (userAuthData.value.telephone.length > 11) {
