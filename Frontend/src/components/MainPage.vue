@@ -55,8 +55,6 @@ const getAllMenu = async () => {
   try {
     await fetch(`${baseUrl}common/menu`)
       .then((response) => {
-        console.log(response);
-
         return response.json();
       })
       .then((data) => {
@@ -78,8 +76,6 @@ const getNewProduct = async () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-
         const products = data.new.products;
         for (let i = 0; i < products.length; i++) {
           const el = products[i];
@@ -107,5 +103,28 @@ main::after {
   width: 168px;
   background-repeat: no-repeat;
   top: 20%;
+}
+.wrapper-modal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: linear-gradient(
+      0deg,
+      rgba(33, 49, 52, 0.2),
+      rgba(33, 49, 52, 0.2)
+    ),
+    linear-gradient(0deg, rgba(247, 210, 45, 0.4), rgba(247, 210, 45, 0.4));
+  text-align: center;
+  white-space: nowrap;
+  .wrapper-modal ::after {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 100%;
+    content: "";
+  }
 }
 </style>
