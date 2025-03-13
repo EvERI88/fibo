@@ -141,7 +141,6 @@ const auth = async () => {
       .then((data) => {
         console.log(data);
         document.cookie = `token=${data.token}`;
-        alert(document.cookie);
       });
   } catch (err) {
     console.log(err);
