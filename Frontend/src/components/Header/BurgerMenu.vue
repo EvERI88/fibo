@@ -73,7 +73,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 
 interface Navigation {
@@ -108,14 +108,10 @@ const checkNumber = () => {
     );
     const formattedNumber = number.replace(pattern, "+$1 ($2) $3-$4-$5");
     userAuthData.value.telephone = formattedNumber;
-    console.log("Отформатированный номер:", formattedNumber);
   } else {
     userAuthData.value.telephone = number.slice(0, 11);
-    console.log("Срезанный номер:", userAuthData.value.telephone);
   }
 };
-
-watchEffect(() => checkNumber());
 
 const toggleModalAuth = () => {
   openAuth.value = !openAuth.value;
@@ -128,10 +124,12 @@ const toggleModalAuth = () => {
 };
 
 const auth = async () => {
+  console.log(userAuthData.value);
+
   try {
     await fetch(`${baseUrl}auth`, {
       method: "POST",
-      body: JSON.stringify(userAuthData),
+      body: JSON.stringify(userAuthData.value),
     })
       .then((response) => {
         return response.json();
