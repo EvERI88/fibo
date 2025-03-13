@@ -100,22 +100,22 @@ const userAuthData = ref<User>({
 });
 
 const checkNumber = () => {
-  if (typeof userAuthData.value.telephone === "string") {
-    const regExp = new RegExp(
-      `^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$`
+  const number = userAuthData.value.telephone.toString().replace(/[^0-9]/g, "");
+
+  if (number.length < 11) {
+    const pattern = new RegExp(
+      `^(\\d{${number.length}})(\\d{3})(\\d{3})(\\d{2})(\\d{2})$`
     );
-    userAuthData.value.telephone = userAuthData.value.telephone.replace(
-      regExp,
-      ""
-    );
-    if (userAuthData.value.telephone.length > 11) {
-      console.log("Номер телефона слишком длинный");
-      userAuthData.value.telephone = userAuthData.value.telephone.slice(0, 11);
-    }
-    console.log("числовое значение:", userAuthData.value.telephone);
+    const formattedNumber = number.replace(pattern, "+$1 ($2) $3-$4-$5");
+    userAuthData.value.telephone = formattedNumber;
+    console.log("Отформатированный номер:", formattedNumber);
+  } else {
+    userAuthData.value.telephone = number.slice(0, 11);
+    console.log("Срезанный номер:", userAuthData.value.telephone);
   }
 };
-watchEffect(() => checkNumber);
+
+watchEffect(() => checkNumber());
 
 const toggleModalAuth = () => {
   openAuth.value = !openAuth.value;
