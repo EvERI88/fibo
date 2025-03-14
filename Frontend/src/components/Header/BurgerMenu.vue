@@ -355,10 +355,7 @@ const auth = async () => {
           getAllErrorsAuth.value = data.error;
         } else {
           document.cookie = `token=${data.token}`;
-          localStorage.setItem("id", data.data.id);
           userStore.setUser(data.data);
-          console.log(userStore.user);
-
           toggleModalAuth();
         }
       });

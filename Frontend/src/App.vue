@@ -33,12 +33,11 @@ const getCookie = (name = "token") => {
 
 const getToken = async () => {
   const token = getCookie();
-  const userId = localStorage.getItem("id");
 
   try {
     await fetch(`${baseUrl}user/check-token`, {
       method: "POST",
-      body: JSON.stringify({ token: token, id: userId }),
+      body: JSON.stringify({ token: token }),
       mode: "cors",
     })
       .then((response) => {
