@@ -49,20 +49,49 @@
             <div class="modal__row-input">
               Номер телефона
               <input
-                @input="checkNumber"
-                v-model.number="userAuthData.telephone"
+                @input="checkNumberAuth"
+                v-model="userAuthData.telephone"
                 class="modal__row-input-border"
-                type="tel"
+                :class="{
+                  'modal__row-input-border-error':
+                    getAllErrorsAuth['telephone'],
+                }"
+                type="text"
               />
+              <BlockError v-if="getAllErrorsAuth['telephone']">
+                <template v-slot:body>
+                  <p class="error-block__text">
+                    {{ getAllErrorsAuth["telephone"] }}
+                  </p>
+                </template>
+              </BlockError>
             </div>
             <div class="modal__row-input">
               Пароль
               <input
                 v-model="userAuthData.password"
                 class="modal__row-input-border"
+                :class="{
+                  'modal__row-input-border-error': getAllErrorsAuth['password'],
+                }"
                 type="password"
               />
+              <BlockError v-if="getAllErrorsAuth['password']">
+                <template v-slot:body>
+                  <p class="error-block__text">
+                    {{ getAllErrorsAuth["password"] }}
+                  </p>
+                </template>
+              </BlockError>
+              <BlockError v-if="getAllErrorsAuth['try_again']">
+                <template v-slot:body>
+                  <p class="error-block__text">
+                    {{ getAllErrorsAuth["try_again"] }}
+                  </p>
+                </template>
+              </BlockError>
             </div>
+
             <div class="modal__row-footer">
               <button
                 class="modal__row-footer-button"
@@ -95,15 +124,19 @@
             <div class="modal__row-input">
               Номер телефона
               <input
-                @input="checkNumber"
-                v-model.number="userAuthData.telephone"
+                @input="checkNumberRegister"
+                v-model="userRegisterData.telephone"
                 class="modal__row-input-border"
-                type="tel"
+                :class="{
+                  'modal__row-input-border-error':
+                    getAllErrorsRegister['telephone'],
+                }"
+                type="text"
               />
-              <BlockError v-if="getAllErrors['telephone']">
+              <BlockError v-if="getAllErrorsRegister['telephone']">
                 <template v-slot:body>
-                  <p class="body__error-text">
-                    {{ getAllErrors["telephone"] }}
+                  <p class="error-block__text">
+                    {{ getAllErrorsRegister["telephone"] }}
                   </p>
                 </template>
               </BlockError>
@@ -111,15 +144,17 @@
             <div class="modal__row-input">
               Имя пользователя
               <input
-                @input="checkNumber"
-                v-model.number="userAuthData.telephone"
+                v-model="userRegisterData.name"
                 class="modal__row-input-border"
+                :class="{
+                  'modal__row-input-border-error': getAllErrorsRegister['name'],
+                }"
                 type="tel"
               />
-              <BlockError v-if="getAllErrors['name']">
+              <BlockError v-if="getAllErrorsRegister['name']">
                 <template v-slot:body>
-                  <p class="body__error-text">
-                    {{ getAllErrors["name"] }}
+                  <p class="error-block__text">
+                    {{ getAllErrorsRegister["name"] }}
                   </p>
                 </template>
               </BlockError>
@@ -127,14 +162,18 @@
             <div class="modal__row-input">
               Пароль
               <input
-                v-model="userAuthData.password"
+                v-model="userRegisterData.password"
                 class="modal__row-input-border"
+                :class="{
+                  'modal__row-input-border-error':
+                    getAllErrorsRegister['password'],
+                }"
                 type="password"
               />
-              <BlockError v-if="getAllErrors['password']">
+              <BlockError v-if="getAllErrorsRegister['password']">
                 <template v-slot:body>
-                  <p class="body__error-text">
-                    {{ getAllErrors["password"] }}
+                  <p class="error-block__text">
+                    {{ getAllErrorsRegister["password"] }}
                   </p>
                 </template>
               </BlockError>
@@ -142,10 +181,21 @@
             <div class="modal__row-input">
               Подтверждение пароля
               <input
-                v-model="userAuthData.password"
+                v-model="userRegisterData.confirmPassword"
                 class="modal__row-input-border"
+                :class="{
+                  'modal__row-input-border-error':
+                    getAllErrorsRegister['confirmPassword'],
+                }"
                 type="password"
               />
+              <BlockError v-if="getAllErrorsRegister['confirmPassword']">
+                <template v-slot:body>
+                  <p class="error-block__text">
+                    {{ getAllErrorsRegister["confirmPassword"] }}
+                  </p>
+                </template>
+              </BlockError>
             </div>
             <div class="modal__row-footer">
               <button
@@ -167,7 +217,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 import BlockError from "../UI/BlockError.vue";
 
@@ -179,6 +229,7 @@ interface Navigation {
 interface UserAuth {
   telephone: string;
   password: string;
+  try_again: string;
 }
 interface UserRegister {
   telephone: string;
@@ -190,7 +241,13 @@ interface Errors {
   telephone: string;
   name: string;
   password: string;
-  passwordValidate: string;
+  confirmPassword: string;
+}
+[];
+interface ErrorsAuth {
+  telephone: string;
+  password: string;
+  try_again: string;
 }
 [];
 
@@ -206,6 +263,7 @@ const baseUrl: string = "http://api.fibo.local/";
 const userAuthData = ref<UserAuth>({
   telephone: "",
   password: "",
+  try_again: "",
 });
 const userRegisterData = ref<UserRegister>({
   telephone: "",
@@ -214,7 +272,8 @@ const userRegisterData = ref<UserRegister>({
   confirmPassword: "",
 });
 
-const checkNumber = () => {
+// сделать под две функции
+const checkNumberAuth = () => {
   const number = userAuthData.value.telephone.toString().replace(/[^0-9]/g, "");
 
   if (number.length < 11) {
@@ -225,6 +284,21 @@ const checkNumber = () => {
     userAuthData.value.telephone = formattedNumber;
   } else {
     userAuthData.value.telephone = number.slice(0, 11);
+  }
+};
+const checkNumberRegister = () => {
+  const number = userRegisterData.value.telephone
+    .toString()
+    .replace(/[^0-9]/g, "");
+
+  if (number.length < 11) {
+    const pattern = new RegExp(
+      `^(\\d{${number.length}})(\\d{3})(\\d{3})(\\d{2})(\\d{2})$`
+    );
+    const formattedNumber = number.replace(pattern, "+$1 ($2) $3-$4-$5");
+    userRegisterData.value.telephone = formattedNumber;
+  } else {
+    userRegisterData.value.telephone = number.slice(0, 11);
   }
 };
 
@@ -247,16 +321,19 @@ const toggleModalRegister = () => {
   }
 };
 
-const getAllErrors = ref<Errors>({
+const getAllErrorsRegister = ref<Errors>({
   telephone: "",
   name: "",
   password: "",
-  validatePassword: "",
+  confirmPassword: "",
+});
+const getAllErrorsAuth = ref<ErrorsAuth>({
+  telephone: "",
+  password: "",
+  try_again: "",
 });
 
 const auth = async () => {
-  console.log(userAuthData.value);
-
   try {
     await fetch(`${baseUrl}user/auth`, {
       method: "POST",
@@ -266,28 +343,31 @@ const auth = async () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        document.cookie = `token=${data.token}`;
+        if (data.status === "error") {
+          getAllErrorsAuth.value = data.error;
+        } else {
+          document.cookie = `token=${data.token}`;
+        }
       });
   } catch (err) {
     console.log(err);
   }
 };
 const register = async () => {
-  console.log(userRegisterData.value);
-
   try {
+    getAllErrorsRegister.value = <Errors>{};
     await fetch(`${baseUrl}user/register`, {
       method: "POST",
       body: JSON.stringify(userRegisterData.value),
+      mode: "cors",
     })
       .then((response) => {
+        console.log(response);
         return response.json();
       })
       .then((data) => {
         if (data.status === "error") {
-          getAllErrors.value;
-          getAllErrors.value = data.error;
+          getAllErrorsRegister.value = data.error;
         }
       });
   } catch (err) {
@@ -409,6 +489,9 @@ const register = async () => {
     padding: 10px 19px 10px 19px;
     margin-left: 32px;
     max-width: 225px;
+  }
+  &__row-input-border-error {
+    border: 1.5px solid rgba(255, 46, 101, 1);
   }
   &__row-footer {
     text-wrap: auto;

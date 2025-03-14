@@ -124,7 +124,8 @@ class UserController extends BaseController
         } else {
             return [
                 'status' => 'error',
-                'message' => 'Попробуйте еще раз'
+                'message' => 'Попробуйте еще раз',
+                'error' => (object)['try_again' => 'Попробуйте еще раз']
             ];
         }
     }

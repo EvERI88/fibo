@@ -26,5 +26,8 @@ class UserRegisterRequest extends AbstractRequest
         if (mb_strlen($this->data['password']) < 6) {
             $this->errors['password'] = 'Короткий пароль';
         }
+        if ($this->data['confirmPassword'] !== $this->data['password']) {
+            $this->errors['confirmPassword'] = 'Подтвердите пароль';
+        }
     }
 }

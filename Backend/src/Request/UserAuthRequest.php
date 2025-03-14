@@ -21,7 +21,7 @@ class UserAuthRequest extends AbstractRequest
             $this->errors['telephone'] = 'Неверная длина телефона';
         }
         if (mb_strlen($this->data['password']) < 6) {
-            $this->errors['telephone'] = 'Короткий пароль';
+            $this->errors['password'] = 'Короткий пароль';
         }
     }
 }
