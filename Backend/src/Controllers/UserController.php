@@ -61,7 +61,6 @@ class UserController extends BaseController
     {
         $authValidate = new UserAuthRequest($this->request);
         $data = $authValidate->getData();
-
         $security = new Security();
 
         if (!empty($authValidate->getErrors())) {
@@ -83,7 +82,6 @@ class UserController extends BaseController
 
         $signer  = new Hmac();
         $builder = new Builder($signer);
-
         $now = new DateTime();
         $issued = $now->getTimestamp();
         $notBefore = $now->modify('-1 minute')->getTimestamp();
@@ -157,7 +155,6 @@ class UserController extends BaseController
 
         if ($user) {
             $parser = new Parser();
-
             $tokenObject = $parser->parse($token);
 
             $tokenReceived = $token;
@@ -169,10 +166,8 @@ class UserController extends BaseController
             $id            = (string)$user->id;
             $issuer        = 'http://api.fibo.local';
 
-            // Defaults to 'sha512'
             $signer     = new Hmac();
             $passphrase = $user->password;
-
             $validator = new Validator($tokenObject, 100);
 
             $validator
@@ -186,11 +181,17 @@ class UserController extends BaseController
 
             if ($validator->getErrors()) {
                 return [
-                    'token-status' => 'no-valid'
+                    'token-status' => 'no-valid',
+                    'token-status' => $validator->getErrors()
                 ];
             } else {
                 return [
                     'token-status' => $token,
+                    'user' => (object)[
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'telephone' => $user->telephone,
+                    ],
                 ];
             }
         } else {

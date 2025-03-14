@@ -9,20 +9,12 @@ import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import { onMounted, ref } from "vue";
 import { useUserStore } from "../stores/useUserStore.ts";
+import { useBasketStore } from "../stores/useBasketStore.ts";
 
 const userStore = useUserStore();
-
-interface User {
-  id: number;
-  name: string;
-  telephone: string;
-}
-
-const user = <User>userStore.user;
+const basketStore = useBasketStore();
 
 const baseUrl: string = "http://api.fibo.local/";
-
-const validToken = ref<Boolean>(false);
 
 const getCookie = (name = "token") => {
   let cookie = document.cookie
@@ -31,24 +23,32 @@ const getCookie = (name = "token") => {
   return cookie ? cookie.split("=")[1] : null;
 };
 
-const getToken = async () => {
-  const token = getCookie();
+const checkBasket = () => {
+  basketStore.setBasket = JSON.parse(localStorage.getItem("basket") ?? "");
+};
 
+const getToken = async () => {
+  const token = getCookie() ?? "";
+
+  const tokenParts = token.split(".");
+  // const decodedHeader = JSON.parse(atob(tokenParts[0]));
+  const decodedPayload = JSON.parse(atob(tokenParts[1]));
+  const decodeSub: string = decodedPayload["sub"];
   try {
     await fetch(`${baseUrl}user/check-token`, {
       method: "POST",
-      body: JSON.stringify({ token: token }),
+      body: JSON.stringify({ token: token, id: decodeSub }),
       mode: "cors",
     })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        data["token-status"] === "valid"
-          ? (validToken.value = true)
-          : (validToken.value = false);
-        if (validToken.value) {
+        if (data["user"]) {
+          userStore.user = data["user"];
+          checkBasket;
         } else {
+          document.cookie = `token=`;
         }
       });
   } catch (err) {

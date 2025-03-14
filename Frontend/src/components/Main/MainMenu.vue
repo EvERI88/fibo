@@ -31,7 +31,12 @@
               <div class="menu-main__list-item-price-text">
                 от {{ product.price }} ₽
               </div>
-              <button class="menu-main__list-item-buy">В корзину</button>
+              <button
+                class="menu-main__list-item-buy"
+                @click="inBasket(product.id)"
+              >
+                В корзину
+              </button>
             </div>
           </div>
         </div>
@@ -41,6 +46,10 @@
 </template>
 
 <script setup lang="ts">
+import { useBasketStore } from "../../../stores/useBasketStore.ts";
+
+const basketStore = useBasketStore();
+
 interface Product {
   id: number;
   name: string;
@@ -59,6 +68,15 @@ interface ListMenu {
 defineProps<{
   listMenu: ListMenu[];
 }>();
+
+const inBasket = (id: number) => {
+  const item = {
+    id: id,
+    quantity: 1,
+  };
+  basketStore.addToBasket(item);
+  localStorage.setItem("basket", JSON.stringify(basketStore.basket));
+};
 </script>
 
 <style scoped lang="scss">

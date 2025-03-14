@@ -36,7 +36,10 @@
         </button>
       </div>
       <div class="burger-menu__function-basket">
-        Корзина <span class="burger-menu__count-product-in-basket">1</span>
+        Корзина
+        <span class="burger-menu__count-product-in-basket">{{
+          lengthBasket
+        }}</span>
       </div>
       <RootModal
         @close="toggleModalAuth"
@@ -222,12 +225,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 import BlockError from "../UI/BlockError.vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
-
-const userStore = useUserStore();
+import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
 interface Navigation {
   id: number;
@@ -259,6 +261,11 @@ interface ErrorsAuth {
 }
 [];
 
+const userStore = useUserStore();
+
+const basketStore = useBasketStore();
+
+const lengthBasket = ref(0);
 const openAuth = ref(false);
 const openRegister = ref(false);
 
@@ -280,7 +287,6 @@ const userRegisterData = ref<UserRegister>({
   confirmPassword: "",
 });
 
-// сделать под две функции
 const checkNumberAuth = () => {
   const number = userAuthData.value.telephone.toString().replace(/[^0-9]/g, "");
 
@@ -386,8 +392,17 @@ const register = async () => {
 
 const logout = () => {
   userStore.setUser({});
+  document.cookie = `token=`;
   console.log(userStore.user);
 };
+
+const getLengthBasket = () => {
+  lengthBasket.value = basketStore.getTotalItems;
+};
+
+onMounted(() => {
+  getLengthBasket();
+});
 </script>
 <style scoped lang="scss">
 .burger-menu {
