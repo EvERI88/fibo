@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { useUserStore } from "../stores/useUserStore.ts";
 import { useBasketStore } from "../stores/useBasketStore.ts";
 
@@ -24,7 +24,7 @@ const getCookie = (name = "token") => {
 };
 
 const checkBasket = () => {
-  basketStore.setBasket = JSON.parse(localStorage.getItem("basket") ?? "");
+  basketStore.basket = JSON.parse(localStorage.getItem("basket") ?? "");
 };
 
 const getToken = async () => {
@@ -46,7 +46,7 @@ const getToken = async () => {
       .then((data) => {
         if (data["user"]) {
           userStore.user = data["user"];
-          checkBasket;
+          checkBasket();
         } else {
           document.cookie = `token=`;
         }

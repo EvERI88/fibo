@@ -1,6 +1,7 @@
 <template>
   <div class="burger-menu">
     <div class="burger-menu__wrapper">
+      <MicroBasket v-if="showMicro" />
       <ul
         class="burger-menu__list"
         v-for="navigation in listNavigation"
@@ -19,6 +20,7 @@
           }}</a>
         </li>
       </ul>
+
       <div class="burger-menu__function" v-if="!userStore.user?.id">
         <button @click="toggleModalAuth" class="burger-menu__function-signin">
           Войти
@@ -35,12 +37,13 @@
           Выход
         </button>
       </div>
-      <div class="burger-menu__function-basket">
+      <div class="burger-menu__function-basket" @click="showMicroBasket">
         Корзина
         <span class="burger-menu__count-product-in-basket">{{
           lengthBasket
         }}</span>
       </div>
+
       <RootModal
         @close="toggleModalAuth"
         v-if="openAuth"
@@ -225,11 +228,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 import BlockError from "../UI/BlockError.vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
+import MicroBasket from "../UI/MicroBasket.vue";
 
 interface Navigation {
   id: number;
@@ -268,7 +272,7 @@ const basketStore = useBasketStore();
 const lengthBasket = ref(0);
 const openAuth = ref(false);
 const openRegister = ref(false);
-
+const showMicro = ref(false);
 defineProps<{
   listNavigation: Navigation[];
 }>();
@@ -393,12 +397,17 @@ const register = async () => {
 const logout = () => {
   userStore.setUser({});
   document.cookie = `token=`;
-  console.log(userStore.user);
 };
 
 const getLengthBasket = () => {
   lengthBasket.value = basketStore.getTotalItems;
 };
+
+const showMicroBasket = () => {
+  showMicro.value = !showMicro.value;
+};
+
+watchEffect(getLengthBasket);
 
 onMounted(() => {
   getLengthBasket();
@@ -411,6 +420,7 @@ onMounted(() => {
   padding-top: 20px;
   padding-bottom: 41px;
   &__wrapper {
+    position: relative;
     max-width: 1110px;
     width: 100%;
     display: flex;

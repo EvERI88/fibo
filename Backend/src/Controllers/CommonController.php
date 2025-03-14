@@ -81,6 +81,52 @@ class CommonController extends BaseController
     }
 
 
+    public function getBasketItem(): object
+    {
+        $categoryId = $this->request->getQuery('category_id', 'int', 0);
+        $currentPage = $this->request->getQuery('page', 'int', 1);
+        $limitPerPage = $this->request->getQuery('limit', 'int', 24);
+        $visibleCategories = $this->navigation();
+
+        $nameMenuCategory = '';
+
+        foreach ($visibleCategories as $category) {
+            if ($category->id === $categoryId) {
+                $nameMenuCategory = $category->name;
+            }
+        }
+
+        $paginator = new PaginatorModel(
+            [
+                'model'  => Products::class,
+                'limit' => $limitPerPage,
+                'page'  => $currentPage,
+                "parameters" => [
+                    "category_id = :cst_id:",
+                    "bind" => [
+                        "cst_id" => $categoryId
+                    ],
+                ],
+            ]
+        );
+
+        if ($nameMenuCategory) {
+            $visibleData = (object) [
+                'menu' => array(
+                    'id' => $categoryId,
+                    'name' => $nameMenuCategory,
+                    'products' => $paginator->paginate()
+                )
+            ];
+        } else {
+            $visibleData = (object) array(
+                'error' => 'Несуществующая категория: ' . $categoryId
+            );
+        }
+
+
+        return $visibleData;
+    }
     // public function menuGetCategory(): object
     // {
     //     $categoryId = $this->request->getQuery('category_id', 'int', 0);
