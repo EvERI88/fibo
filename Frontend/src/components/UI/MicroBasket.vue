@@ -58,7 +58,7 @@ onMounted(() => {
 .micro-basket {
   position: absolute;
   top: 100%;
-  z-index: 100;
+  z-index: 1;
   max-width: 349px;
   right: 0;
   width: 100%;

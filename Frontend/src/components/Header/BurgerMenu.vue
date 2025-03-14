@@ -1,5 +1,184 @@
 <template>
   <div class="burger-menu">
+    <RootModal
+      @close="toggleModalAuth"
+      v-if="openAuth"
+      class="modal"
+      :class="{ open: openAuth }"
+    >
+      <template v-slot:header>
+        <div class="modal__header" id="header">
+          <h2 class="modal__title">Вход на сайт</h2>
+        </div>
+      </template>
+      <template v-slot:body>
+        <div class="modal__body">
+          <div class="modal__row-input">
+            Номер телефона
+            <input
+              @input="checkNumberAuth"
+              v-model="userAuthData.telephone"
+              class="modal__row-input-border"
+              :class="{
+                'modal__row-input-border-error': getAllErrorsAuth['telephone'],
+              }"
+              type="text"
+            />
+            <BlockError v-if="getAllErrorsAuth['telephone']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsAuth["telephone"] }}
+                </p>
+              </template>
+            </BlockError>
+          </div>
+          <div class="modal__row-input">
+            Пароль
+            <input
+              v-model="userAuthData.password"
+              class="modal__row-input-border"
+              :class="{
+                'modal__row-input-border-error': getAllErrorsAuth['password'],
+              }"
+              type="password"
+            />
+            <BlockError v-if="getAllErrorsAuth['password']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsAuth["password"] }}
+                </p>
+              </template>
+            </BlockError>
+            <BlockError v-if="getAllErrorsAuth['try_again']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsAuth["try_again"] }}
+                </p>
+              </template>
+            </BlockError>
+          </div>
+
+          <div class="modal__row-footer">
+            <button
+              class="modal__row-footer-button"
+              type="button"
+              @click="auth"
+            >
+              Войти
+            </button>
+            <div class="modal__row-footer-policy">
+              Продолжая, вы соглашаетесь со сбором и обработкой персональных
+              данных и пользовательским соглашением
+            </div>
+          </div>
+        </div>
+      </template>
+    </RootModal>
+    <RootModal
+      @close="toggleModalRegister"
+      v-if="openRegister"
+      class="modal"
+      :class="{ open: openRegister }"
+    >
+      <template v-slot:header>
+        <div class="modal__header" id="header">
+          <h2 class="modal__title">Регистрация</h2>
+        </div>
+      </template>
+      <template v-slot:body>
+        <div class="modal__body">
+          <div class="modal__row-input">
+            Номер телефона
+            <input
+              @input="checkNumberRegister"
+              v-model="userRegisterData.telephone"
+              class="modal__row-input-border"
+              :class="{
+                'modal__row-input-border-error':
+                  getAllErrorsRegister['telephone'],
+              }"
+              type="text"
+            />
+            <BlockError v-if="getAllErrorsRegister['telephone']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsRegister["telephone"] }}
+                </p>
+              </template>
+            </BlockError>
+          </div>
+          <div class="modal__row-input">
+            Имя пользователя
+            <input
+              v-model="userRegisterData.name"
+              class="modal__row-input-border"
+              :class="{
+                'modal__row-input-border-error': getAllErrorsRegister['name'],
+              }"
+              type="tel"
+            />
+            <BlockError v-if="getAllErrorsRegister['name']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsRegister["name"] }}
+                </p>
+              </template>
+            </BlockError>
+          </div>
+          <div class="modal__row-input">
+            Пароль
+            <input
+              v-model="userRegisterData.password"
+              class="modal__row-input-border"
+              :class="{
+                'modal__row-input-border-error':
+                  getAllErrorsRegister['password'],
+              }"
+              type="password"
+            />
+            <BlockError v-if="getAllErrorsRegister['password']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsRegister["password"] }}
+                </p>
+              </template>
+            </BlockError>
+          </div>
+          <div class="modal__row-input">
+            Подтверждение пароля
+            <input
+              v-model="userRegisterData.confirmPassword"
+              class="modal__row-input-border"
+              :class="{
+                'modal__row-input-border-error':
+                  getAllErrorsRegister['confirmPassword'],
+              }"
+              type="password"
+            />
+            <BlockError v-if="getAllErrorsRegister['confirmPassword']">
+              <template v-slot:body>
+                <p class="error-block__text">
+                  {{ getAllErrorsRegister["confirmPassword"] }}
+                </p>
+              </template>
+            </BlockError>
+          </div>
+          <div class="modal__row-footer">
+            <button
+              class="modal__row-footer-button"
+              type="button"
+              @click="register"
+            >
+              Регистрация
+            </button>
+            <div class="modal__row-footer-policy">
+              Продолжая, вы соглашаетесь со сбором и обработкой персональных
+              данных и пользовательским соглашением
+            </div>
+          </div>
+        </div>
+      </template>
+    </RootModal>
     <div class="burger-menu__wrapper">
       <MicroBasket v-if="showMicro" />
       <ul
@@ -43,187 +222,6 @@
           lengthBasket
         }}</span>
       </div>
-
-      <RootModal
-        @close="toggleModalAuth"
-        v-if="openAuth"
-        class="modal"
-        :class="{ open: openAuth }"
-      >
-        <template v-slot:header>
-          <div class="modal__header" id="header">
-            <h2 class="modal__title">Вход на сайт</h2>
-          </div>
-        </template>
-        <template v-slot:body>
-          <div class="modal__body">
-            <div class="modal__row-input">
-              Номер телефона
-              <input
-                @input="checkNumberAuth"
-                v-model="userAuthData.telephone"
-                class="modal__row-input-border"
-                :class="{
-                  'modal__row-input-border-error':
-                    getAllErrorsAuth['telephone'],
-                }"
-                type="text"
-              />
-              <BlockError v-if="getAllErrorsAuth['telephone']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsAuth["telephone"] }}
-                  </p>
-                </template>
-              </BlockError>
-            </div>
-            <div class="modal__row-input">
-              Пароль
-              <input
-                v-model="userAuthData.password"
-                class="modal__row-input-border"
-                :class="{
-                  'modal__row-input-border-error': getAllErrorsAuth['password'],
-                }"
-                type="password"
-              />
-              <BlockError v-if="getAllErrorsAuth['password']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsAuth["password"] }}
-                  </p>
-                </template>
-              </BlockError>
-              <BlockError v-if="getAllErrorsAuth['try_again']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsAuth["try_again"] }}
-                  </p>
-                </template>
-              </BlockError>
-            </div>
-
-            <div class="modal__row-footer">
-              <button
-                class="modal__row-footer-button"
-                type="button"
-                @click="auth"
-              >
-                Войти
-              </button>
-              <div class="modal__row-footer-policy">
-                Продолжая, вы соглашаетесь со сбором и обработкой персональных
-                данных и пользовательским соглашением
-              </div>
-            </div>
-          </div>
-        </template>
-      </RootModal>
-      <RootModal
-        @close="toggleModalRegister"
-        v-if="openRegister"
-        class="modal"
-        :class="{ open: openRegister }"
-      >
-        <template v-slot:header>
-          <div class="modal__header" id="header">
-            <h2 class="modal__title">Регистрация</h2>
-          </div>
-        </template>
-        <template v-slot:body>
-          <div class="modal__body">
-            <div class="modal__row-input">
-              Номер телефона
-              <input
-                @input="checkNumberRegister"
-                v-model="userRegisterData.telephone"
-                class="modal__row-input-border"
-                :class="{
-                  'modal__row-input-border-error':
-                    getAllErrorsRegister['telephone'],
-                }"
-                type="text"
-              />
-              <BlockError v-if="getAllErrorsRegister['telephone']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsRegister["telephone"] }}
-                  </p>
-                </template>
-              </BlockError>
-            </div>
-            <div class="modal__row-input">
-              Имя пользователя
-              <input
-                v-model="userRegisterData.name"
-                class="modal__row-input-border"
-                :class="{
-                  'modal__row-input-border-error': getAllErrorsRegister['name'],
-                }"
-                type="tel"
-              />
-              <BlockError v-if="getAllErrorsRegister['name']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsRegister["name"] }}
-                  </p>
-                </template>
-              </BlockError>
-            </div>
-            <div class="modal__row-input">
-              Пароль
-              <input
-                v-model="userRegisterData.password"
-                class="modal__row-input-border"
-                :class="{
-                  'modal__row-input-border-error':
-                    getAllErrorsRegister['password'],
-                }"
-                type="password"
-              />
-              <BlockError v-if="getAllErrorsRegister['password']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsRegister["password"] }}
-                  </p>
-                </template>
-              </BlockError>
-            </div>
-            <div class="modal__row-input">
-              Подтверждение пароля
-              <input
-                v-model="userRegisterData.confirmPassword"
-                class="modal__row-input-border"
-                :class="{
-                  'modal__row-input-border-error':
-                    getAllErrorsRegister['confirmPassword'],
-                }"
-                type="password"
-              />
-              <BlockError v-if="getAllErrorsRegister['confirmPassword']">
-                <template v-slot:body>
-                  <p class="error-block__text">
-                    {{ getAllErrorsRegister["confirmPassword"] }}
-                  </p>
-                </template>
-              </BlockError>
-            </div>
-            <div class="modal__row-footer">
-              <button
-                class="modal__row-footer-button"
-                type="button"
-                @click="register"
-              >
-                Регистрация
-              </button>
-              <div class="modal__row-footer-policy">
-                Продолжая, вы соглашаетесь со сбором и обработкой персональных
-                данных и пользовательским соглашением
-              </div>
-            </div>
-          </div>
-        </template>
-      </RootModal>
     </div>
   </div>
 </template>
@@ -367,6 +365,7 @@ const auth = async () => {
           document.cookie = `token=${data.token}`;
           userStore.setUser(data.data);
           toggleModalAuth();
+          location.reload();
         }
       });
   } catch (err) {
