@@ -397,6 +397,7 @@ const register = async () => {
 const logout = () => {
   userStore.setUser({});
   document.cookie = `token=`;
+  location.reload();
 };
 
 const getLengthBasket = () => {
