@@ -7,10 +7,15 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Request\UserAuthRequest;
 use App\Request\UserRegisterRequest;
+use App\Request\UserTokenRequest;
 use DateTime;
+use DateTimeImmutable;
 use Phalcon\Encryption\Security;
 use Phalcon\Encryption\Security\JWT\Builder;
 use Phalcon\Encryption\Security\JWT\Signer\Hmac;
+use Phalcon\Encryption\Security\JWT\Token\Parser;
+use Phalcon\Encryption\Security\JWT\Validator;
+use Firebase\JWT\JWT;
 
 class UserController extends BaseController
 {
@@ -126,6 +131,72 @@ class UserController extends BaseController
                 'status' => 'error',
                 'message' => 'Попробуйте еще раз',
                 'error' => (object)['try_again' => 'Попробуйте еще раз']
+            ];
+        }
+    }
+    public function checkToken(): array
+    {
+        $tokenValidate = new UserTokenRequest($this->request);
+        $data = $tokenValidate->getData();
+        $token = $data['token'];
+
+        if (!$token) {
+            return [
+                'Auth' => 'no authorization',
+            ];
+        }
+
+        $user = User::findFirst(
+            [
+                'conditions' => 'id = :id:',
+                'bind'       => [
+                    'id' => (int)$data['id']
+                ]
+            ]
+        );
+
+        if ($user) {
+            $parser = new Parser();
+
+            $tokenObject = $parser->parse($token);
+
+            $tokenReceived = $token;
+            $audience      = 'http://api.fibo.local/user/auth';
+            $now           = new DateTimeImmutable();
+            $issued        = $now->getTimestamp();
+            $notBefore     = $now->modify('-1 minute')->getTimestamp();
+            $expires       = $now->getTimestamp();
+            $id            = (string)$user->id;
+            $issuer        = 'http://api.fibo.local';
+
+            // Defaults to 'sha512'
+            $signer     = new Hmac();
+            $passphrase = $user->password;
+
+            $validator = new Validator($tokenObject, 100);
+
+            $validator
+                ->validateAudience($audience)
+                ->validateExpiration($expires)
+                ->validateId($id)
+                ->validateIssuedAt($issued)
+                ->validateIssuer($issuer)
+                ->validateNotBefore($notBefore)
+                ->validateSignature($signer, $passphrase);
+
+            if ($validator->getErrors()) {
+                return [
+                    'token-status' => 'no-valid'
+                ];
+            } else {
+                return [
+                    'token-status' => 'valid'
+                ];
+            }
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Пользователь не найден',
             ];
         }
     }

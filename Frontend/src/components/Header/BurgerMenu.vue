@@ -346,7 +346,10 @@ const auth = async () => {
         if (data.status === "error") {
           getAllErrorsAuth.value = data.error;
         } else {
+          console.log(data["id"]);
+
           document.cookie = `token=${data.token}`;
+          localStorage.setItem("id", data.data.id);
         }
       });
   } catch (err) {
