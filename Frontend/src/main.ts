@@ -3,7 +3,9 @@ import "./style.css";
 import App from "./App.vue";
 import { createMemoryHistory, createRouter } from "vue-router";
 import MainPage from "./components/MainPage.vue";
+import { createPinia } from "pinia";
 
+const pinia = createPinia();
 const routes = [
   { path: "/", component: MainPage },
   { path: "/contacts", component: () => import("./components/Contacts.vue") },
@@ -14,4 +16,4 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(router).mount("#app");
+createApp(App).use(router).use(pinia).mount("#app");

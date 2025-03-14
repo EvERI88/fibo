@@ -7,7 +7,18 @@
 <script setup lang="ts">
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref } from "vue";
+import { useUserStore } from "../stores/useUserStore.ts";
+
+const userStore = useUserStore();
+
+interface User {
+  id: number;
+  name: string;
+  telephone: string;
+}
+
+const user = <User>userStore.user;
 
 const baseUrl: string = "http://api.fibo.local/";
 
@@ -31,26 +42,20 @@ const getToken = async () => {
       mode: "cors",
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         data["token-status"] === "valid"
           ? (validToken.value = true)
           : (validToken.value = false);
+        if (validToken.value) {
+        } else {
+        }
       });
   } catch (err) {
     console.log(err);
   }
 };
-
-const onLeave = () => {
-  if (!validToken.value) {
-    console.log("Тут будет редирект");
-  }
-};
-
-watchEffect(onLeave);
 
 onMounted(() => {
   getToken();

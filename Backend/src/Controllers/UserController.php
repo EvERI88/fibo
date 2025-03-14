@@ -190,7 +190,7 @@ class UserController extends BaseController
                 ];
             } else {
                 return [
-                    'token-status' => 'valid'
+                    'token-status' => $token,
                 ];
             }
         } else {

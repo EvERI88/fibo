@@ -19,7 +19,7 @@
           }}</a>
         </li>
       </ul>
-      <div class="burger-menu__function">
+      <div class="burger-menu__function" v-if="!userStore.user?.id">
         <button @click="toggleModalAuth" class="burger-menu__function-signin">
           Войти
         </button>
@@ -29,9 +29,14 @@
         >
           Регистрация
         </button>
-        <div class="burger-menu__function-basket">
-          Корзина <span class="burger-menu__count-product-in-basket">1</span>
-        </div>
+      </div>
+      <div class="burger-menu__function" v-else>
+        <button @click="logout" class="burger-menu__function-signin">
+          Выход
+        </button>
+      </div>
+      <div class="burger-menu__function-basket">
+        Корзина <span class="burger-menu__count-product-in-basket">1</span>
       </div>
       <RootModal
         @close="toggleModalAuth"
@@ -220,6 +225,9 @@
 import { ref } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 import BlockError from "../UI/BlockError.vue";
+import { useUserStore } from "../../../stores/useUserStore.ts";
+
+const userStore = useUserStore();
 
 interface Navigation {
   id: number;
@@ -346,10 +354,12 @@ const auth = async () => {
         if (data.status === "error") {
           getAllErrorsAuth.value = data.error;
         } else {
-          console.log(data["id"]);
-
           document.cookie = `token=${data.token}`;
           localStorage.setItem("id", data.data.id);
+          userStore.setUser(data.data);
+          console.log(userStore.user);
+
+          toggleModalAuth();
         }
       });
   } catch (err) {
@@ -365,7 +375,6 @@ const register = async () => {
       mode: "cors",
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -376,6 +385,11 @@ const register = async () => {
   } catch (err) {
     console.log(err);
   }
+};
+
+const logout = () => {
+  userStore.setUser({});
+  console.log(userStore.user);
 };
 </script>
 <style scoped lang="scss">
