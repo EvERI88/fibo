@@ -1,18 +1,48 @@
 <template>
   <div class="micro-basket">
-    <div class="micro-basket__wrapper">
+    <div
+      v-for="item in itemsInBasket"
+      class="micro-basket__wrapper"
+      :key="item.id"
+    >
       <div class="micro-basket__top">
-        <div class="micro-basket__top-img">img</div>
+        <div class="micro-basket__top-img">
+          <img
+            :src="
+              item.image === 'none'
+                ? `http://api.fibo.local/images/products/none.jpg`
+                : `http://api.fibo.local/${item.image}`
+            "
+            alt="item.image"
+          />
+        </div>
         <div class="micro-basket__top-info">
-          <p>С креветками и трюфелями</p>
+          <p>{{ item.name }}</p>
           <div class="micro-basket__top-info-quantity">
             <i class="fa-solid fa-minus"></i>
-            <p>1</p>
+            <template v-for="basketQuantity in basketStore.basket?.items">
+              <p v-if="basketQuantity.id === item.id">
+                {{ basketQuantity.quantity }}
+              </p>
+            </template>
             <i class="fa-solid fa-plus"></i>
           </div>
         </div>
-        <div class="micro-basket__top-func">close 120 $</div>
+        <div class="micro-basket__top-func">
+          <button
+            class="micro-basket__top-func-remove-item"
+            type="button"
+            @click="removeItem(item.id)"
+          ></button>
+          <p>{{ item.price }} $</p>
+        </div>
       </div>
+      <div class="micro-basket__line"></div>
+    </div>
+    <div class="micro-basket__bottom">
+      Сумма заказа <span class="micro-basket__bottom-price">{{ 0 }}</span>
+      <p class="micro-basket__bottom-question">Добавить к заказу?</p>
+      {{ "slider" }}
     </div>
   </div>
 </template>
@@ -20,9 +50,9 @@
 import { onMounted, ref } from "vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
-const basketMicro = ref();
 const basketStore = useBasketStore();
 const baseUrl: string = "http://api.fibo.local/";
+const itemsInBasket = ref();
 
 const getProduct = async () => {
   const idProducts: number[] = basketStore.basket.items.reduce<number[]>(
@@ -32,54 +62,38 @@ const getProduct = async () => {
     },
     []
   );
-  console.log(idProducts);
   try {
     await fetch(`${baseUrl}common/basket`, {
       method: "POST",
-      body: JSON.stringify({products: idProducts}),
+      body: JSON.stringify({ products: idProducts }),
     })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        // if (data.status === "error") {
-        //   getAllErrorsAuth.value = data.error;
-        // } else {
-        //   document.cookie = `token=${data.token}`;
-        //   userStore.setUser(data.data);
-        //   toggleModalAuth();
-        //   location.reload();
-        // }
+        console.log(basketStore.getTotalItems);
+
+        data.products
+          ? (itemsInBasket.value = data.products)
+          : (data.products = []);
       });
   } catch (err) {
     console.log(err);
   }
 };
 
-// const auth = async () => {
-//   try {
-//     await fetch(`${baseUrl}user/auth`, {
-//       method: "POST",
-//       body: JSON.stringify(userAuthData.value),
-//     })
-//       .then((response) => {
-//         return response.json();
-//       })
-//       .then((data) => {
-//         if (data.status === "error") {
-//           getAllErrorsAuth.value = data.error;
-//         } else {
-//           document.cookie = `token=${data.token}`;
-//           userStore.setUser(data.data);
-//           toggleModalAuth();
-//           location.reload();
-//         }
-//       });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+const removeItem = <T extends number | string>(id: T): void => {
+  const deletedItem = basketStore.basket?.items.findIndex((x) => x.id == id);
+
+  basketStore.removeToBasket(deletedItem);
+  localStorage.setItem("basket", JSON.stringify(basketStore.basket));
+  console.log(itemsInBasket.value);
+
+  itemsInBasket.value.splice(
+    itemsInBasket.value.findIndex((x: any) => x.id === id),
+    1
+  );
+};
 
 onMounted(() => {
   getProduct();
@@ -98,24 +112,22 @@ onMounted(() => {
   background: rgba(255, 255, 255, 1);
   border-radius: 10px;
   padding: 24px;
-
+  &__line {
+    box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.06);
+    height: 1px;
+    width: 100%;
+    background: rgba(236, 236, 241, 1);
+    margin: 18px 0;
+  }
   &__wrapper {
     position: relative;
-  }
-
-  &__wrapper::before {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    content: "";
-    background-color: #fff;
-    top: -29px;
-    right: 30px;
-    transform: rotate(45deg);
   }
   &__top {
     display: grid;
     grid-template-columns: 71px 146px 1fr;
+  }
+  &__top-info {
+    padding-left: 17px;
   }
   &__top-info-quantity {
     display: flex;
@@ -137,6 +149,28 @@ onMounted(() => {
     font-weight: 800;
     font-size: 11px;
     line-height: 17px;
+  }
+  &__top-func {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: end;
+    padding-bottom: 10px;
+    color: var(--col-title);
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    text-align: center;
+  }
+  &__top-func-remove-item {
+    content: "";
+    width: 27px;
+    height: 27px;
+    background-image: url("img/basket/closeButton.png");
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }
 </style>

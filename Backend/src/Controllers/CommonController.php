@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Models\Categories;
 use App\Models\Products;
 use App\Request\BasketRequest;
+use Phalcon\Http\Request;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class CommonController extends BaseController
@@ -82,56 +83,50 @@ class CommonController extends BaseController
     }
 
 
-    public function getBasketItem(): object
+    public function getBasketItem(): array
     {
-
         $requestBasket = new BasketRequest($this->request);
 
-        var_dump($requestBasket);
-        $categoryId = $this->request->getQuery('category_id', 'int', 0);
-        $currentPage = $this->request->getQuery('page', 'int', 1);
-        $limitPerPage = $this->request->getQuery('limit', 'int', 24);
-        $visibleCategories = $this->navigation();
-
-        $nameMenuCategory = '';
-
-        foreach ($visibleCategories as $category) {
-            if ($category->id === $categoryId) {
-                $nameMenuCategory = $category->name;
-            }
-        }
-
-        $paginator = new PaginatorModel(
-            [
-                'model'  => Products::class,
-                'limit' => $limitPerPage,
-                'page'  => $currentPage,
-                "parameters" => [
-                    "category_id = :cst_id:",
-                    "bind" => [
-                        "cst_id" => $categoryId
-                    ],
-                ],
-            ]
-        );
-
-        if ($nameMenuCategory) {
-            $visibleData = (object) [
-                'menu' => array(
-                    'id' => $categoryId,
-                    'name' => $nameMenuCategory,
-                    'products' => $paginator->paginate()
-                )
+        if (!empty($requestBasket->getErrors())) {
+            return [
+                'status' => 'error',
+                'message' => 'Корзина пустая',
+                'errors' => $requestBasket->getErrors(),
             ];
-        } else {
-            $visibleData = (object) array(
-                'error' => 'Несуществующая категория: ' . $categoryId
-            );
         }
 
+        $data = $requestBasket->getData();
 
-        return $visibleData;
+        if (empty($data['products'])) {
+            return [
+                'status' => 'error',
+                'message' => 'Нет продуктов в корзине',
+            ];
+        }
+
+        $products = $this
+            ->modelsManager
+            ->createBuilder()
+            ->columns([
+                'p.id',
+                'p.name',
+                'p.price',
+                'p.image'
+            ])
+            ->from(['p' => Products::class])
+            ->inWhere(
+                "p.id",
+                $data['products']
+            )
+            ->getQuery()
+            ->execute();
+
+        return [
+            'status' => 'success',
+            'products' => $products->toArray()
+        ];
     }
+
     // public function menuGetCategory(): object
     // {
     //     $categoryId = $this->request->getQuery('category_id', 'int', 0);

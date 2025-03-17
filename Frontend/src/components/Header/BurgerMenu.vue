@@ -186,7 +186,7 @@
       </template>
     </RootModal>
     <div class="burger-menu__wrapper">
-      <MicroBasket v-if="showMicro" />
+      <MicroBasket v-if="basketStore.basket.isVisible" />
       <ul
         class="burger-menu__list"
         v-for="navigation in listNavigation"
@@ -276,7 +276,6 @@ const basketStore = useBasketStore();
 const lengthBasket = ref(0);
 const openAuth = ref(false);
 const openRegister = ref(false);
-const showMicro = ref(false);
 defineProps<{
   listNavigation: Navigation[];
 }>();
@@ -410,7 +409,7 @@ const getLengthBasket = () => {
 };
 
 const showMicroBasket = () => {
-  showMicro.value = !showMicro.value;
+  basketStore.basket.isVisible = !basketStore.basket.isVisible;
 };
 
 watchEffect(getLengthBasket);
