@@ -8,7 +8,7 @@
       <Feedback class="header__feedback" />
     </div>
   </header>
-  <BurgerMenu @openAuth="openAuth" :listNavigation="listNavigation" />
+  <BurgerMenu :listNavigation="listNavigation" />
 </template>
 <script setup lang="ts">
 import { RouterLink } from "vue-router";

@@ -17,7 +17,7 @@ final class CommonRoutes implements IRoutes
         $collection->get('/navigation', 'navigation');
         $collection->get('/menu', 'menu');
         $collection->get('/new', 'new');
-        $collection->get('/basket', 'getBasketItem');
+        $collection->post('/basket', 'getBasketItem');
         return $collection;
     }
 }

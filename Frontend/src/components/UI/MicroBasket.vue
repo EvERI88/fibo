@@ -34,21 +34,52 @@ const getProduct = async () => {
   );
   console.log(idProducts);
   try {
-    await fetch(`${baseUrl}common/basket`)
+    await fetch(`${baseUrl}common/basket`, {
+      method: "POST",
+      body: JSON.stringify({products: idProducts}),
+    })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        const products = data.new.products;
-        for (let i = 0; i < products.length; i++) {
-          const el = products[i];
-          basketMicro.value.push(el);
-        }
+        console.log(data);
+        // if (data.status === "error") {
+        //   getAllErrorsAuth.value = data.error;
+        // } else {
+        //   document.cookie = `token=${data.token}`;
+        //   userStore.setUser(data.data);
+        //   toggleModalAuth();
+        //   location.reload();
+        // }
       });
   } catch (err) {
     console.log(err);
   }
 };
+
+// const auth = async () => {
+//   try {
+//     await fetch(`${baseUrl}user/auth`, {
+//       method: "POST",
+//       body: JSON.stringify(userAuthData.value),
+//     })
+//       .then((response) => {
+//         return response.json();
+//       })
+//       .then((data) => {
+//         if (data.status === "error") {
+//           getAllErrorsAuth.value = data.error;
+//         } else {
+//           document.cookie = `token=${data.token}`;
+//           userStore.setUser(data.data);
+//           toggleModalAuth();
+//           location.reload();
+//         }
+//       });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 onMounted(() => {
   getProduct();
@@ -65,7 +96,7 @@ onMounted(() => {
   border: 3.5px solid rgba(247, 210, 45, 0.4);
   box-shadow: 0px 4px 28px 0px rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 1);
-  border-radius: 3.5px;
+  border-radius: 10px;
   padding: 24px;
 
   &__wrapper {

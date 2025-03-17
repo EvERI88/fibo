@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\Categories;
 use App\Models\Products;
+use App\Request\BasketRequest;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class CommonController extends BaseController
@@ -83,6 +84,10 @@ class CommonController extends BaseController
 
     public function getBasketItem(): object
     {
+
+        $requestBasket = new BasketRequest($this->request);
+
+        var_dump($requestBasket);
         $categoryId = $this->request->getQuery('category_id', 'int', 0);
         $currentPage = $this->request->getQuery('page', 'int', 1);
         $limitPerPage = $this->request->getQuery('limit', 'int', 24);

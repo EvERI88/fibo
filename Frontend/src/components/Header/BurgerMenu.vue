@@ -16,6 +16,7 @@
           <div class="modal__row-input">
             Номер телефона
             <input
+              @keyup.enter="auth"
               @input="checkNumberAuth"
               v-model="userAuthData.telephone"
               class="modal__row-input-border"
@@ -35,6 +36,7 @@
           <div class="modal__row-input">
             Пароль
             <input
+              @keyup.enter="auth"
               v-model="userAuthData.password"
               class="modal__row-input-border"
               :class="{
@@ -90,6 +92,7 @@
           <div class="modal__row-input">
             Номер телефона
             <input
+              @keyup.enter="register"
               @input="checkNumberRegister"
               v-model="userRegisterData.telephone"
               class="modal__row-input-border"
@@ -110,6 +113,7 @@
           <div class="modal__row-input">
             Имя пользователя
             <input
+              @keyup.enter="register"
               v-model="userRegisterData.name"
               class="modal__row-input-border"
               :class="{
@@ -128,6 +132,7 @@
           <div class="modal__row-input">
             Пароль
             <input
+              @keyup.enter="register"
               v-model="userRegisterData.password"
               class="modal__row-input-border"
               :class="{
@@ -147,6 +152,7 @@
           <div class="modal__row-input">
             Подтверждение пароля
             <input
+              @keyup.enter="register"
               v-model="userRegisterData.confirmPassword"
               class="modal__row-input-border"
               :class="{
