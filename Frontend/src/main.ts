@@ -9,6 +9,7 @@ const pinia = createPinia();
 const routes = [
   { path: "/", component: MainPage },
   { path: "/contacts", component: () => import("./components/Contacts.vue") },
+  { path: "/basket", component: () => import("./components/Basket/Basket.vue") },
 ];
 
 const router = createRouter({

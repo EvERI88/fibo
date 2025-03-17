@@ -43,9 +43,16 @@
       </div>
     </div>
   </div>
+  <RouterLink
+    to="/basket"
+    class="burger-menu__list-item"
+    @click="basketStore.basket.isVisible = false"
+  >
+    Перейти в корзину
+  </RouterLink>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted } from "vue";
 import emblaCarouselVue from "embla-carousel-vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
@@ -133,9 +140,6 @@ const addToBasket = <T extends number>(id: T) => {
   };
   basketStore.basket.isVisible = false;
   basketStore.addToBasket(item);
-  nextTick(() => {
-    basketStore.basket.isVisible = true;
-  });
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
 };
 onMounted(() => {

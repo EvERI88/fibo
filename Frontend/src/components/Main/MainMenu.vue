@@ -77,9 +77,6 @@ const inBasket = (id: number) => {
     quantity: 1,
   };
   basketStore.addToBasket(item);
-  nextTick(() => {
-    basketStore.basket.isVisible = true;
-  });
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
 };
 </script>

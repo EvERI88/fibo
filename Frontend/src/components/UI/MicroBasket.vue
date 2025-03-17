@@ -114,14 +114,12 @@ const removeItem = <T extends number | string>(id: T): void => {
   const deletedItem = basketStore.basket?.items.findIndex((x) => x.id == id);
   basketStore.removeToBasket(deletedItem);
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
-  if (itemsInBasket.value) {
-    itemsInBasket.value.splice(
-      itemsInBasket.value.findIndex((x: any) => x.id === id),
-      1
-    );
-    if (itemsInBasket.value.length < 1) {
-      emptyBasket.value = true;
-    }
+  itemsInBasket.value.splice(
+    itemsInBasket.value.findIndex((x: any) => x.id === id),
+    1
+  );
+  if (itemsInBasket.value.length < 1) {
+    emptyBasket.value = true;
   }
 };
 
@@ -169,7 +167,7 @@ onMounted(() => {
   allPrice();
 });
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .micro-basket {
   position: absolute;
   top: 100%;
@@ -182,6 +180,8 @@ onMounted(() => {
   background: rgba(255, 255, 255, 1);
   border-radius: 10px;
   padding: 24px;
+  max-height: 463px;
+  overflow: auto;
   &__line {
     box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.06);
     height: 1px;
