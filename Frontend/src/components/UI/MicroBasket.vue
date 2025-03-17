@@ -115,7 +115,7 @@ const removeItem = <T extends number | string>(id: T): void => {
   basketStore.removeToBasket(deletedItem);
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
   itemsInBasket.value.splice(
-    itemsInBasket.value.findIndex((x: any) => x.id === id),
+    itemsInBasket.value.findIndex((x: { id: number }) => x.id === id),
     1
   );
   if (itemsInBasket.value.length < 1) {
