@@ -462,9 +462,12 @@ onMounted(() => {
     font-size: 16px;
     line-height: 28px;
     color: hsla(345, 6%, 13%, 1);
-    padding: 7px 25px;
+    padding: 7px 0 7px 25px;
     cursor: pointer;
+    max-width: 170px;
+    width: 100%;
   }
+
   &__count-product-in-basket {
     padding-left: 25px;
     position: relative;

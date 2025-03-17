@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick } from "vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
 const basketStore = useBasketStore();
@@ -70,11 +71,15 @@ defineProps<{
 }>();
 
 const inBasket = (id: number) => {
+  basketStore.basket.isVisible = false;
   const item = {
     id: id,
     quantity: 1,
   };
   basketStore.addToBasket(item);
+  nextTick(() => {
+    basketStore.basket.isVisible = true;
+  });
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
 };
 </script>

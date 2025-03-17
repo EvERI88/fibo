@@ -1,6 +1,8 @@
 <template>
   <div class="micro-basket">
+    <div class="micro-basket__empty" v-if="emptyBasket">Корзина пуста</div>
     <div
+      v-else
       v-for="item in itemsInBasket"
       class="micro-basket__wrapper"
       :key="item.id"
@@ -18,15 +20,24 @@
         </div>
         <div class="micro-basket__top-info">
           <p>{{ item.name }}</p>
-          <div class="micro-basket__top-info-quantity">
-            <i class="fa-solid fa-minus"></i>
-            <template v-for="basketQuantity in basketStore.basket?.items">
-              <p v-if="basketQuantity.id === item.id">
+          <template v-for="basketQuantity in basketStore.basket?.items">
+            <div
+              v-if="basketQuantity.id === item.id"
+              class="micro-basket__top-info-quantity"
+            >
+              <i
+                class="fa-solid fa-minus micro-basket__top-info-quantity-minus"
+                @click="minusQuantity(basketQuantity)"
+              ></i>
+              <p>
                 {{ basketQuantity.quantity }}
               </p>
-            </template>
-            <i class="fa-solid fa-plus"></i>
-          </div>
+              <i
+                @click="plusQuantity(basketQuantity)"
+                class="fa-solid fa-plus micro-basket__top-info-quantity-plus"
+              ></i>
+            </div>
+          </template>
         </div>
         <div class="micro-basket__top-func">
           <button
@@ -39,21 +50,37 @@
       </div>
       <div class="micro-basket__line"></div>
     </div>
-    <div class="micro-basket__bottom">
-      Сумма заказа <span class="micro-basket__bottom-price">{{ 0 }}</span>
-      <p class="micro-basket__bottom-question">Добавить к заказу?</p>
-      {{ "slider" }}
-    </div>
+    <AddToBasket
+      :finalPrice="basketStore.basket.allPrice"
+      :sliderImg="sliderImg"
+    />
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
+import AddToBasket from "../UI/AddToBasket.vue";
+
+interface BasketQuantity {
+  id: number;
+  quantity: number;
+}
+interface SliderImg {
+  img: string;
+}
+const sliderImg: SliderImg[] = [
+  { img: "1" },
+  { img: "1" },
+  { img: "2" },
+  { img: "1" },
+  { img: "2" },
+  { img: "2" },
+];
 
 const basketStore = useBasketStore();
 const baseUrl: string = "http://api.fibo.local/";
 const itemsInBasket = ref();
-
+const emptyBasket = ref(false);
 const getProduct = async () => {
   const idProducts: number[] = basketStore.basket.items.reduce<number[]>(
     (array, item) => {
@@ -71,8 +98,9 @@ const getProduct = async () => {
         return response.json();
       })
       .then((data) => {
-        console.log(basketStore.getTotalItems);
-
+        if (data.status === "error") {
+          emptyBasket.value = true;
+        }
         data.products
           ? (itemsInBasket.value = data.products)
           : (data.products = []);
@@ -84,19 +112,61 @@ const getProduct = async () => {
 
 const removeItem = <T extends number | string>(id: T): void => {
   const deletedItem = basketStore.basket?.items.findIndex((x) => x.id == id);
-
   basketStore.removeToBasket(deletedItem);
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
-  console.log(itemsInBasket.value);
-
-  itemsInBasket.value.splice(
-    itemsInBasket.value.findIndex((x: any) => x.id === id),
-    1
-  );
+  if (itemsInBasket.value) {
+    itemsInBasket.value.splice(
+      itemsInBasket.value.findIndex((x: any) => x.id === id),
+      1
+    );
+    if (itemsInBasket.value.length < 1) {
+      emptyBasket.value = true;
+    }
+  }
 };
+
+const minusQuantity = <T extends BasketQuantity>(basketQuantity: T) => {
+  if (basketQuantity.quantity > 1) {
+    basketQuantity.quantity = --basketQuantity.quantity;
+    basketStore.basket.items.map((x) =>
+      x.id === basketQuantity.id ? (x = basketQuantity) : ""
+    );
+    localStorage.setItem("basket", JSON.stringify(basketStore.basket));
+  }
+};
+const plusQuantity = <T extends BasketQuantity>(basketQuantity: T) => {
+  basketQuantity.quantity = ++basketQuantity.quantity;
+  basketStore.basket.items.map((x) =>
+    x.id === basketQuantity.id ? (x = basketQuantity) : ""
+  );
+  localStorage.setItem("basket", JSON.stringify(basketStore.basket));
+};
+
+const allPrice = () => {
+  if (!itemsInBasket.value) {
+    console.error("itemsInBasket.value не определено");
+    return 0;
+  }
+
+  const totalPrice = basketStore.basket.items.reduce((total, item) => {
+    const foundItem = itemsInBasket.value.find(
+      (x: { id: number }) => x.id === item.id
+    );
+
+    if (foundItem) {
+      return total + (foundItem.price || 0) * (item.quantity || 0);
+    }
+
+    return total;
+  }, 0);
+  basketStore.basket.allPrice = totalPrice;
+};
+watchEffect(getProduct);
+watchEffect(allPrice);
 
 onMounted(() => {
   getProduct();
+  allPrice();
 });
 </script>
 <style lang="scss">
@@ -128,6 +198,9 @@ onMounted(() => {
   }
   &__top-info {
     padding-left: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   &__top-info-quantity {
     display: flex;
@@ -144,6 +217,12 @@ onMounted(() => {
     border-radius: 8px;
     justify-content: center;
     margin-top: 12px;
+  }
+  &__top-info-quantity-plus {
+    cursor: pointer;
+  }
+  &__top-info-quantity-minus {
+    cursor: pointer;
   }
   .fa-solid {
     font-weight: 800;

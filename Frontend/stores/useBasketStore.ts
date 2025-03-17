@@ -8,12 +8,12 @@ export const useBasketStore = defineStore("basket", () => {
   }
 
   interface Basket {
-    isVisible: boolean
+    allPrice: number;
+    isVisible: boolean;
     items: CartItem[];
   }
-  const visibleBasket = ref<Basket['isVisible']>(false);
 
-  const basket = ref<Basket>({ items: [], isVisible: false });
+  const basket = ref<Basket>({ items: [], isVisible: false, allPrice: 0 });
 
   const addToBasket = (newItem: CartItem) => {
     const existingItem = basket.value.items.find(
