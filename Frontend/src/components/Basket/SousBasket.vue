@@ -19,6 +19,9 @@
   display: flex;
   flex-direction: row;
   gap: 21px;
+  margin: 0 auto;
+  max-width: 800px;
+
   &__wrapper {
     border: 1.5px solid rgba(226, 226, 233, 1);
     border-radius: 12px;

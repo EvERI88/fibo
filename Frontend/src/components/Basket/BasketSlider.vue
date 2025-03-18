@@ -1,36 +1,38 @@
 <template>
-  <div class="embla" ref="emblaRef">
-    <div class="embla__viewport">
-      <div class="embla__container">
-        <div
-          class="embla__slide"
-          v-for="(slider, index) in itemsInBasket"
-          :key="index"
-          :class="{ embla__selected: isSlideSelected(index) }"
-        >
-          <img
-            class="embla__slide-img"
-            :src="
-              slider.image === 'none'
-                ? `http://api.fibo.local/images/products/none.jpg`
-                : `http://api.fibo.local/${slider.image}`
-            "
-            :alt="`http://api.fibo.local/images/products/none.jpg`"
-          />
-          <div class="embla__slide-info">
-            <p>{{ slider.name }}</p>
-            <p class="embla__slide-info-price">{{ slider.price }} ₽</p>
+  <div class="wrapper-ebmla">
+    <div class="embla" ref="emblaRef">
+      <div class="embla__viewport">
+        <div class="embla__container">
+          <div
+            class="embla__slide"
+            v-for="(slider, index) in itemsInBasket"
+            :key="index"
+            :class="{ embla__selected: isSlideSelected(index) }"
+          >
+            <img
+              class="embla__slide-img"
+              :src="
+                slider.image === 'none'
+                  ? `http://api.fibo.local/images/products/none.jpg`
+                  : `http://api.fibo.local/${slider.image}`
+              "
+              :alt="`http://api.fibo.local/images/products/none.jpg`"
+            />
+            <div class="embla__slide-info">
+              <p>{{ slider.name }}</p>
+              <p class="embla__slide-info-price">{{ slider.price }} ₽</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="embla__btn">
-        <button class="embla__prev" @click="scrollToPrev">
-          <img src="/img/prev/left.png" alt="" />
-        </button>
-        <button class="embla__next" @click="scrollToNext">
-          <img src="/img/prev/right.png" alt="" />
-        </button>
-      </div>
+    </div>
+    <div class="embla__btn">
+      <button class="embla__prev" @click="scrollToPrev">
+        <img src="/img/prev/left.png" alt="" />
+      </button>
+      <button class="embla__next" @click="scrollToNext">
+        <img src="/img/prev/right.png" alt="" />
+      </button>
     </div>
   </div>
 </template>
@@ -92,7 +94,6 @@ const getProduct = async () => {
         if (data.status === "error") {
           //   emptyBasket.value = true;
         }
-        console.log(data);
         data.products
           ? (itemsInBasket.value = data.products)
           : (data.products = []);
@@ -107,9 +108,15 @@ onMounted(() => {
 });
 </script>
 <style lang="scss" scoped>
+.wrapper-ebmla {
+  position: relative;
+  display: flex;
+}
 .embla {
   overflow: hidden;
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
   &__container {
     display: flex;
     gap: 30px;
@@ -138,14 +145,12 @@ onMounted(() => {
   }
   &__btn {
     position: absolute;
-    transform: translate(13px, -50%);
-    top: 462px;
-    justify-content: space-between;
+    transform: translate(0, -50%);
+    top: 50%;
     display: flex;
-    max-width: 1100px;
-    left: 100px;
-    right: 100px;
-    margin: 0 auto;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 450px;
   }
   &__selected {
     border: 2.5px solid rgba(247, 210, 45, 0.4);

@@ -111,6 +111,7 @@ class CommonController extends BaseController
                 'p.id',
                 'p.name',
                 'p.price',
+                'p.description',
                 'p.image'
             ])
             ->from(['p' => Products::class])
