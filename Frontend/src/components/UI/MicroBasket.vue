@@ -181,6 +181,7 @@ onMounted(() => {
   padding: 24px;
   max-height: 463px;
   overflow: auto;
+  overscroll-behavior: none;
   &__line {
     box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.06);
     height: 1px;
