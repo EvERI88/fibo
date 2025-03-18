@@ -31,7 +31,6 @@ const getToken = async () => {
   const token = getCookie() ?? "";
 
   const tokenParts = token.split(".");
-  // const decodedHeader = JSON.parse(atob(tokenParts[0]));
   const decodedPayload = JSON.parse(atob(tokenParts[1]));
   const decodeSub: string = decodedPayload["sub"];
   try {

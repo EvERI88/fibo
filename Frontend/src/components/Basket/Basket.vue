@@ -52,7 +52,7 @@
       </div>
       <p class="basket__title">Добавить в корзину</p>
     </div>
-    <BasketSlider />
+    <BasketSlider @updateList="updateList" />
     <p class="basket__title basket__title-sous">
       Соусы к бортикам или закускам
     </p>
@@ -73,8 +73,8 @@ interface BasketQuantity {
 }
 
 const basketStore = useBasketStore();
-const emptyBasket = ref(false);
 const baseUrl: string = "http://api.fibo.local/";
+const emptyBasket = ref(false);
 const itemsInBasket = ref();
 
 const getProduct = async () => {
@@ -155,6 +155,10 @@ const allPrice = () => {
     return total;
   }, 0);
   basketStore.basket.allPrice = totalPrice;
+};
+
+const updateList = () => {
+  getProduct();
 };
 
 watchEffect(allPrice);

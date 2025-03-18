@@ -5,9 +5,10 @@
         <div class="embla__container">
           <div
             class="embla__slide"
-            v-for="(slider, index) in itemsInBasket"
+            v-for="(slider, index) in newProducts"
             :key="index"
             :class="{ embla__selected: isSlideSelected(index) }"
+            @click="addToBasket(slider.id)"
           >
             <img
               class="embla__slide-img"
@@ -37,11 +38,27 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import emblaCarouselVue from "embla-carousel-vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
+interface blocks {
+  new: {
+    id: number;
+    name: string;
+    image: string;
+    price: number;
+  }[];
+}
+
+const emit = defineEmits<{
+  updateList: [isUpdate: boolean];
+}>();
+
 const basketStore = useBasketStore();
+
+const newProducts = ref<blocks["new"]>([]);
+
 const [emblaRef, emblaApi] = emblaCarouselVue({
   container: ".embla__container",
   loop: true,
@@ -50,8 +67,6 @@ const [emblaRef, emblaApi] = emblaCarouselVue({
 });
 const baseUrl: string = "http://api.fibo.local/";
 const selectedIndex = ref<number>(0);
-
-const itemsInBasket = ref();
 
 const isSlideSelected = (index: number): boolean => {
   const start = selectedIndex.value;
@@ -74,37 +89,39 @@ const scrollToNext = (): void => {
   }
 };
 
-const getProduct = async () => {
-  const idProducts: number[] = basketStore.basket.items.reduce<number[]>(
-    (array, item) => {
-      array.push(item.id);
-      return array;
-    },
-    []
-  );
+const getNewProduct = async () => {
   try {
-    await fetch(`${baseUrl}common/basket`, {
-      method: "POST",
-      body: JSON.stringify({ products: idProducts }),
-    })
+    await fetch(`${baseUrl}common/new`)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        if (data.status === "error") {
-          //   emptyBasket.value = true;
+        const products = data.new.products;
+        for (let i = 0; i < products.length; i++) {
+          const el = products[i];
+          newProducts.value.push(el);
         }
-        data.products
-          ? (itemsInBasket.value = data.products)
-          : (data.products = []);
       });
   } catch (err) {
     console.log(err);
   }
 };
+const addToBasket = <T extends number>(id: T) => {
+  const item = {
+    id: id,
+    quantity: 1,
+  };
+  basketStore.basket.isVisible = false;
+  basketStore.addToBasket(item);
+  localStorage.setItem("basket", JSON.stringify(basketStore.basket));
+
+  emit('updateList', true);
+};
+
+
 
 onMounted(() => {
-  getProduct();
+  getNewProduct();
 });
 </script>
 <style lang="scss" scoped>
