@@ -55,6 +55,10 @@ interface SliderImage {
   img: string;
 }
 
+const emit = defineEmits<{
+  updateList: [isUpdate: boolean];
+}>();
+
 defineProps<{
   sliderImg: SliderImage[];
   finalPrice: number;
@@ -131,9 +135,10 @@ const addToBasket = <T extends number>(id: T) => {
     id: id,
     quantity: 1,
   };
-  basketStore.basket.isVisible = false;
   basketStore.addToBasket(item);
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
+
+  emit("updateList", true);
 };
 onMounted(() => {
   getNewProduct();

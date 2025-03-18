@@ -186,7 +186,7 @@
       </template>
     </RootModal>
     <div class="burger-menu__wrapper">
-      <MicroBasket v-if="basketStore.basket.isVisible" />
+      <MicroBasket v-if="!basketStore.basket.isVisible && userStore.user?.id" />
       <ul
         class="burger-menu__list"
         v-for="navigation in listNavigation"
@@ -222,16 +222,21 @@
           Выход
         </button>
       </div>
-      <RouterLink
-        to="/basket"
+
+      <div
+        @mouseenter="
+          basketStore.basket.isVisible = !basketStore.basket.isVisible
+        "
         class="burger-menu__function-basket"
-        @mouseenter="showMicroBasket"
+        v-if="userStore.user?.id"
       >
-        Корзина
-        <span class="burger-menu__count-product-in-basket">{{
-          lengthBasket
-        }}</span>
-      </RouterLink>
+        <RouterLink to="/basket" class="burger-menu__basket-link">
+          Корзина
+          <span class="burger-menu__count-product-in-basket">{{
+            lengthBasket
+          }}</span>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>
@@ -242,6 +247,7 @@ import BlockError from "../UI/BlockError.vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 import MicroBasket from "../UI/MicroBasket.vue";
+import { RouterLink } from "vue-router";
 
 interface Navigation {
   id: number;
@@ -413,16 +419,14 @@ const getLengthBasket = () => {
 };
 
 const showMicroBasket = () => {
-  basketStore.basket.isVisible = !basketStore.basket.isVisible;
-};
-const hiddenBasket = () => {
   basketStore.basket.isVisible = false;
 };
 
 watchEffect(getLengthBasket);
+
 onMounted(() => {
+  showMicroBasket();
   getLengthBasket();
-  hiddenBasket();
 });
 </script>
 <style scoped lang="scss">
@@ -488,6 +492,9 @@ onMounted(() => {
     left: 7px;
     top: 0;
   }
+  &__basket-link {
+    color: #000;
+  }
 }
 
 .modal {
@@ -520,6 +527,7 @@ onMounted(() => {
     letter-spacing: 0%;
     padding-bottom: 41px;
   }
+
   &__row-input {
     font-family: Montserrat;
     font-weight: 600;

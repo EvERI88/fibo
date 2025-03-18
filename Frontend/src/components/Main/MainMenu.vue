@@ -71,7 +71,6 @@ defineProps<{
 }>();
 
 const inBasket = (id: number) => {
-  basketStore.basket.isVisible = false;
   const item = {
     id: id,
     quantity: 1,

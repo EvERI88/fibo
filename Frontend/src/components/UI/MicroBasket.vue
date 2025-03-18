@@ -51,6 +51,7 @@
       <div class="micro-basket__line"></div>
     </div>
     <AddToBasket
+      @updateList="getProduct"
       :finalPrice="basketStore.basket.allPrice"
       :sliderImg="sliderImg"
     />
