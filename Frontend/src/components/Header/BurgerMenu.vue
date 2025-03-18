@@ -405,6 +405,7 @@ const logout = () => {
 };
 
 const getLengthBasket = () => {
+  basketStore.basket.isVisible = false;
   lengthBasket.value = basketStore.getTotalItems;
 };
 

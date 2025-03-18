@@ -1,5 +1,6 @@
 <template>
-  <Header />
+  <Header v-if="router.currentRoute.value.name !== 'basket'" />
+  <HeaderBasket v-else />
   <RouterView />
   <Footer />
 </template>
@@ -10,10 +11,12 @@ import Footer from "./components/Footer.vue";
 import { onMounted } from "vue";
 import { useUserStore } from "../stores/useUserStore.ts";
 import { useBasketStore } from "../stores/useBasketStore.ts";
+import { useRouter } from "vue-router";
+import HeaderBasket from "./components/HeaderBasket.vue";
 
 const userStore = useUserStore();
 const basketStore = useBasketStore();
-
+const router = useRouter();
 const baseUrl: string = "http://api.fibo.local/";
 
 const getCookie = (name = "token") => {

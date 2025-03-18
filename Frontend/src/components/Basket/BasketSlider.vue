@@ -38,7 +38,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref } from "vue";
 import emblaCarouselVue from "embla-carousel-vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
@@ -115,10 +115,8 @@ const addToBasket = <T extends number>(id: T) => {
   basketStore.addToBasket(item);
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
 
-  emit('updateList', true);
+  emit("updateList", true);
 };
-
-
 
 onMounted(() => {
   getNewProduct();
@@ -139,20 +137,21 @@ onMounted(() => {
     gap: 30px;
   }
   &__viewport {
-    width: 1100px;
+    width: 800px;
     margin: 0 auto;
   }
   &__slide-img {
     width: 71px;
   }
   &__slide {
-    flex: 0 0 calc(22%);
+    flex: 0 0 calc(32%);
     border: 2.5px solid rgba(247, 210, 45, 0.4);
     border-radius: 12px;
     display: flex;
     align-items: center;
     gap: 15px;
     padding: 14px 9px 14px 17px;
+    margin-right: -17px;
   }
   &_slide-img {
     height: 100%;

@@ -22,7 +22,10 @@
       </div>
     </div>
     <div class="basket-bottom__wrapper-send-button">
-      <RouterLink to="/" class="basket-bottom__wrapper-return-button"
+      <RouterLink
+        @click="reloadPage"
+        to="/"
+        class="basket-bottom__wrapper-return-button"
         ><i class="fa-solid fa-angle-left"></i> Вернуться назад</RouterLink
       >
       <button class="basket-bottom__wrapper-submit-order">
@@ -35,6 +38,10 @@
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
 const basketStore = useBasketStore();
+
+const reloadPage = () => {
+  window.location.reload();
+};
 </script>
 <style lang="scss" scoped>
 .basket-bottom {

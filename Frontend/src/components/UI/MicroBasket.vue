@@ -142,7 +142,6 @@ const plusQuantity = <T extends BasketQuantity>(basketQuantity: T) => {
 
 const allPrice = () => {
   if (!itemsInBasket.value) {
-    console.error("itemsInBasket.value не определено");
     return 0;
   }
 
