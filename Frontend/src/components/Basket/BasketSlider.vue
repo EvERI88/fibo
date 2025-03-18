@@ -167,6 +167,7 @@ onMounted(() => {
     justify-content: space-between;
     width: 100%;
     padding: 0 450px;
+    z-index: -1;
   }
   &__selected {
     border: 2.5px solid rgba(247, 210, 45, 0.4);

@@ -66,7 +66,6 @@ import BasketSlider from "./BasketSlider.vue";
 import SousBasket from "./SousBasket.vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 import { onMounted, ref, watchEffect } from "vue";
-import { useRouter } from "vue-router";
 
 interface BasketQuantity {
   id: number;
@@ -79,8 +78,6 @@ const emptyBasket = ref(false);
 const itemsInBasket = ref();
 
 const getProduct = async () => {
-  console.log(useRouter().currentRoute.value.name);
-
   const idProducts: number[] = basketStore.basket.items.reduce<number[]>(
     (array, item) => {
       array.push(item.id);

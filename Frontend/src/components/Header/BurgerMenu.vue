@@ -222,12 +222,16 @@
           Выход
         </button>
       </div>
-      <div class="burger-menu__function-basket" @click="showMicroBasket">
+      <RouterLink
+        to="/basket"
+        class="burger-menu__function-basket"
+        @mouseenter="showMicroBasket"
+      >
         Корзина
         <span class="burger-menu__count-product-in-basket">{{
           lengthBasket
         }}</span>
-      </div>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -405,18 +409,20 @@ const logout = () => {
 };
 
 const getLengthBasket = () => {
-  basketStore.basket.isVisible = false;
   lengthBasket.value = basketStore.getTotalItems;
 };
 
 const showMicroBasket = () => {
   basketStore.basket.isVisible = !basketStore.basket.isVisible;
 };
+const hiddenBasket = () => {
+  basketStore.basket.isVisible = false;
+};
 
 watchEffect(getLengthBasket);
-
 onMounted(() => {
   getLengthBasket();
+  hiddenBasket();
 });
 </script>
 <style scoped lang="scss">

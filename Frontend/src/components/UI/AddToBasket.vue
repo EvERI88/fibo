@@ -43,13 +43,6 @@
       </div>
     </div>
   </div>
-  <RouterLink
-    to="/basket"
-    class="burger-menu__list-item"
-    @click="basketStore.basket.isVisible = false"
-  >
-    Перейти в корзину
-  </RouterLink>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
