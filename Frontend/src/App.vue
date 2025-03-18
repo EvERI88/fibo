@@ -1,5 +1,10 @@
 <template>
-  <Header v-if="router.currentRoute.value.name !== 'basket'" />
+  <Header
+    v-if="
+      router.currentRoute.value.name !== 'basket' &&
+      router.currentRoute.value.name !== 'order'
+    "
+  />
   <HeaderBasket v-else />
   <RouterView />
   <Footer />
@@ -58,7 +63,24 @@ const getToken = async () => {
   }
 };
 
+const setPathRoute = () => {
+  router.afterEach((to) => {
+    localStorage.setItem("currentRoute", to.fullPath);
+  });
+};
+
+const savePathRoute = () => {
+  const savedRoute = localStorage.getItem("currentRoute");
+
+  if (savedRoute) {
+    router.push(savedRoute);
+  }
+};
+router.afterEach((to) => {
+  localStorage.setItem("currentRoute", to.fullPath);
+});
 onMounted(() => {
   getToken();
+  savePathRoute();
 });
 </script>

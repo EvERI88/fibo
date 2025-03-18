@@ -186,7 +186,7 @@
       </template>
     </RootModal>
     <div class="burger-menu__wrapper">
-      <MicroBasket v-if="!basketStore.basket.isVisible && userStore.user?.id" />
+      <MicroBasket v-if="basketStore.basket.isVisible && userStore.user?.id" />
       <ul
         class="burger-menu__list"
         v-for="navigation in listNavigation"

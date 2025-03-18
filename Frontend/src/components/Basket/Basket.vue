@@ -57,7 +57,8 @@
       Соусы к бортикам или закускам
     </p>
     <SousBasket />
-    <BasketBottom />
+    <BasketBottom @createDeliveryEmit="toggleModalDelivery" />
+    <OrderDelivery v-if="isModalDelivery" @close="toggleModalDelivery" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -66,7 +67,8 @@ import BasketSlider from "./BasketSlider.vue";
 import SousBasket from "./SousBasket.vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 import { onMounted, ref, watchEffect } from "vue";
-
+import OrderDelivery from "../Order/OrderDelivery.vue";
+stringify
 interface BasketQuantity {
   id: number;
   quantity: number;
@@ -76,6 +78,7 @@ const basketStore = useBasketStore();
 const baseUrl: string = "http://api.fibo.local/";
 const emptyBasket = ref(false);
 const itemsInBasket = ref();
+const isModalDelivery = ref(false);
 
 const getProduct = async () => {
   const idProducts: number[] = basketStore.basket.items.reduce<number[]>(
@@ -153,6 +156,16 @@ const allPrice = () => {
     return total;
   }, 0);
   basketStore.basket.allPrice = totalPrice;
+};
+
+const toggleModalDelivery = () => {
+  isModalDelivery.value = !isModalDelivery.value;
+  if (isModalDelivery.value) {
+    document.body.classList.add("scroll-hidden");
+    window.scrollTo(0, 0);
+  } else {
+    document.body.classList.remove("scroll-hidden");
+  }
 };
 
 const updateList = () => {

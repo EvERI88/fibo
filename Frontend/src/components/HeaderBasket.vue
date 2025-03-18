@@ -24,12 +24,13 @@
 <script setup lang="ts">
 import Logo from "./UI/Logo.vue";
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   display: flex;
   justify-content: center;
   padding-top: 1rem;
-
+  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.06);
+  padding-bottom: 14px;
   &__wrapper {
     max-width: 1110px;
     width: 100%;

@@ -28,7 +28,10 @@
         class="basket-bottom__wrapper-return-button"
         ><i class="fa-solid fa-angle-left"></i> Вернуться назад</RouterLink
       >
-      <button class="basket-bottom__wrapper-submit-order">
+      <button
+        class="basket-bottom__wrapper-submit-order"
+        @click="createDelivery"
+      >
         Оформить заказ <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
@@ -37,7 +40,16 @@
 <script setup lang="ts">
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
+const emit = defineEmits<{
+  createDeliveryEmit: [createDelivery: boolean];
+}>();
+
 const basketStore = useBasketStore();
+
+const createDelivery = () => {
+  emit("createDeliveryEmit", true);
+  
+};
 
 const reloadPage = () => {
   window.location.reload();
