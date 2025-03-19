@@ -52,7 +52,7 @@
           <input
             class="modal__row-input-border"
             type="text"
-            placeholder="Последний"
+            placeholder="Подъезд"
             v-model="infoAddress.numberPod"
           />
           <input

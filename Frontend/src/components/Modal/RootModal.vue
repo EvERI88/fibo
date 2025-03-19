@@ -47,8 +47,6 @@ const closeModal = () => {
   right: 0;
   bottom: 0;
   z-index: 10;
-  transform: translateX(-100%);
-  transition: transform 0.5s ease-in-out;
   background: linear-gradient(
       0deg,
       rgba(33, 49, 52, 0.2),

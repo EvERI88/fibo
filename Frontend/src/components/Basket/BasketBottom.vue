@@ -48,7 +48,6 @@ const basketStore = useBasketStore();
 
 const createDelivery = () => {
   emit("createDeliveryEmit", true);
-  
 };
 
 const reloadPage = () => {

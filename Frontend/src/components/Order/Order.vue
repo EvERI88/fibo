@@ -8,18 +8,30 @@
           <input
             type="text"
             class="order__info-user-input order__info-user-name"
+            v-model="order.user.name"
           />
         </div>
         <div class="order__info-user-inputs">
           <p class="order__info-user-text">Номер телефона</p>
-          <input type="text" class="order__info-user-input" />
+          <input
+            type="text"
+            class="order__info-user-input"
+            v-model="order.user.telephone"
+            disabled
+          />
           <button class="order__info-user-change">Изменить</button>
         </div>
         <div class="order__info-user-inputs">
           <p class="order__info-user-text">Адрес доставки</p>
-          <textarea type="text" class="order__info-user-textarea" />
+          <textarea
+            type="text"
+            class="order__info-user-textarea"
+            v-model="areaInfo"
+            disabled
+          />
           <button
             class="order__info-user-change-address order__info-user-change"
+            @click="returnBackPage()"
           >
             Изменить
           </button>
@@ -29,8 +41,15 @@
         </div>
         <div class="order__info-user-inputs">
           <p class="order__info-user-text">Время доставки</p>
-          <input type="text" class="order__info-user-input" />
-          <button class="order__info-user-change">Изменить</button>
+          <input
+            type="text"
+            class="order__info-user-input"
+            v-model="order.delivery.time"
+            disabled
+          />
+          <button class="order__info-user-change" @click="toggleModalTime">
+            Изменить
+          </button>
         </div>
         <p class="order__info-title-promo">Промокод</p>
         <div class="order__info-promo">
@@ -116,7 +135,7 @@
             корзину</RouterLink
           >
           <div>
-            <button class="order__info-function-right">
+            <button class="order__info-function-right" @click="submitOrder">
               Оформить заказ на {{ basketStore.basket.allPrice }} ₽
             </button>
           </div>
@@ -139,10 +158,6 @@
                   >
                 </div>
               </template>
-              <div
-                class="basketStore"
-                v-for="basket in basketStore.basket"
-              ></div>
             </div>
             <div class="order__info-product-description">
               {{ order.description }}
@@ -158,14 +173,21 @@
         <div class="order__info-product-delivery">Бесплатная доставка</div>
       </div>
     </div>
+    <OrderSelectedTime
+      v-if="modalChangeTime"
+      @close="toggleModalTime"
+      @emitChangeTime="selectedTime"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 import { useUserStore } from "../../../stores/useUserStore.ts";
+import OrderSelectedTime from "./OrderSelectedTime.vue";
 
+const router = useRouter();
 interface OrderDetail {
   user: {
     id: number;
@@ -177,12 +199,12 @@ interface OrderDetail {
     home: number;
     number: number;
     numberPod: number;
-    numberKV: number;
     intercom: string;
     floor: number;
     methodPay: string;
     name: string;
     comment: string;
+    time: string;
   };
   products: {
     product: {
@@ -203,7 +225,6 @@ interface DeliveryInfo {
   home: number;
   number: number;
   numberPod: number;
-  numberKV: number;
   intercom: string;
   floor: number;
   methodPay: string;
@@ -211,6 +232,7 @@ interface DeliveryInfo {
   comment: string;
 }
 
+const modalChangeTime = ref(false);
 const withoutChange = ref(false);
 const selectBonus = ref(false);
 const methodPayMent = ref("cash");
@@ -223,7 +245,7 @@ const deliveryInfo = ref<DeliveryInfo>();
 const order = ref<OrderDetail>({
   user: {
     id: 0,
-    name: "",
+    name: user.value.name,
     telephone: "",
   },
   delivery: {
@@ -231,19 +253,31 @@ const order = ref<OrderDetail>({
     home: 0,
     number: 0,
     numberPod: 0,
-    numberKV: 0,
     intercom: "",
     floor: 0,
     methodPay: "",
     name: "",
     comment: "",
+    time: "",
   },
   products: [],
 });
+
+const areaInfo = ref("");
 const emptyBasket = ref(false);
 const itemsInBasket = ref<ItemsInBasket>({
   products: [],
 });
+
+const toggleModalTime = () => {
+  modalChangeTime.value = !modalChangeTime.value;
+  if (modalChangeTime.value) {
+    document.body.classList.add("scroll-hidden");
+    window.scrollTo(0, 0);
+  } else {
+    document.body.classList.remove("scroll-hidden");
+  }
+};
 
 const getUserInfo = () => {
   if (userStore.user) {
@@ -265,12 +299,12 @@ const getDeliveryInfo = () => {
       home: deliveryInfo.value.home,
       number: deliveryInfo.value.number,
       numberPod: deliveryInfo.value.numberPod,
-      numberKV: deliveryInfo.value.numberKV,
       intercom: deliveryInfo.value.intercom,
       floor: deliveryInfo.value.floor,
       methodPay: deliveryInfo.value.methodPay,
       name: deliveryInfo.value.name,
       comment: deliveryInfo.value.comment,
+      time: "Как можно скорее",
     };
   }
 };
@@ -316,12 +350,46 @@ const getProducts = async () => {
   }
 };
 
+const submitOrder = async () => {
+  await fetch(`${baseUrl}orders/create`, {
+    method: "POST",
+    body: JSON.stringify(order.value),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    });
+};
+
+const getTextInTextArea = () => {
+  const test = Object.values(order.value.delivery);
+  //   areaInfo.value = test.join("\n");
+  console.log(test);
+
+  areaInfo.value = `Адрес - ${test[0]}
+Дом - ${test[1]}
+Номер квартиры - ${test[2]}
+Подъезд - ${test[3]}
+Наличие домофона - ${test[4]}
+Комментарий - ${test[8]}
+  `;
+};
+
+const selectedTime = (time: string) => {
+  order.value.delivery.time = time;
+  toggleModalTime();
+};
+const returnBackPage = () => {
+  router.push({ name: "basket" });
+};
 onMounted(() => {
   deliveryInfo.value = JSON.parse(localStorage.getItem("order") ?? "");
   getProducts();
   getUserInfo();
   getDeliveryInfo();
-  console.log(order.value);
+  getTextInTextArea();
 });
 </script>
 <style lang="scss">
@@ -329,6 +397,14 @@ onMounted(() => {
   padding-top: 32px;
   display: flex;
   justify-content: center;
+  &__info-user-textarea {
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 28px;
+    padding: 10px 0 10px 19px;
+    border-radius: 7px;
+  }
   &__button-price-product {
     width: 100%;
     text-align: end;
@@ -441,9 +517,6 @@ onMounted(() => {
     font-size: 13px;
     line-height: 28px;
     color: rgba(35, 31, 32, 1);
-  }
-
-  &__info-method-pay {
   }
 
   &__info-method-pay-title {
