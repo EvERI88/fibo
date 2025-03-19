@@ -5,7 +5,8 @@
       router.currentRoute.value.name !== 'order'
     "
   />
-  <HeaderBasket v-else />
+  <HeaderBasket v-if="router.currentRoute.value.name === 'basket'" />
+  <HeaderOrder v-if="router.currentRoute.value.name === 'order'" />
   <RouterView />
   <Footer />
 </template>
@@ -18,6 +19,7 @@ import { useUserStore } from "../stores/useUserStore.ts";
 import { useBasketStore } from "../stores/useBasketStore.ts";
 import { useRouter } from "vue-router";
 import HeaderBasket from "./components/HeaderBasket.vue";
+import HeaderOrder from "./components/HeaderOrder.vue";
 
 const userStore = useUserStore();
 const basketStore = useBasketStore();

@@ -161,13 +161,16 @@ onMounted(() => {
   }
   &__btn {
     position: absolute;
-    transform: translate(0, -50%);
+    transform: translate(-50%, -50%);
     top: 50%;
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    padding: 0 450px;
-    z-index: -1;
+    width: 90%;
+    z-index: 1;
+    margin: 0 auto;
+    display: flex;
+    left: 50%;
+    width: 1100px;
   }
   &__selected {
     border: 2.5px solid rgba(247, 210, 45, 0.4);
