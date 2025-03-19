@@ -125,11 +125,28 @@
       <div class="order__info-products">
         <p class="order__info-products-title">Состав заказа</p>
         <div class="order__info-products-list">
-          <div class="order__info-product">
+          <div class="order__info-product" v-for="item in order.products">
             <div class="order__info-product-title">
-              Пицца <span class="order__info-product-price">100P</span>
+              {{ item.name }}
+              <template v-for="basketQuantity in basketStore.basket?.items">
+                <div
+                  v-if="basketQuantity.id === item.id"
+                  class="order__button-price-product"
+                >
+                  <span class="order__info-product-price"
+                    >{{ item.price }} * {{ basketQuantity.quantity }} =
+                    {{ item.price * basketQuantity.quantity }}₽</span
+                  >
+                </div>
+              </template>
+              <div
+                class="basketStore"
+                v-for="basket in basketStore.basket"
+              ></div>
             </div>
-            <div class="order__info-product-description">Средняя</div>
+            <div class="order__info-product-description">
+              {{ order.description }}
+            </div>
           </div>
         </div>
         <div class="order__info-product-total-price">
@@ -163,7 +180,7 @@ interface OrderDetail {
     numberKV: number;
     intercom: string;
     floor: number;
-    method: boolean;
+    methodPay: string;
     name: string;
     comment: string;
   };
@@ -173,19 +190,25 @@ interface OrderDetail {
       name: string;
       description: string;
       price: number;
-    };
+    }[];
   }[];
 }
 
 interface ItemsInBasket {
-  products: {
-    product: {
-      id: number;
-      name: string;
-      description: string;
-      price: number;
-    };
-  }[];
+  products: [];
+}
+
+interface DeliveryInfo {
+  address: string;
+  home: number;
+  number: number;
+  numberPod: number;
+  numberKV: number;
+  intercom: string;
+  floor: number;
+  methodPay: string;
+  name: string;
+  comment: string;
 }
 
 const withoutChange = ref(false);
@@ -195,17 +218,39 @@ const baseUrl: string = "http://api.fibo.local/";
 
 const basketStore = useBasketStore();
 const userStore = useUserStore();
-const deliveryInfo = ref({});
-const order = <OrderDetail>{};
+const user = ref<OrderDetail["user"]>(userStore.user);
+const deliveryInfo = ref<DeliveryInfo>();
+const order = ref<OrderDetail>({
+  user: {
+    id: 0,
+    name: "",
+    telephone: "",
+  },
+  delivery: {
+    address: "",
+    home: 0,
+    number: 0,
+    numberPod: 0,
+    numberKV: 0,
+    intercom: "",
+    floor: 0,
+    methodPay: "",
+    name: "",
+    comment: "",
+  },
+  products: [],
+});
 const emptyBasket = ref(false);
-const itemsInBasket = ref<ItemsInBasket>();
+const itemsInBasket = ref<ItemsInBasket>({
+  products: [],
+});
 
 const getUserInfo = () => {
   if (userStore.user) {
-    order.user = {
-      id: userStore.user.id,
-      name: userStore.user.name,
-      telephone: userStore.user.telephone,
+    order.value.user = {
+      id: user.value.id,
+      name: user.value.name,
+      telephone: user.value.telephone,
     };
   } else {
     console.error("error user data");
@@ -215,7 +260,7 @@ const getUserInfo = () => {
 
 const getDeliveryInfo = () => {
   if (deliveryInfo.value) {
-    order.delivery = {
+    order.value.delivery = {
       address: deliveryInfo.value.address,
       home: deliveryInfo.value.home,
       number: deliveryInfo.value.number,
@@ -223,7 +268,7 @@ const getDeliveryInfo = () => {
       numberKV: deliveryInfo.value.numberKV,
       intercom: deliveryInfo.value.intercom,
       floor: deliveryInfo.value.floor,
-      method: deliveryInfo.value.method,
+      methodPay: deliveryInfo.value.methodPay,
       name: deliveryInfo.value.name,
       comment: deliveryInfo.value.comment,
     };
@@ -250,27 +295,33 @@ const getProducts = async () => {
         if (data.status === "error") {
           emptyBasket.value = true;
         }
-        data.products
-          ? (itemsInBasket.value! = data.products)
-          : (data.products = []);
         if (data.products) {
+          itemsInBasket.value.products = data.products;
+
+          for (let i = 0; i < data.products.length; i++) {
+            const element = data.products[i];
+            order.value.products.push({
+              id: element.id,
+              name: element.name,
+              description: element.description,
+              price: element.price,
+            });
+          }
+        } else {
+          itemsInBasket.value.products = [];
         }
       });
   } catch (err) {
     console.log(err);
   }
-  itemsInBasket.value!.products.forEach((element: any) => {
-    order.products.push(element);
-  });
 };
 
-const getProductsInfo = () => {};
 onMounted(() => {
   deliveryInfo.value = JSON.parse(localStorage.getItem("order") ?? "");
+  getProducts();
   getUserInfo();
   getDeliveryInfo();
-  getProducts();
-  console.log(order);
+  console.log(order.value);
 });
 </script>
 <style lang="scss">
@@ -278,7 +329,10 @@ onMounted(() => {
   padding-top: 32px;
   display: flex;
   justify-content: center;
-
+  &__button-price-product {
+    width: 100%;
+    text-align: end;
+  }
   &__wrapper {
     display: grid;
     grid-template-columns: 730px 337px;
