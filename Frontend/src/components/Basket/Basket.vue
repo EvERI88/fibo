@@ -66,9 +66,8 @@ import BasketBottom from "./BasketBottom.vue";
 import BasketSlider from "./BasketSlider.vue";
 import SousBasket from "./SousBasket.vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, provide, ref, watchEffect } from "vue";
 import OrderDelivery from "../Order/OrderDelivery.vue";
-stringify
 interface BasketQuantity {
   id: number;
   quantity: number;
@@ -160,6 +159,7 @@ const allPrice = () => {
 
 const toggleModalDelivery = () => {
   isModalDelivery.value = !isModalDelivery.value;
+
   if (isModalDelivery.value) {
     document.body.classList.add("scroll-hidden");
     window.scrollTo(0, 0);
