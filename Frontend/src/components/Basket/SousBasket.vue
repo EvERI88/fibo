@@ -4,7 +4,6 @@
       class="sous-basket__wrapper"
       v-for="(card, index) in allSous.sous"
       :key="index"
-      @click="selectSous(card)"
       :class="{ 'sous-basket__wrapper-selected': setSelected(index) }"
     >
       <div class="sous-basket__cart">

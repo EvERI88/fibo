@@ -31,6 +31,7 @@
       <button
         class="basket-bottom__wrapper-submit-order"
         @click="createDelivery"
+        :disabled="basketStore.basket.items.length < 1"
       >
         Оформить заказ <i class="fa-solid fa-chevron-right"></i>
       </button>

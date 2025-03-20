@@ -223,6 +223,12 @@
         </button>
       </div>
 
+      <div class="burger-menu__function" v-if="userStore.user?.id">
+        <button @click="redirectHome" class="burger-menu__function-signin">
+          Кабинет
+        </button>
+      </div>
+
       <div
         @mouseenter="
           basketStore.basket.isVisible = !basketStore.basket.isVisible
@@ -247,8 +253,9 @@ import BlockError from "../UI/BlockError.vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 import MicroBasket from "../UI/MicroBasket.vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 
+const router = useRouter();
 interface Navigation {
   id: number;
   name: string;
@@ -409,7 +416,7 @@ const register = async () => {
 };
 
 const logout = () => {
-  userStore.setUser({});
+  userStore.setUser(Object());
   document.cookie = `token=`;
   location.reload();
 };
@@ -420,6 +427,10 @@ const getLengthBasket = () => {
 
 const showMicroBasket = () => {
   basketStore.basket.isVisible = false;
+};
+
+const redirectHome = () => {
+  router.push({ name: "personal" });
 };
 
 watchEffect(getLengthBasket);

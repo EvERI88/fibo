@@ -12,5 +12,5 @@ class User extends BaseModel
     public ?string $name = null;
     public ?string $telephone = null;
     public ?string $password = null;
-    public ?bool $is_admin = null;
+    public ?int $is_admin = null;
 }

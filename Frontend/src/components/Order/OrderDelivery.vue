@@ -140,16 +140,16 @@ const errors = ref<Errors>({
 });
 
 const infoAddress = ref<Address>({
-  address: "Улица блюхера",
-  home: 32,
-  number: 77,
-  numberPod: 3,
-  numberKV: 77,
-  intercom: "Есть +",
-  floor: 3,
+  address: "",
+  home: 0,
+  number: 0,
+  numberPod: 0,
+  numberKV: 0,
+  intercom: "",
+  floor: 0,
   method: `${selectedMethodDelivery.value}`,
-  name: "Дом",
-  comment: "Тут будет комментарий",
+  name: "",
+  comment: "",
 });
 
 const emit = defineEmits<{

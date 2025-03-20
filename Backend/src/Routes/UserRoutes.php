@@ -16,6 +16,7 @@ final class UserRoutes implements IRoutes
         $collection->setPrefix('/user');
         $collection->post('/auth', 'authorization');
         $collection->post('/register', 'register');
+        $collection->post('/update', 'update');
         $collection->post('/check-token', 'checkToken');
         return $collection;
     }

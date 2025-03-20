@@ -57,7 +57,10 @@
       Соусы к бортикам или закускам
     </p>
     <SousBasket />
-    <BasketBottom @createDeliveryEmit="toggleModalDelivery" />
+    <BasketBottom
+      @createDeliveryEmit="toggleModalDelivery"
+      :itemsInBasket="itemsInBasket"
+    />
     <OrderDelivery v-if="isModalDelivery" @close="toggleModalDelivery" />
   </div>
 </template>
@@ -66,8 +69,9 @@ import BasketBottom from "./BasketBottom.vue";
 import BasketSlider from "./BasketSlider.vue";
 import SousBasket from "./SousBasket.vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
-import { onMounted, provide, ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import OrderDelivery from "../Order/OrderDelivery.vue";
+
 interface BasketQuantity {
   id: number;
   quantity: number;

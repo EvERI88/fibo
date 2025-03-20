@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Request\UserAuthRequest;
 use App\Request\UserRegisterRequest;
 use App\Request\UserTokenRequest;
+use App\Request\UserUpdateRequest;
 use DateTime;
 use DateTimeImmutable;
 use Phalcon\Encryption\Security;
@@ -199,6 +200,74 @@ class UserController extends BaseController
                 'status' => 'error',
                 'message' => 'Пользователь не найден',
             ];
+        }
+    }
+    public function update(): array
+    {
+        $requestValidate = new UserUpdateRequest($this->request);
+        $security = new Security();
+
+
+        if (!empty($requestValidate->getErrors())) {
+            return [
+                'status' => 'error',
+                'message' => 'Ошибка валидации',
+                'errors' => $requestValidate->getErrors(),
+            ];
+        }
+
+        $data = $requestValidate->getData();
+        $user = User::findFirst($data['id']);
+
+        if (empty($data['password'])) {
+            if (!$user) {
+                return [
+                    'data' => $data['data'],
+                    'status' => 'error',
+                    'message' => 'Пользователь не найден',
+                ];
+            }
+            $data['password'] = $user->password;
+            $user->assign($data);
+
+            if ($user->update()) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Пользователь успешно обновлен',
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Ошибка при обновлении пользователя',
+                    'errors' => $user->getMessages(),
+                ];
+            }
+        } else {
+            $check = $security->checkHash((string)$data['password'], $user->password);
+            if ($check) {
+                $data['password'] = $security->hash((string)$data['new_password']);
+
+                $user->assign($data);
+
+                if ($user->update()) {
+                    return [
+                        'status' => 'success',
+                        'message' => 'Пользователь успешно обновлен',
+                    ];
+                } else {
+                    return [
+                        'status' => 'error',
+                        'message' => 'Ошибка при обновлении пользователя',
+                        'errors' => $user->getMessages(),
+                    ];
+                }
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Неверно указан старый пароль',
+                    'errors' => $requestValidate->getErrors()
+                ];
+            }
         }
     }
 }
