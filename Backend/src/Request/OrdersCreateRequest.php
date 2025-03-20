@@ -16,12 +16,6 @@ class OrdersCreateRequest extends AbstractRequest
     public function validate(Request $request): void
     {
 
-        $delivery = $this->data['delivery'];
-
-        if (empty($delivery['home'])) {
-            $this->errors['name'] = 'Дом не может быть пустым';
-        } else if (mb_strlen($delivery['address']) < 5) {
-            $this->errors['name'] = 'Короткий адрес';
-        }
+        
     }
 }

@@ -16,7 +16,8 @@ class Orders extends BaseModel
     public ?int $price = null;
     public ?string $method_pay = null;
     public ?bool $report_bonus = null;
-    public ?bool $change_money = null;
+    public ?bool $without_change = null;
+    public ?int $change_money = null;
     public ?string $updated_at = null;
     public ?int $category_id = null;
 }

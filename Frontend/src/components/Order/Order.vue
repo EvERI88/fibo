@@ -95,6 +95,7 @@
             </p>
             <div class="order__info-payment-detail-change-input-wrapper">
               <input
+                v-model="order.delivery.change_money"
                 type="number"
                 class="order__info-payment-detail-change-input"
               />
@@ -205,6 +206,7 @@ interface OrderDetail {
     name: string;
     comment: string;
     time: string;
+    change_money: number;
   };
   products: {
     product: {
@@ -212,6 +214,7 @@ interface OrderDetail {
       name: string;
       description: string;
       price: number;
+      quantity: number;
     }[];
   }[];
 }
@@ -259,6 +262,7 @@ const order = ref<OrderDetail>({
     name: "",
     comment: "",
     time: "",
+    change_money: 0,
   },
   products: [],
 });
@@ -288,7 +292,6 @@ const getUserInfo = () => {
     };
   } else {
     console.error("error user data");
-    // Здесь можно задать значения по умолчанию или обработать ситуацию
   }
 };
 
@@ -317,6 +320,7 @@ const getProducts = async () => {
     },
     []
   );
+
   try {
     await fetch(`${baseUrl}common/basket`, {
       method: "POST",
@@ -339,6 +343,7 @@ const getProducts = async () => {
               name: element.name,
               description: element.description,
               price: element.price,
+              quantity: basketStore.basket.items[i].quantity,
             });
           }
         } else {
@@ -351,9 +356,31 @@ const getProducts = async () => {
 };
 
 const submitOrder = async () => {
+  const arrayProd = [];
+  const productsString = Object.values(order.value.products);
+
+  for (let i = 0; i < order.value.products.length; i++) {
+    const element = order.value.products[i];
+    arrayProd.push(
+      `id: ${element.id} name: ${element.name} quantity: ${element.quantity}`
+    );
+  }
+  console.log(arrayProd.join(" / "));
+
   await fetch(`${baseUrl}orders/create`, {
     method: "POST",
-    body: JSON.stringify(order.value),
+    body: JSON.stringify({
+      number: Math.floor(Math.random() * (9999 - 1111) + 1111),
+      user_id: order.value.user.id,
+      address: areaInfo.value,
+      products: arrayProd.join(" / "),
+      selected_time: order.value.delivery.time,
+      price: basketStore.basket.allPrice,
+      method_pay: methodPayMent.value,
+      report_bonus: selectBonus.value,
+      without_change: withoutChange.value,
+      change_money: withoutChange.value,
+    }),
   })
     .then((response) => {
       return response.json();
@@ -365,9 +392,6 @@ const submitOrder = async () => {
 
 const getTextInTextArea = () => {
   const test = Object.values(order.value.delivery);
-  //   areaInfo.value = test.join("\n");
-  console.log(test);
-
   areaInfo.value = `Адрес - ${test[0]}
 Дом - ${test[1]}
 Номер квартиры - ${test[2]}
@@ -481,6 +505,7 @@ onMounted(() => {
     resize: none;
     border-radius: 7px;
     background: rgba(241, 242, 245, 0.6);
+    overscroll-behavior: none;
   }
 
   &__info-title-promo {
