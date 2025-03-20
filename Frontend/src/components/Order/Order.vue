@@ -203,11 +203,11 @@ interface OrderDetail {
   };
   delivery: {
     address: string;
-    home: number;
-    number: number;
-    numberPod: number;
+    home: string;
+    number: string;
+    numberPod: string;
     intercom: string;
-    floor: number;
+    floor: string;
     methodPay: string;
     name: string;
     comment: string;
@@ -231,11 +231,11 @@ interface ItemsInBasket {
 
 interface DeliveryInfo {
   address: string;
-  home: number;
-  number: number;
-  numberPod: number;
+  home: string;
+  number: string;
+  numberPod: string;
   intercom: string;
-  floor: number;
+  floor: string;
   methodPay: string;
   name: string;
   comment: string;
@@ -268,11 +268,11 @@ const order = ref<OrderDetail>({
   },
   delivery: {
     address: "",
-    home: 0,
-    number: 0,
-    numberPod: 0,
+    home: "",
+    number: "",
+    numberPod: "",
     intercom: "",
-    floor: 0,
+    floor: "",
     methodPay: "",
     name: "",
     comment: "",
@@ -424,6 +424,7 @@ const getTextInTextArea = () => {
 Номер квартиры - ${test[2]}
 Подъезд - ${test[3]}
 Наличие домофона - ${test[4]}
+Этаж - ${test[5]}
 Комментарий - ${test[8]}
   `;
 };

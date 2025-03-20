@@ -28,82 +28,96 @@
             Самовывоз
           </div>
         </div>
-        <div class="modal__row-address">
-          <input
-            class="modal__row-input-border-big modal__row-input-border"
-            type="text"
-            placeholder="Город, Улица"
-            v-model="infoAddress.address"
-          />
-          <input
-            class="modal__row-input-border"
-            type="text"
-            placeholder="Дом"
-            v-model="infoAddress.home"
-          />
-        </div>
-        <div class="modal__row-address-fake">
-          <input
-            class="modal__row-input-border"
-            type="text"
-            placeholder="Кв"
-            v-model="infoAddress.number"
-          />
-          <input
-            class="modal__row-input-border"
-            type="text"
-            placeholder="Подъезд"
-            v-model="infoAddress.numberPod"
-          />
-          <input
-            class="modal__row-input-border"
-            type="text"
-            placeholder="Домофон"
-            v-model="infoAddress.intercom"
-          />
-          <input
-            class="modal__row-input-border"
-            type="text"
-            placeholder="Этаж"
-            v-model="infoAddress.floor"
-          />
-        </div>
-        <div class="modal__row-address-bred">
-          <input
-            class="modal__row-input-border"
-            type="text"
-            placeholder="Название адреса"
-            v-model="infoAddress.name"
-          />
-          <p class="modal__row-text">
-            Например <span class="modal__row-text-span">Дом</span> или
-            <span class="modal__row-text-span">Работа</span>
-          </p>
-        </div>
-
-        <div class="modal__row-input-area">
-          <textarea
-            class="modal__row-input-area-text"
-            name=""
-            id=""
-            placeholder="Комментарий к адресу"
-            v-model="infoAddress.comment"
-          ></textarea>
-        </div>
         <div
-          class="modal__wrapper-error error-block"
-          v-if="errors.errors.length >= 1"
+          class="modal__method-wrapper"
+          v-if="selectedMethodDelivery === 'Доставка'"
         >
-          <div v-for="error in errors.errors" class="modal__wrapper-error">
-            {{ error.value }}
+          <div class="modal__row-address">
+            <input
+              class="modal__row-input-border-big modal__row-input-border"
+              type="text"
+              placeholder="Город, Улица"
+              v-model="infoAddress.address"
+            />
+            <input
+              class="modal__row-input-border"
+              placeholder="Дом"
+              @input="filterInput('home', $event)"
+              v-model.number="infoAddress.home"
+            />
+          </div>
+          <div class="modal__row-address-fake">
+            <input
+              class="modal__row-input-border"
+              type="text"
+              placeholder="Кв"
+              v-model="infoAddress.number"
+              @input="filterInput('number', $event)"
+            />
+            <input
+              class="modal__row-input-border"
+              type="text"
+              placeholder="Подъезд"
+              v-model="infoAddress.numberPod"
+              @input="filterInput('numberPod', $event)"
+            />
+            <input
+              class="modal__row-input-border"
+              type="text"
+              placeholder="Домофон"
+              v-model="infoAddress.intercom"
+              @input="filterInput('intercom', $event)"
+            />
+            <input
+              class="modal__row-input-border"
+              type="text"
+              placeholder="Этаж"
+              v-model="infoAddress.floor"
+              @input="filterInput('floor', $event)"
+            />
+          </div>
+          <div class="modal__row-address-bred">
+            <input
+              class="modal__row-input-border"
+              type="text"
+              placeholder="Название адреса"
+              v-model="infoAddress.name"
+            />
+            <p class="modal__row-text">
+              Например <span class="modal__row-text-span">Дом</span> или
+              <span class="modal__row-text-span">Работа</span>
+            </p>
+          </div>
+
+          <div class="modal__row-input-area">
+            <textarea
+              class="modal__row-input-area-text"
+              name=""
+              id=""
+              placeholder="Комментарий к адресу"
+              v-model="infoAddress.comment"
+            ></textarea>
+          </div>
+          <div
+            class="modal__wrapper-error error-block"
+            v-if="errors.errors.length >= 1"
+          >
+            <div v-for="error in errors.errors" class="modal__wrapper-error">
+              {{ error.value }}
+            </div>
           </div>
         </div>
+
         <button
           type="button"
           class="modal__row-footer-delivery"
           @click="continueCreateOrder"
         >
-          Подтвердить адрес
+          {{
+            selectedMethodDelivery === "Самовывоз"
+              ? "Оформить"
+              : "Подтвердить адрес"
+          }}
         </button>
       </div>
     </template>
@@ -117,12 +131,11 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 interface Address {
   address: string;
-  home: number;
-  number: number;
-  numberPod: number;
-  numberKV: number;
+  home: string;
+  number: string;
+  numberPod: string;
   intercom: string;
-  floor: number;
+  floor: string;
   method: string;
   name: string;
   comment: string;
@@ -141,12 +154,11 @@ const errors = ref<Errors>({
 
 const infoAddress = ref<Address>({
   address: "",
-  home: 0,
-  number: 0,
-  numberPod: 0,
-  numberKV: 0,
+  home: "",
+  number: "",
+  numberPod: "",
   intercom: "",
-  floor: 0,
+  floor: "",
   method: `${selectedMethodDelivery.value}`,
   name: "",
   comment: "",
@@ -156,6 +168,11 @@ const emit = defineEmits<{
   close: [open: boolean];
 }>();
 
+const filterInput = (fieldName: keyof Address, event: any) => {
+  const input = event.target.value;
+  const numbersOnly: string = input.replace(/[^0-9]/g, "");
+  infoAddress.value[fieldName] = numbersOnly;
+};
 const closeModal = () => {
   emit("close", true);
 };
@@ -171,22 +188,16 @@ const continueCreateOrder = () => {
       value: "Несуществующий адрес",
     });
   }
-  if (infoAddress.value.home < 1) {
+  if (infoAddress.value.home.length < 1) {
     errors.value?.errors.push({
       keyError: "home",
       value: "Введите номер дома",
     });
   }
-  if (infoAddress.value.number < 1) {
+  if (infoAddress.value.number.length < 1) {
     errors.value?.errors.push({
       keyError: "number",
       value: "Введите номер квартиры",
-    });
-  }
-  if (infoAddress.value.numberPod < 1) {
-    errors.value?.errors.push({
-      keyError: "numberPod",
-      value: "Введите подъезд",
     });
   }
   if (infoAddress.value.intercom.length < 1) {
@@ -195,18 +206,16 @@ const continueCreateOrder = () => {
       value: "Укажите есть ли Домофон",
     });
   }
-  if (infoAddress.value.floor < 1) {
+  if (infoAddress.value.floor.length < 1) {
     errors.value?.errors.push({
       keyError: "floor",
       value: "Укажите этаж",
     });
   }
-  console.log(errors.value?.errors);
-
-  router.push({ name: "order" });
 
   if (errors.value?.errors.length < 1) {
     localStorage.setItem("order", JSON.stringify(infoAddress.value));
+    router.push({ name: "order" });
     document.body.classList.remove("scroll-hidden");
   }
 };
@@ -221,6 +230,12 @@ const continueCreateOrder = () => {
     gap: 15px;
     display: flex;
     padding-bottom: 20px;
+  }
+  &__method-wrapper {
+    gap: 15px;
+    display: flex;
+    padding-bottom: 20px;
+    flex-direction: column;
   }
   &__delivery {
     padding: 9px 36px;
