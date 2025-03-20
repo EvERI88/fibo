@@ -15,7 +15,11 @@ class OrdersCreateRequest extends AbstractRequest
 
     public function validate(Request $request): void
     {
-
-        
+        if (mb_strlen($this->data['name']) < 3) {
+            $this->errors['name'] = 'Короткое имя: ' . strlen($this->data['name']);
+        }
+        if (mb_strlen($this->data['products']) < 5) {
+            $this->errors['products'] = 'Выберите продукты';
+        }
     }
 }

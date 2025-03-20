@@ -65,7 +65,7 @@
 
           <div
             class="order__info-payment-detail-card"
-            @click="methodPayMent = 'card'"
+            @click="methodPayMentFunction('card')"
           >
             <div
               class="order__info-payment-detail-card-radio"
@@ -78,7 +78,7 @@
           </div>
           <div
             class="order__info-payment-detail-cash"
-            @click="methodPayMent = 'cash'"
+            @click="methodPayMentFunction('cash')"
           >
             <div
               class="order__info-payment-detail-card-radio"
@@ -96,13 +96,14 @@
             <div class="order__info-payment-detail-change-input-wrapper">
               <input
                 v-model="order.delivery.change_money"
-                type="number"
+                type="text"
                 class="order__info-payment-detail-change-input"
+                :disabled="withoutChange"
               />
             </div>
             <div
               class="order__info-payment-detail-change-checkbox-wrapper"
-              @click="withoutChange = !withoutChange"
+              @click="withoutChangeFunction"
             >
               <div
                 class="order__info-payment-detail-change-checkbox"
@@ -145,23 +146,26 @@
       <div class="order__info-products">
         <p class="order__info-products-title">Состав заказа</p>
         <div class="order__info-products-list">
-          <div class="order__info-product" v-for="item in order.products">
-            <div class="order__info-product-title">
-              {{ item.name }}
+          <div
+            class="order__info-product"
+            v-for="product in order.products.product"
+          >
+            <div class="order__info-product-title" :key="product.id">
+              {{ product.name }}
               <template v-for="basketQuantity in basketStore.basket?.items">
                 <div
-                  v-if="basketQuantity.id === item.id"
+                  v-if="basketQuantity.id === product.id"
                   class="order__button-price-product"
                 >
                   <span class="order__info-product-price"
-                    >{{ item.price }} * {{ basketQuantity.quantity }} =
-                    {{ item.price * basketQuantity.quantity }}₽</span
+                    >{{ product.price }} * {{ basketQuantity.quantity }} =
+                    {{ product.price * basketQuantity.quantity }}₽</span
                   >
                 </div>
               </template>
             </div>
             <div class="order__info-product-description">
-              {{ order.description }}
+              {{ product.description }}
             </div>
           </div>
         </div>
@@ -180,20 +184,22 @@
       @emitChangeTime="selectedTime"
     />
   </div>
+  <Loading v-if="loading" />
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, watchEffect } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 import { useUserStore } from "../../../stores/useUserStore.ts";
 import OrderSelectedTime from "./OrderSelectedTime.vue";
+import Loading from "../UI/Loading.vue";
 
 const router = useRouter();
 interface OrderDetail {
   user: {
-    id: number;
-    name: string;
-    telephone: string;
+    id: number | undefined;
+    name: string | undefined;
+    telephone: string | undefined;
   };
   delivery: {
     address: string;
@@ -216,7 +222,7 @@ interface OrderDetail {
       price: number;
       quantity: number;
     }[];
-  }[];
+  };
 }
 
 interface ItemsInBasket {
@@ -233,6 +239,14 @@ interface DeliveryInfo {
   methodPay: string;
   name: string;
   comment: string;
+  change_money: number;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
 }
 
 const modalChangeTime = ref(false);
@@ -240,15 +254,16 @@ const withoutChange = ref(false);
 const selectBonus = ref(false);
 const methodPayMent = ref("cash");
 const baseUrl: string = "http://api.fibo.local/";
+const loading = ref(false);
 
 const basketStore = useBasketStore();
 const userStore = useUserStore();
-const user = ref<OrderDetail["user"]>(userStore.user);
+const user = ref<OrderDetail["user"] | undefined>(userStore.user);
 const deliveryInfo = ref<DeliveryInfo>();
 const order = ref<OrderDetail>({
   user: {
     id: 0,
-    name: user.value.name,
+    name: user.value?.name,
     telephone: "",
   },
   delivery: {
@@ -264,7 +279,9 @@ const order = ref<OrderDetail>({
     time: "",
     change_money: 0,
   },
-  products: [],
+  products: {
+    product: [],
+  },
 });
 
 const areaInfo = ref("");
@@ -286,9 +303,9 @@ const toggleModalTime = () => {
 const getUserInfo = () => {
   if (userStore.user) {
     order.value.user = {
-      id: user.value.id,
-      name: user.value.name,
-      telephone: user.value.telephone,
+      id: user.value?.id,
+      name: user.value?.name,
+      telephone: user.value?.telephone,
     };
   } else {
     console.error("error user data");
@@ -307,7 +324,8 @@ const getDeliveryInfo = () => {
       methodPay: deliveryInfo.value.methodPay,
       name: deliveryInfo.value.name,
       comment: deliveryInfo.value.comment,
-      time: "Как можно скорее",
+      change_money: deliveryInfo.value.change_money,
+      time: "Побыстрее",
     };
   }
 };
@@ -337,8 +355,8 @@ const getProducts = async () => {
           itemsInBasket.value.products = data.products;
 
           for (let i = 0; i < data.products.length; i++) {
-            const element = data.products[i];
-            order.value.products.push({
+            const element: any = data.products[i];
+            order.value.products.product.push({
               id: element.id,
               name: element.name,
               description: element.description,
@@ -357,10 +375,9 @@ const getProducts = async () => {
 
 const submitOrder = async () => {
   const arrayProd = [];
-  const productsString = Object.values(order.value.products);
-
-  for (let i = 0; i < order.value.products.length; i++) {
-    const element = order.value.products[i];
+  loading.value = true;
+  for (let i = 0; i < order.value.products.product.length; i++) {
+    const element: any = order.value.products.product[i];
     arrayProd.push(
       `id: ${element.id} name: ${element.name} quantity: ${element.quantity}`
     );
@@ -370,6 +387,7 @@ const submitOrder = async () => {
   await fetch(`${baseUrl}orders/create`, {
     method: "POST",
     body: JSON.stringify({
+      name: order.value.user.name,
       number: Math.floor(Math.random() * (9999 - 1111) + 1111),
       user_id: order.value.user.id,
       address: areaInfo.value,
@@ -377,15 +395,22 @@ const submitOrder = async () => {
       selected_time: order.value.delivery.time,
       price: basketStore.basket.allPrice,
       method_pay: methodPayMent.value,
-      report_bonus: selectBonus.value,
-      without_change: withoutChange.value,
-      change_money: withoutChange.value,
+      report_bonus: selectBonus.value ? 1 : 0,
+      without_change: withoutChange.value ? 1 : 0,
+      change_money: order.value.delivery.change_money
+        ? order.value.delivery.change_money
+        : 0,
     }),
   })
     .then((response) => {
       return response.json();
     })
     .then((data) => {
+      loading.value = false;
+      basketStore.clearBasket;
+      localStorage.removeItem("basket");
+      router.push({ name: "main" });
+      window.location.reload();
       console.log(data);
     });
 };
@@ -408,12 +433,32 @@ const selectedTime = (time: string) => {
 const returnBackPage = () => {
   router.push({ name: "basket" });
 };
+
+const withoutChangeFunction = () => {
+  withoutChange.value = !withoutChange.value;
+  order.value.delivery.change_money = 0;
+};
+
+const methodPayMentFunction = (method: string) => {
+  methodPayMent.value = method;
+  if (methodPayMent.value === "card") {
+    withoutChange.value = true;
+  }
+};
+
 onMounted(() => {
   deliveryInfo.value = JSON.parse(localStorage.getItem("order") ?? "");
   getProducts();
   getUserInfo();
   getDeliveryInfo();
   getTextInTextArea();
+  nextTick(() => {
+    console.log(userStore.user?.id);
+
+    if (userStore.user?.id == 0) {
+      router.push({ name: "main" });
+    }
+  });
 });
 </script>
 <style lang="scss">

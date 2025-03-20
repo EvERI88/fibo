@@ -12,8 +12,9 @@ class OrdersController extends BaseController
     public function create(): array
     {
         $ordersValidate = new OrdersCreateRequest($this->request);
-        $orders = new Orders();
+        $order = new Orders();
         $data = $ordersValidate->getData();
+
         if (!empty($ordersValidate->getErrors())) {
             return [
                 'status' => 'error',
@@ -21,11 +22,21 @@ class OrdersController extends BaseController
                 'errors' => $ordersValidate->getErrors(),
             ];
         }
-        return [
-            'status' => 'success',
-            'errors' => $ordersValidate->getData(),
-        ];
-        // $orders->assign($data);
+        $order->assign($data);
 
+        if ($order->create()) {
+            return [
+                'status' => 'success',
+                'message' => 'Заказ успешно создан',
+                'data' => $order,
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Ошибка при обновлении продукта',
+                'errors' => $order->getMessages(),
+                'data' => $order,
+            ];
+        }
     }
 }
