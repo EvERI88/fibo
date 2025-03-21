@@ -15,6 +15,7 @@ final class OrdersRoutes implements IRoutes
         $collection->setHandler(OrdersController::class, true);
         $collection->setPrefix('/orders');
         $collection->post('/create', 'create');
+        $collection->post('/', 'get');
         return $collection;
     }
 }

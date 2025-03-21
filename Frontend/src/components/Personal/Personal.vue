@@ -20,6 +20,11 @@
         </div>
       </div>
       <div class="personal__data">
+        <div class="personal__order">
+          <RouterLink to="/personal-order" class="personal__order-link">
+            Ваши заказы
+          </RouterLink>
+        </div>
         <p class="personal__data-title">Личные данные</p>
         <div class="personal__data-title-row">
           <p class="personal__data-title-row-placeholder">Имя</p>
@@ -194,9 +199,6 @@
         <button type="button" class="personal__exit-button">Выйти</button>
       </div>
     </div>
-    <RouterLink to="/personal-order" class="header__logo">
-      Ваши заказы
-    </RouterLink>
   </div>
 </template>
 <script lang="ts" setup>
@@ -341,7 +343,18 @@ const changeUserData = async () => {
   max-width: 350px;
 }
 .personal {
-  &__wrapper {
+  &__order {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+  }
+  &__order-link {
+    color: #000;
+    text-decoration: underline;
+
+    color: var(--col-title);
+    font-size: 20px;
   }
 
   &__bonus-background {

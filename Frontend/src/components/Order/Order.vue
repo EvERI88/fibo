@@ -456,8 +456,6 @@ onMounted(() => {
   getDeliveryInfo();
   getTextInTextArea();
   nextTick(() => {
-    console.log(userStore.user?.id);
-
     if (userStore.user?.id == 0) {
       router.push({ name: "main" });
     }
