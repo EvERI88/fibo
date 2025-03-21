@@ -1,5 +1,13 @@
 <template>
   <div class="orders" v-if="orders.orders.length > 0">
+    <PersonalOrdersPaginate
+      @prevPage="currentList--"
+      @nextPage="currentList++"
+      @changeCurrentList="changeNumberList"
+      :currentList
+      :totalPage
+      :listNumber
+    />
     <div class="orders__wrapper">
       <div class="orders__items">
         <div
@@ -28,34 +36,27 @@
             class="orders__items-item-accordion"
             @click="item.visibleProduct = !item.visibleProduct"
           >
+            {{ updateProducts(index).countSymbol }}
             Показать продукты
             <i class="fa-solid fa-arrows-up-down"></i>
             <div
               v-if="item.visibleProduct"
               class="orders__items-item-accordion-products"
               @click.stop
-              :style="{ 'height': `${updateProducts(index).countSymbol}px` }"
             >
               <textarea
                 disabled
                 name=""
                 id=""
                 class="orders__items-item-accordion-products-text-area"
-              >
- {{ updateProducts(item.id).test }}</textarea
+                :style="{ height: updateProducts(item.id).countSymbol + 'px' }"
+                >{{ updateProducts(item.id).test }}</textarea
               >
             </div>
           </div>
         </div>
       </div>
     </div>
-    <PersonalOrdersPaginate
-      @prevPage="currentList--"
-      @nextPage="currentList++"
-      :currentList
-      :totalPage
-      :listNumber
-    />
   </div>
   <div class="not-orders" v-else>
     <div class="not-orders__wrapper">Вы ничего не заказывали</div>
@@ -96,8 +97,6 @@ const listNumber = ref<List>({
 
 const getArrayPage = () => {
   for (let i = 1; i < totalPage.value + 1; i++) {
-    console.log(true);
-
     listNumber.value.number.push(i);
   }
 };
@@ -143,6 +142,10 @@ const updateProducts = (id: number) => {
   return { test: test, countSymbol: countSymbol };
 };
 
+const changeNumberList = (number: number) => {
+  currentList.value = number;
+};
+
 watchEffect(getOrders);
 
 onMounted(() => {
@@ -155,11 +158,11 @@ onMounted(() => {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
-  height: 46vh;
   &__wrapper {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding-top: 35px;
   }
 
   &__items {

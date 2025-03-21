@@ -11,7 +11,7 @@
           'paginate__order-wrapper-text-selected': number === currentList,
         }"
       >
-        <p>{{ number }}</p>
+        <p @click="selectNumber(number)">{{ number }}</p>
       </div>
       <div class="paginate__order-wrapper-button-next" @click="nextPage">></div>
     </div>
@@ -30,6 +30,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   nextPage: [list: number];
   prevPage: [list: number];
+  changeCurrentList: [number: number];
 }>();
 
 const nextPage = () => {
@@ -40,11 +41,15 @@ const nextPage = () => {
 const prevPage = () => {
   if (props.currentList !== 1) emit("prevPage", props.currentList);
 };
+
+const selectNumber = (number: number) => {
+  emit("changeCurrentList", number);
+};
 </script>
 <style lang="scss">
 .paginate {
   position: absolute;
-  bottom: 0;
+  z-index: 1;
   &__order-wrapper {
     display: flex;
     gap: 10px;
@@ -65,8 +70,6 @@ const prevPage = () => {
   &__order-wrapper-text {
     background: #f3f3f7;
     color: #696f7a;
-    // background-color: var(--col-title);
-    // color: #000;
     border-radius: 50%;
     height: 30px;
     width: 30px;
