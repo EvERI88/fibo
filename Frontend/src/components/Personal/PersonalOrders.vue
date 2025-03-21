@@ -34,13 +34,13 @@
               v-if="item.visibleProduct"
               class="orders__items-item-accordion-products"
               @click.stop
+              :style="{ 'height': `${updateProducts(index).countSymbol}px` }"
             >
               <textarea
                 disabled
                 name=""
                 id=""
                 class="orders__items-item-accordion-products-text-area"
-                :style="{ height: `${updateProducts(index).countSymbol}px` }"
               >
  {{ updateProducts(item.id).test }}</textarea
               >
@@ -128,7 +128,7 @@ const updateProducts = (id: number) => {
   let countSymbol = findPrice?.products.match(/id: \d/g)?.length;
 
   if (countSymbol) {
-    countSymbol = countSymbol * 26;
+    countSymbol = countSymbol * 30;
   }
 
   const test = findPrice?.products
