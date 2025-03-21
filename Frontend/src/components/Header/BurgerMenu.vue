@@ -408,6 +408,8 @@ const register = async () => {
       .then((data) => {
         if (data.status === "error") {
           getAllErrorsRegister.value = data.error;
+        } else {
+          window.location.reload();
         }
       });
   } catch (err) {

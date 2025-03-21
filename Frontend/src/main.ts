@@ -24,6 +24,11 @@ const routes = [
     component: () => import("./components/Personal/Personal.vue"),
     name: "personal",
   },
+  {
+    path: "/personal-order",
+    component: () => import("./components/Personal/PersonalOrders.vue"),
+    name: "personal-order",
+  },
 ];
 
 const router = createRouter({

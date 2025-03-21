@@ -15,6 +15,13 @@ class UserUpdateRequest extends AbstractRequest
     }
     public function validate(Request $request): void
     {
+
+        if (empty($this->data['name'])) {
+            $this->errors['name'] = 'Имя пользователя не может быть пустым';
+        } else if (mb_strlen($this->data['name']) < 6) {
+            $this->errors['name'] = 'Короткое имя пользователя: ';
+        }
+
         // if (preg_match('/^\+?\d+$/', $value)) {
         //     echo "Целое положительное число :-)";
         // }

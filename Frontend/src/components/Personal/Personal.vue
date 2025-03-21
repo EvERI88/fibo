@@ -25,9 +25,9 @@
           <p class="personal__data-title-row-placeholder">Имя</p>
           <div class="personal__data-title-row-input-wrapper">
             <input
-              v-model="user.name"
               type="text"
               class="personal__data-title-row-input"
+              v-model="user.name"
               :disabled="!change.name"
             />
             <div
@@ -68,9 +68,9 @@
           <p class="personal__data-title-row-placeholder">Номер телефона</p>
           <div class="personal__data-title-row-input-wrapper">
             <input
-              v-model="user.telephone"
               type="text"
               class="personal__data-title-row-input"
+              v-model="user.telephone"
               disabled
             />
           </div>
@@ -79,9 +79,9 @@
           <p class="personal__data-title-row-placeholder">Старый пароль</p>
           <div class="personal__data-title-row-input-wrapper">
             <input
-              v-model="user.setPassword.oldPassword"
               type="password"
               class="personal__data-title-row-input"
+              v-model="user.setPassword.oldPassword"
               :disabled="!change.password"
             />
             <BlockError v-if="getAllErrorsUser.verifiedPassword">
@@ -135,9 +135,9 @@
           <p class="personal__data-title-row-placeholder">Новый пароль</p>
           <div class="personal__data-title-row-input-wrapper">
             <input
-              v-model="user.setPassword.newPassword"
               type="password"
               class="personal__data-title-row-input"
+              v-model="user.setPassword.newPassword"
               :disabled="!change.password"
             />
           </div>
@@ -148,9 +148,9 @@
           </p>
           <div class="personal__data-title-row-input-wrapper">
             <input
-              v-model="user.setPassword.confirmNewPassword"
               type="password"
               class="personal__data-title-row-input"
+              v-model="user.setPassword.confirmNewPassword"
               :disabled="!change.password"
             />
             <BlockError
@@ -194,6 +194,9 @@
         <button type="button" class="personal__exit-button">Выйти</button>
       </div>
     </div>
+    <RouterLink to="/personal-order" class="header__logo">
+      Ваши заказы
+    </RouterLink>
   </div>
 </template>
 <script lang="ts" setup>
@@ -332,7 +335,7 @@ const changeUserData = async () => {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .error-block {
   margin-left: 0;
   max-width: 350px;
@@ -445,7 +448,7 @@ const changeUserData = async () => {
     color: var(--col-title);
     position: absolute;
     right: 19px;
-    top: 50%;
+    top: 25px;
     transform: translate(0, -50%);
     font-family: Montserrat;
     font-weight: 700;
@@ -466,6 +469,7 @@ const changeUserData = async () => {
     font-size: 15px;
     line-height: 28px;
     text-align: right;
+    cursor: pointer;
   }
   &__data-title-row-button-cancel {
     border: none;
