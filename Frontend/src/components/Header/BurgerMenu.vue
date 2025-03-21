@@ -420,6 +420,7 @@ const register = async () => {
 const logout = () => {
   userStore.setUser(Object());
   document.cookie = `token=`;
+  router.push({ name: "main" });
   location.reload();
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="orders">
+  <div class="orders" v-if="orders.orders.length > 0">
     <div class="orders__wrapper">
       <div class="orders__items">
         <div
@@ -49,11 +49,22 @@
         </div>
       </div>
     </div>
+    <PersonalOrdersPaginate
+      @prevPage="currentList--"
+      @nextPage="currentList++"
+      :currentList
+      :totalPage
+      :listNumber
+    />
+  </div>
+  <div class="not-orders" v-else>
+    <div class="not-orders__wrapper">Вы ничего не заказывали</div>
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
+import PersonalOrdersPaginate from "./PersonalOrdersPaginate.vue";
 
 interface Orders {
   orders: {
@@ -67,20 +78,33 @@ interface Orders {
     countRow: number;
   }[];
 }
-
-interface Acc {
-  isVisibleItem: number[];
+interface List {
+  number: number[];
 }
 
+const currentList = ref(1);
+const totalPage = ref(0);
 const userStore = useUserStore();
 const baseUrl: string = "http://api.fibo.local/";
 const orders = ref<Orders>({
   orders: [],
 });
 
+const listNumber = ref<List>({
+  number: [],
+});
+
+const getArrayPage = () => {
+  for (let i = 1; i < totalPage.value + 1; i++) {
+    console.log(true);
+
+    listNumber.value.number.push(i);
+  }
+};
+
 const getOrders = async () => {
   try {
-    await fetch(`${baseUrl}orders`, {
+    await fetch(`${baseUrl}orders?page=${currentList.value}`, {
       method: "POST",
       body: JSON.stringify({ id: userStore.user?.id }),
     })
@@ -88,7 +112,13 @@ const getOrders = async () => {
         return response.json();
       })
       .then((data) => {
-        orders.value.orders = data.orders;
+        orders.value.orders = data.orders.items;
+        const limit = data.orders.limit;
+        const totalItem = data.orders["total_items"];
+        totalPage.value = Math.ceil(totalItem / limit);
+        if (listNumber.value.number.length < 1) {
+          getArrayPage();
+        }
       });
   } catch (err) {}
 };
@@ -113,15 +143,19 @@ const updateProducts = (id: number) => {
   return { test: test, countSymbol: countSymbol };
 };
 
+watchEffect(getOrders);
+
 onMounted(() => {
   getOrders();
 });
 </script>
 <style lang="scss">
 .orders {
+  position: relative;
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+  height: 46vh;
   &__wrapper {
     display: flex;
     flex-direction: column;
@@ -170,6 +204,14 @@ onMounted(() => {
     resize: none;
     font-weight: 500;
     line-height: 26px;
+  }
+}
+.not-orders {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  &__wrapper {
+    height: 45vh;
   }
 }
 </style>

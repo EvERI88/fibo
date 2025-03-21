@@ -8,6 +8,10 @@ use App\Models\Orders;
 use App\Models\User;
 use App\Request\OrdersCreateRequest;
 use App\Request\OrdersGetRequest;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+use Phalcon\Paginator\Adapter\QueryBuilder;
+use Phalcon\Paginator\PaginatorFactory;
+use Phalcon\Support\Helper\Arr\Order;
 
 class OrdersController extends BaseController
 {
@@ -43,6 +47,11 @@ class OrdersController extends BaseController
     }
     public function get(): array
     {
+
+        $currentPage = $this->request->getQuery('page', 'int', 1);
+        $limitPerPage = $this->request->getQuery('limit', 'int', 2);
+
+
         $orderValidate = new OrdersGetRequest($this->request);
         if (!empty($orderValidate->getErrors())) {
             return [
@@ -52,8 +61,7 @@ class OrdersController extends BaseController
             ];
         }
         $data = $orderValidate->getData();
-        $orders = $this->modelsManager
-            ->createBuilder()
+        $orders = $this->modelsManager->createBuilder()
             ->columns([
                 'id',
                 'number',
@@ -61,12 +69,12 @@ class OrdersController extends BaseController
                 'products',
                 'price',
                 'method_pay',
+                'user_id',
                 'is_active'
             ])
             ->from(Orders::class)
-            ->where('user_id = ' . $data['id'])
-            ->getQuery()
-            ->execute();
+            ->where('user_id = ' . $data['id']);
+
         $is_user = User::findFirst($data['id']);
         if (!$is_user) {
             return [
@@ -75,11 +83,19 @@ class OrdersController extends BaseController
             ];
         }
 
-        if (count($orders) > 0) {
+        $paginate = new QueryBuilder(
+            [
+                "builder" => $orders,
+                "limit" => $limitPerPage,
+                "page" => $currentPage
+            ]
+        );
+
+        if (count($paginate->paginate()->items) > 0) {
             return [
                 'status' => 'success',
                 'message' => 'Найдены заказы',
-                'orders' => $orders,
+                'orders' => $paginate->paginate(),
             ];
         } else {
             return [
