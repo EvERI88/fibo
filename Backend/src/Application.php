@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Middleware\ResponseMiddleware;
+use App\Models\PromoCode;
 use App\Providers\ConfigProvider;
 use App\Providers\DBProvider;
 use App\Providers\EventsManagerProvider;
@@ -12,6 +13,7 @@ use App\Routes\CategoriesRoutes;
 use App\Routes\ProductsRoutes;
 use App\Routes\CommonRoutes;
 use App\Routes\OrdersRoutes;
+use App\Routes\PromoCodeRoutes;
 use App\Routes\UserRoutes;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
@@ -54,6 +56,7 @@ class Application
             new CommonRoutes(),
             new UserRoutes(),
             new OrdersRoutes(),
+            new PromoCodeRoutes(),
         ];
 
         foreach ($routes as $route) {

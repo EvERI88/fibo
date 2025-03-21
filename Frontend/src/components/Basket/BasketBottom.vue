@@ -8,8 +8,11 @@
             type="text"
             placeholder="Введите промокод"
             class="basket-bottom__input-input"
+            v-model="promoCode"
           />
-          <button class="basket-bottom__submit-code">Применить</button>
+          <button class="basket-bottom__submit-code" @click="successCode">
+            Применить
+          </button>
         </div>
         <div class="basket-bottom__total">
           <p class="basket-bottom__total-text">
@@ -39,6 +42,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { ref } from "vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
 const emit = defineEmits<{
@@ -46,9 +50,23 @@ const emit = defineEmits<{
 }>();
 
 const basketStore = useBasketStore();
-
+const baseUrl: string = "http://api.fibo.local/";
+const promoCode = ref("");
 const createDelivery = () => {
   emit("createDeliveryEmit", true);
+};
+
+const successCode = async () => {
+  await fetch(`${baseUrl}promo-code`, {
+    method: "POST",
+    body: JSON.stringify({ code: promoCode.value }),
+  })
+    .then((response) => {
+      response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    });
 };
 
 const reloadPage = () => {
