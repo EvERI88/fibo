@@ -10,8 +10,9 @@
         :class="{
           'paginate__order-wrapper-text-selected': number === currentList,
         }"
+        @click="selectNumber(number)"
       >
-        <p @click="selectNumber(number)">{{ number }}</p>
+        <p>{{ number }}</p>
       </div>
       <div class="paginate__order-wrapper-button-next" @click="nextPage">></div>
     </div>
