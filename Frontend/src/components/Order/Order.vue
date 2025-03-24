@@ -57,8 +57,19 @@
             type="text"
             placeholder="Введите промокод"
             class="order__info-promo-input"
+            :disabled="findPromo.id !== 3"
+            v-model="promoCode"
           />
-          <button class="order__submit-code">Применить</button>
+          <button
+            class="order__submit-code"
+            :disabled="findPromo.id !== 3"
+            @click="successCode"
+          >
+            Применить
+          </button>
+        </div>
+        <div class="order__wrapper-top-success" v-if="findPromo.id !== 3">
+          <p>Успешно применили промокод на {{ findPromo.discount }}%</p>
         </div>
         <div class="order__info-payment-detail">
           <p class="order__info-payment-detail-title">Способ оплаты</p>
@@ -242,11 +253,11 @@ interface DeliveryInfo {
   change_money: number;
 }
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
+interface Promo {
+  id: number | undefined;
+  code: string | undefined;
+  status: number | undefined;
+  discount: number;
 }
 
 const modalChangeTime = ref(false);
@@ -284,10 +295,18 @@ const order = ref<OrderDetail>({
   },
 });
 
+const promoCode = ref();
 const areaInfo = ref("");
 const emptyBasket = ref(false);
 const itemsInBasket = ref<ItemsInBasket>({
   products: [],
+});
+const errorMessage = ref("");
+const findPromo = ref<Promo>({
+  id: 3,
+  code: "",
+  status: 0,
+  discount: 0,
 });
 
 const toggleModalTime = () => {
@@ -397,6 +416,7 @@ const submitOrder = async () => {
       method_pay: methodPayMent.value,
       report_bonus: selectBonus.value ? 1 : 0,
       without_change: withoutChange.value ? 1 : 0,
+      promo_code_id: findPromo.value.id,
       change_money: order.value.delivery.change_money
         ? order.value.delivery.change_money
         : 0,
@@ -408,12 +428,12 @@ const submitOrder = async () => {
       return response.json();
     })
     .then((data) => {
+      localStorage.removeItem("promo");
       loading.value = false;
       basketStore.clearBasket;
       localStorage.removeItem("basket");
       router.push({ name: "main" });
       window.location.reload();
-      console.log(data);
     });
 };
 
@@ -449,12 +469,58 @@ const methodPayMentFunction = (method: string) => {
   }
 };
 
+const getPromoCode = () => {
+  if (localStorage.getItem("promo")) {
+    findPromo.value = JSON.parse(localStorage.getItem("promo") ?? "");
+    promoCode.value = findPromo.value.code;
+  }
+};
+
+const successPromo = () => {
+  if (findPromo.value.id !== 0) {
+    const countDiscount =
+      (basketStore.basket.allPrice * findPromo.value.discount) / 100;
+    basketStore.basket.allPrice = basketStore.basket.allPrice - countDiscount;
+  }
+};
+
+const successCode = async () => {
+  await fetch(`${baseUrl}promo`, {
+    method: "POST",
+    body: JSON.stringify({ code: promoCode.value }),
+    mode: "cors",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.error) {
+        errorMessage.value = data.error;
+        return;
+      } else {
+        if (data.code[0]) {
+          findPromo.value = {
+            id: data.code[0].id,
+            code: data.code[0].code,
+            status: data.code[0].status,
+            discount: data.code[0].discount,
+          };
+          errorMessage.value = "";
+          localStorage.setItem("promo", JSON.stringify(findPromo.value));
+        }
+      }
+    });
+};
+
+watchEffect(successPromo);
+
 onMounted(() => {
   deliveryInfo.value = JSON.parse(localStorage.getItem("order") ?? "");
   getProducts();
   getUserInfo();
   getDeliveryInfo();
   getTextInTextArea();
+  getPromoCode();
   nextTick(() => {
     if (userStore.user?.id == 0) {
       router.push({ name: "main" });
@@ -467,6 +533,34 @@ onMounted(() => {
   padding-top: 32px;
   display: flex;
   justify-content: center;
+
+  &__wrapper-top-success {
+    border-radius: 8px;
+    background: rgb(31, 187, 52);
+    min-height: 42px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    grid-column: 2;
+    margin-top: 13px;
+    width: 100%;
+    flex-wrap: wrap;
+    max-width: 353px;
+    margin-left: 0;
+    padding-left: 20px;
+    color: #fff;
+  }
+  &__wrapper-top-success::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    left: 10%;
+    background: rgb(31, 187, 52);
+  }
   &__info-user-textarea {
     font-family: Montserrat;
     font-weight: 700;
@@ -566,7 +660,7 @@ onMounted(() => {
 
   &__info-promo {
     display: flex;
-    padding-bottom: 58px;
+    max-width: 358px;
   }
 
   &__info-promo-input {
@@ -603,6 +697,7 @@ onMounted(() => {
     background-color: rgba(241, 242, 245, 0.6);
     border-radius: 6px;
     padding: 40px 40px 30px 30px;
+    margin-top: 50px;
   }
   &__info-payment-detail-title {
     color: rgba(255, 46, 101, 1);

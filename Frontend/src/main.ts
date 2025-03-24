@@ -5,6 +5,7 @@ import { createMemoryHistory, createRouter } from "vue-router";
 import MainPage from "./components/MainPage.vue";
 import { createPinia } from "pinia";
 import { useUserStore } from "../stores/useUserStore.ts";
+import { useBasketStore } from "../stores/useBasketStore.ts";
 
 const pinia = createPinia();
 const routes = [
@@ -18,7 +19,8 @@ const routes = [
     component: () => import("./components/Basket/Basket.vue"),
     name: "basket",
     beforeEnter: () => {
-      if (!useUserStore().user?.id) return false;
+      if (!useUserStore().user?.id || useBasketStore().basket.items.length < 1)
+        return false;
     },
   },
   {
