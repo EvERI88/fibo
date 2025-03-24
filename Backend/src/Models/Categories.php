@@ -11,4 +11,5 @@ class Categories extends BaseModel
     public ?string $is_visible = null;
     public ?string $updated_at = null;
     public ?string $created_at = null;
+    
 }

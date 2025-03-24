@@ -13,4 +13,6 @@ class User extends BaseModel
     public ?string $telephone = null;
     public ?string $password = null;
     public ?int $is_admin = null;
+    public ?string $created_at = null;
+    public ?string $updated_at = null;
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Мар 24 2025 г., 11:12
+-- Время создания: Мар 24 2025 г., 12:42
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.17
 
@@ -73,6 +73,7 @@ CREATE TABLE `orders` (
   `name` text NOT NULL,
   `change_money` int NOT NULL,
   `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `promo_code_id` int NOT NULL DEFAULT '3'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -81,21 +82,25 @@ CREATE TABLE `orders` (
 -- Дамп данных таблицы `orders`
 --
 
-INSERT INTO `orders` (`id`, `number`, `user_id`, `address`, `products`, `selected_time`, `price`, `method_pay`, `report_bonus`, `without_change`, `name`, `change_money`, `updated_at`, `is_active`, `promo_code_id`) VALUES
-(9, '7600', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 1, 0, 'Valery', 0, '2025-03-24 02:00:46', 1, 3),
-(10, '2178', 9, 'Адрес - Блюхера\nДом - 12\nНомер квартиры - 123\nПодъезд - 12313\nНаличие домофона - 2131\nЭтаж - 123\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1 / id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:01:45', 1, 2),
-(11, '3973', 9, 'Адрес - fhgddgfh\nДом - 56\nНомер квартиры - 56\nПодъезд - 56\nНаличие домофона - 56\nЭтаж - 56\nКомментарий - \n  ', 'id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:13:03', 1, 2),
-(12, '3872', 9, 'Адрес - 465456\nДом - 56\nНомер квартиры - 56\nПодъезд - 56\nНаличие домофона - 56\nЭтаж - 56\nКомментарий - \n  ', 'id: 6 name: рожочки quantity: 1 / id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:24:27', 1, 2),
-(13, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:36:03', 1, 1),
-(14, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:36:18', 1, 2),
-(15, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:37:49', 1, 2),
-(16, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:48:53', 1, 2),
-(17, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:49:39', 1, 1),
-(18, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:49:56', 1, 2),
-(19, '8238', 9, 'Адрес - Блюхера\nДом - 77\nНомер квартиры - 7\nПодъезд - 77\nНаличие домофона - 7\nЭтаж - 77\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:52:17', 1, 1),
-(20, '2863', 9, 'Адрес - блюхера\nДом - 123\nНомер квартиры - 213\nПодъезд - 312\nНаличие домофона - 123\nЭтаж - 312\nКомментарий - \n  ', 'id: 4 name: Пепперони quantity: 1 / id: 5 name: Маргарита quantity: 1 / id: 8 name: Рожки quantity: 1', 'Побыстрее', 0, 'cash', 0, 1, 'Valery', 0, '2025-03-24 05:26:17', 1, 2),
-(21, '3775', 9, 'Адрес - fdssdffsd\nДом - 43\nНомер квартиры - 34\nПодъезд - 34\nНаличие домофона - 34\nЭтаж - 34\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 4 name: Пепперони quantity: 1', 'Побыстрее', 104, 'cash', 0, 0, 'Valery', 0, '2025-03-24 05:33:22', 1, 3),
-(22, '3857', 9, 'Адрес - fdsfdsfsd\nДом - 23\nНомер квартиры - 23\nПодъезд - 23\nНаличие домофона - 23\nЭтаж - 23\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 3 / id: 4 name: Пепперони quantity: 4 / id: 5 name: Маргарита quantity: 3', 'Побыстрее', 712, 'card', 0, 1, 'Valery', 0, '2025-03-24 05:50:23', 1, 3);
+INSERT INTO `orders` (`id`, `number`, `user_id`, `address`, `products`, `selected_time`, `price`, `method_pay`, `report_bonus`, `without_change`, `name`, `change_money`, `updated_at`, `created_at`, `is_active`, `promo_code_id`) VALUES
+(9, '7600', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 1, 0, 'Valery', 0, '2025-03-24 02:00:46', '0000-00-00 00:00:00', 1, 3),
+(10, '2178', 9, 'Адрес - Блюхера\nДом - 12\nНомер квартиры - 123\nПодъезд - 12313\nНаличие домофона - 2131\nЭтаж - 123\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1 / id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:01:45', '0000-00-00 00:00:00', 1, 2),
+(11, '3973', 9, 'Адрес - fhgddgfh\nДом - 56\nНомер квартиры - 56\nПодъезд - 56\nНаличие домофона - 56\nЭтаж - 56\nКомментарий - \n  ', 'id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:13:03', '0000-00-00 00:00:00', 1, 2),
+(12, '3872', 9, 'Адрес - 465456\nДом - 56\nНомер квартиры - 56\nПодъезд - 56\nНаличие домофона - 56\nЭтаж - 56\nКомментарий - \n  ', 'id: 6 name: рожочки quantity: 1 / id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:24:27', '0000-00-00 00:00:00', 1, 2),
+(13, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:36:03', '0000-00-00 00:00:00', 1, 1),
+(14, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:36:18', '0000-00-00 00:00:00', 1, 2),
+(15, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:37:49', '0000-00-00 00:00:00', 1, 2),
+(16, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:48:53', '0000-00-00 00:00:00', 1, 2),
+(17, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:49:39', '0000-00-00 00:00:00', 1, 1),
+(18, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:49:56', '0000-00-00 00:00:00', 1, 2),
+(19, '8238', 9, 'Адрес - Блюхера\nДом - 77\nНомер квартиры - 7\nПодъезд - 77\nНаличие домофона - 7\nЭтаж - 77\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:52:17', '0000-00-00 00:00:00', 1, 1),
+(20, '2863', 9, 'Адрес - блюхера\nДом - 123\nНомер квартиры - 213\nПодъезд - 312\nНаличие домофона - 123\nЭтаж - 312\nКомментарий - \n  ', 'id: 4 name: Пепперони quantity: 1 / id: 5 name: Маргарита quantity: 1 / id: 8 name: Рожки quantity: 1', 'Побыстрее', 0, 'cash', 0, 1, 'Valery', 0, '2025-03-24 05:26:17', '0000-00-00 00:00:00', 1, 2),
+(21, '3775', 9, 'Адрес - fdssdffsd\nДом - 43\nНомер квартиры - 34\nПодъезд - 34\nНаличие домофона - 34\nЭтаж - 34\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 4 name: Пепперони quantity: 1', 'Побыстрее', 104, 'cash', 0, 0, 'Valery', 0, '2025-03-24 05:33:22', '0000-00-00 00:00:00', 1, 3),
+(22, '3857', 9, 'Адрес - fdsfdsfsd\nДом - 23\nНомер квартиры - 23\nПодъезд - 23\nНаличие домофона - 23\nЭтаж - 23\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 3 / id: 4 name: Пепперони quantity: 4 / id: 5 name: Маргарита quantity: 3', 'Побыстрее', 712, 'card', 0, 1, 'Valery', 0, '2025-03-24 05:50:23', '0000-00-00 00:00:00', 1, 3),
+(23, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 06:55:56', '0000-00-00 00:00:00', 1, 2),
+(24, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 06:58:15', '0000-00-00 00:00:00', 1, 2),
+(25, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 06:58:20', '0000-00-00 00:00:00', 1, 2),
+(26, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 07:35:45', '2025-03-24 07:35:45', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -241,18 +246,20 @@ CREATE TABLE `promo_code` (
   `id` int NOT NULL,
   `code` int NOT NULL,
   `discount` int NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `promo_code`
 --
 
-INSERT INTO `promo_code` (`id`, `code`, `discount`, `status`) VALUES
-(1, 7777, 100, 0),
-(2, 7777, 100, 0),
-(3, 0, 0, 0),
-(4, 1111, 30, 1);
+INSERT INTO `promo_code` (`id`, `code`, `discount`, `status`, `created_at`, `updated_at`) VALUES
+(1, 7777, 100, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 7777, 100, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 1111, 30, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -265,30 +272,32 @@ CREATE TABLE `user` (
   `name` varchar(255) NOT NULL,
   `telephone` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `is_admin` tinyint(1) NOT NULL DEFAULT '0'
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `telephone`, `password`, `is_admin`) VALUES
-(1, 'Admin', '2147483647', 'asdsadsad', 1),
-(8, 'Admin', '12987654321', '123231', 1),
-(9, 'Valery', '89511238303', '$2y$10$BiyNrdyA35nalwxOU.gsB.xIcGstTWbILwLb8pXvcxdn.wP9b2R1e', 1),
-(10, 'Valery', '89511238304', '$2y$10$SgSfOZkOsBtdwZJoYNapkuuIxOL75tT9ogopwyUOTEN/RTJmEdhM.', 1),
-(14, 'Valery', '89511238305', '$2y$10$4g5jyqa9p5vsJu4nJX5pHOQa8OOshj5ar7gZh6zQ4Gu6YUjXtaqUe', 1),
-(17, 'Valery', '89511238306', '$2y$10$jPWkNwBrAaFKxQjN/ggCCead2EYdlywAQltE1j0VvQAVzbaUjYIRe', 1),
-(19, 'Valery', '89511238307', '$2y$10$.LohcGy172tfZhM8LAWE6O3Ex/DnrD8WoSbLfqKb5/.vX66MOqM3q', 1),
-(20, 'asdadsdasdsa', '32232323343', '$2y$10$IfRBk5zFcRyT5jLRceZkNerzHZ4JNvcIgOmhaIx8hbiszLxBnAB9W', 0),
-(21, 'pedro', '89502700555', '$2y$10$yuPELZVqi8MpDOT8vRPXaOxsAuHa96VdjYCi54V7WOVid307LRzvO', 0),
-(22, 'DIMASO', '11111111111', '$2y$10$kDH2rK5zsvsqFhzOQyQbyejbW3XvBTI2/hrSHYmCf5Bn9Nw/6su0a', 0),
-(23, '12345', '99999999999', '$2y$10$Ov.JFxla.X4ztIhPyjuIUuG9DsEEzJC5QuuXub84XYmG4mis7Siem', 0),
-(24, '22222', '22222222222', '$2y$10$P2DEm3C491t6EBcXkvWmr.nv1JGq1MD4yRf1P.JA66dv99OiFAVgC', 0),
-(25, '33333', '33333333333', '$2y$10$Mg.6HU0nTHDm3/Q5/QCHvOrvDZiGsDW6gMcundfI7GlCJqpjKJCBu', 0),
-(26, '55555555', '44444444444', '$2y$10$AWm9Ag6qGlU6gW8SFDcL6.IOd6Ub/Ovq.Buq8HwCDkudncb8js3Vi', 0),
-(27, '00000', '00000000000', '$2y$10$wps8O1v5vZ1fyFsTRF5q1.0ZtjmnnH3vb/YCEXDwzagzLhwOMMbuq', 0),
-(28, '55555', '55555555555', '$2y$10$bUJFKU8PBpc73vEJTn7hd.wsyzrwbHwrCKcIFNTi30PFWUIPGXtyW', 0);
+INSERT INTO `user` (`id`, `name`, `telephone`, `password`, `is_admin`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', '2147483647', 'asdsadsad', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 'Admin', '12987654321', '123231', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 'Valery', '89511238303', '$2y$10$BiyNrdyA35nalwxOU.gsB.xIcGstTWbILwLb8pXvcxdn.wP9b2R1e', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, 'Valery', '89511238304', '$2y$10$SgSfOZkOsBtdwZJoYNapkuuIxOL75tT9ogopwyUOTEN/RTJmEdhM.', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, 'Valery', '89511238305', '$2y$10$4g5jyqa9p5vsJu4nJX5pHOQa8OOshj5ar7gZh6zQ4Gu6YUjXtaqUe', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(17, 'Valery', '89511238306', '$2y$10$jPWkNwBrAaFKxQjN/ggCCead2EYdlywAQltE1j0VvQAVzbaUjYIRe', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, 'Valery', '89511238307', '$2y$10$.LohcGy172tfZhM8LAWE6O3Ex/DnrD8WoSbLfqKb5/.vX66MOqM3q', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(20, 'asdadsdasdsa', '32232323343', '$2y$10$IfRBk5zFcRyT5jLRceZkNerzHZ4JNvcIgOmhaIx8hbiszLxBnAB9W', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(21, 'pedro', '89502700555', '$2y$10$yuPELZVqi8MpDOT8vRPXaOxsAuHa96VdjYCi54V7WOVid307LRzvO', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(22, 'DIMASO', '11111111111', '$2y$10$kDH2rK5zsvsqFhzOQyQbyejbW3XvBTI2/hrSHYmCf5Bn9Nw/6su0a', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(23, '12345', '99999999999', '$2y$10$Ov.JFxla.X4ztIhPyjuIUuG9DsEEzJC5QuuXub84XYmG4mis7Siem', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(24, '22222', '22222222222', '$2y$10$P2DEm3C491t6EBcXkvWmr.nv1JGq1MD4yRf1P.JA66dv99OiFAVgC', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(25, '33333', '33333333333', '$2y$10$Mg.6HU0nTHDm3/Q5/QCHvOrvDZiGsDW6gMcundfI7GlCJqpjKJCBu', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(26, '55555555', '44444444444', '$2y$10$AWm9Ag6qGlU6gW8SFDcL6.IOd6Ub/Ovq.Buq8HwCDkudncb8js3Vi', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(27, '00000', '00000000000', '$2y$10$wps8O1v5vZ1fyFsTRF5q1.0ZtjmnnH3vb/YCEXDwzagzLhwOMMbuq', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(28, '55555', '55555555555', '$2y$10$bUJFKU8PBpc73vEJTn7hd.wsyzrwbHwrCKcIFNTi30PFWUIPGXtyW', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 --
 -- Индексы сохранённых таблиц
@@ -342,7 +351,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
