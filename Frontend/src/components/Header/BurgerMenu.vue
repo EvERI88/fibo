@@ -248,7 +248,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { nextTick, onMounted, ref, watchEffect } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 import BlockError from "../UI/BlockError.vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
@@ -290,7 +290,6 @@ interface ErrorsAuth {
 const userStore = useUserStore();
 
 const basketStore = useBasketStore();
-const basketButton = ref(null);
 const lengthBasket = ref(0);
 const openAuth = ref(false);
 const openRegister = ref(false);

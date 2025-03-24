@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick } from "vue";
 import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
 const basketStore = useBasketStore();

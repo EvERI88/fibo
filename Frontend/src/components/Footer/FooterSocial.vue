@@ -27,7 +27,7 @@
       <li class="list__item list__item-street">Вернадского 86В</li>
     </ul>
     <div class="social__pay">
-      YaBao Все праав защищены © 2021
+      YaBao Все права защищены © 2021
       <div class="pay__img">
         <img src="/img/pay/visa.png" alt="#" />
         <img src="/img/pay/paypal.png" alt="#" />

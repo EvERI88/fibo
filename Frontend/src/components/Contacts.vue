@@ -35,8 +35,6 @@
     width: 100%;
     border-radius: 14px;
   }
-  &__title {
-  }
   &__wrapper-info {
     padding-top: 43px;
   }

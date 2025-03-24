@@ -424,7 +424,6 @@ const submitOrder = async () => {
   })
     .then((response) => {
       loading.value = false;
-
       return response.json();
     })
     .then((data) => {

@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useBasketStore } from "../../../stores/useBasketStore.ts";
+// import { useBasketStore } from "../../../stores/useBasketStore.ts";
 
 interface Sous {
   sous: {
@@ -30,7 +30,7 @@ interface Sous {
   }[];
 }
 
-const basketStore = useBasketStore();
+// const basketStore = useBasketStore();
 const allSous = <Sous>{
   sous: [
     { id: 1, name: "Кетчуп", price: 1 },
@@ -46,17 +46,17 @@ const selectedSous = ref<Sous>({
   sous: [],
 });
 
-const selectSous = (card: any) => {
-  selectedSous.value.sous.push(card);
-  totalPrice(card.price);
-};
-const totalPrice = (price: number) => {
-  const sousPrice = selectedSous.value.sous.reduce(
-    (totalPriceSous, item) => totalPriceSous + item.price,
-    0
-  );
-  basketStore.basket.allPrice += price;
-};
+// const selectSous = (card: any) => {
+//   selectedSous.value.sous.push(card);
+//   totalPrice(card.price);
+// };
+// const totalPrice = (price: number) => {
+//   const sousPrice = selectedSous.value.sous.reduce(
+//     (totalPriceSous, item) => totalPriceSous + item.price,
+//     0
+//   );
+//   basketStore.basket.allPrice += price;
+// };
 
 const setSelected = (index: number) => {
   const searchIndex = index + 1;
