@@ -19,6 +19,7 @@ class Orders extends BaseModel
     public ?int $without_change = null;
     public ?int $change_money = null;
     public ?string $updated_at = null;
+    public ?string $created_at = null;
     public ?int $category_id = null;
     public ?int $promo_code = null;
 }
