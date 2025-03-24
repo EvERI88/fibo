@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Мар 21 2025 г., 10:34
+-- Время создания: Мар 24 2025 г., 09:20
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.17
 
@@ -73,22 +73,26 @@ CREATE TABLE `orders` (
   `name` text NOT NULL,
   `change_money` int NOT NULL,
   `updated_at` timestamp NOT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT '1'
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `promo_code_id` int NOT NULL DEFAULT '3'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `orders`
 --
 
-INSERT INTO `orders` (`id`, `number`, `user_id`, `address`, `products`, `selected_time`, `price`, `method_pay`, `report_bonus`, `without_change`, `name`, `change_money`, `updated_at`, `is_active`) VALUES
-(1, '1000', 9, 'address', '123231321321', 'selected+time', 100, 'test', 1, 1, 'test', 1000, '2025-03-20 00:29:40', 0),
-(2, '5025', 9, 'Адрес - Улица блюхера\nДом - 32\nНомер квартиры - 77\nПодъезд - 3\nНаличие домофона - Есть +\nКомментарий - Тут будет комментарий\n  ', 'id: 1 name: Песто quantity: 2 / id: 4 name: Пепперони quantity: 6 / id: 5 name: Маргарита quantity: 7', 'Побыстрее', 1304, 'cash', 0, 0, 'Valery', 0, '2025-03-20 00:30:33', 0),
-(3, '4093', 9, 'Адрес - Улица блюхера\nДом - 32\nНомер квартиры - 77\nПодъезд - 3\nНаличие домофона - Есть +\nКомментарий - Тут будет комментарий\n  ', 'id: 1 name: Песто quantity: 2 / id: 4 name: Пепперони quantity: 6 / id: 5 name: Маргарита quantity: 7', 'Побыстрее', 1308, 'cash', 0, 0, 'Valery', 0, '2025-03-20 00:37:29', 0),
-(4, '3636', 9, 'Адрес - Улица блюхера\nДом - 32\nНомер квартиры - 77\nПодъезд - 3\nНаличие домофона - Есть +\nКомментарий - Тут будет комментарий\n  ', 'id: 1 name: Песто quantity: 1 / id: 4 name: Пепперони quantity: 1 / id: 9 name: Рожки quantity: 1 / id: 17 name: Мак quantity: 1 / id: 18 name: adsassad quantity: 1 / id: 23 name: adsassad quantity: 1 / id: 24 name: adsassad quantity: 1', 'Побыстрее', 2000473, 'cash', 0, 0, 'Valery', 0, '2025-03-20 00:38:25', 0),
-(5, '1290', 9, 'Адрес - Улица блюхера\nДом - 32\nНомер квартиры - 77\nПодъезд - 3\nНаличие домофона - Есть +\nКомментарий - Тут будет комментарий\n  ', 'id: 4 name: Пепперони quantity: 2 / id: 5 name: Маргарита quantity: 1', 'Побыстрее', 300, 'cash', 0, 0, 'Valery', 0, '2025-03-20 01:13:40', 0),
-(6, '5220', 9, 'Адрес - фвыфвыыфв\nДом - 1\nНомер квартиры - 2\nПодъезд - 3\nНаличие домофона - 4\nЭтаж - 5\nКомментарий - \n  ', 'id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1', 'Побыстрее', 200, 'cash', 0, 0, 'Valery', 0, '2025-03-20 07:54:32', 0),
-(7, '9480', 9, 'Адрес - ваывыаыва\nДом - 32\nНомер квартиры - 2323\nПодъезд - 23\nНаличие домофона - 2332\nЭтаж - 23\nКомментарий - \n  ', 'id: 5 name: Маргарита quantity: 1', 'Побыстрее', 100, 'cash', 0, 0, 'Valery', 0, '2025-03-20 07:55:05', 0),
-(8, '3678', 27, 'Адрес - Блюхера\nДом - 77\nНомер квартиры - 0\nПодъезд - 0\nНаличие домофона - 0\nЭтаж - 2\nКомментарий - \n  ', 'id: 4 name: Пепперони quantity: 4 / id: 5 name: Маргарита quantity: 2', '15:00', 600, 'cash', 0, 1, '00000', 0, '2025-03-21 02:27:27', 1);
+INSERT INTO `orders` (`id`, `number`, `user_id`, `address`, `products`, `selected_time`, `price`, `method_pay`, `report_bonus`, `without_change`, `name`, `change_money`, `updated_at`, `is_active`, `promo_code_id`) VALUES
+(9, '7600', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 1, 0, 'Valery', 0, '2025-03-24 02:00:46', 1, 3),
+(10, '2178', 9, 'Адрес - Блюхера\nДом - 12\nНомер квартиры - 123\nПодъезд - 12313\nНаличие домофона - 2131\nЭтаж - 123\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1 / id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:01:45', 1, 2),
+(11, '3973', 9, 'Адрес - fhgddgfh\nДом - 56\nНомер квартиры - 56\nПодъезд - 56\nНаличие домофона - 56\nЭтаж - 56\nКомментарий - \n  ', 'id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:13:03', 1, 2),
+(12, '3872', 9, 'Адрес - 465456\nДом - 56\nНомер квартиры - 56\nПодъезд - 56\nНаличие домофона - 56\nЭтаж - 56\nКомментарий - \n  ', 'id: 6 name: рожочки quantity: 1 / id: 7 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:24:27', 1, 2),
+(13, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:36:03', 1, 1),
+(14, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:36:18', 1, 2),
+(15, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:37:49', 1, 2),
+(16, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:48:53', 1, 2),
+(17, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:49:39', 1, 1),
+(18, '4444', 9, 'Адрес - 5656868\nДом - 7676\nНомер квартиры - 7676\nПодъезд - 67\nНаличие домофона - 67\nЭтаж - 67\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1', 'Побыстрее', 4, 'cash', 0, 1, 'Valery', 0, '2025-03-24 02:49:56', 1, 2),
+(19, '8238', 9, 'Адрес - Блюхера\nДом - 77\nНомер квартиры - 7\nПодъезд - 77\nНаличие домофона - 7\nЭтаж - 77\nКомментарий - \n  ', 'id: 1 name: Песто quantity: 1 / id: 3 name: Спагетти quantity: 1 / id: 6 name: рожочки quantity: 1', 'Побыстрее', 0, 'cash', 0, 0, 'Valery', 0, '2025-03-24 02:52:17', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -227,6 +231,28 @@ INSERT INTO `products` (`id`, `name`, `price`, `image`, `is_new`, `description`,
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `promo_code`
+--
+
+CREATE TABLE `promo_code` (
+  `id` int NOT NULL,
+  `code` int NOT NULL,
+  `discount` int NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `promo_code`
+--
+
+INSERT INTO `promo_code` (`id`, `code`, `discount`, `status`) VALUES
+(1, 7777, 100, 0),
+(2, 7777, 100, 1),
+(3, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `user`
 --
 
@@ -275,7 +301,8 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `promo_code_id` (`promo_code_id`);
 
 --
 -- Индексы таблицы `products`
@@ -283,6 +310,12 @@ ALTER TABLE `orders`
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
+
+--
+-- Индексы таблицы `promo_code`
+--
+ALTER TABLE `promo_code`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `user`
@@ -305,13 +338,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+
+--
+-- AUTO_INCREMENT для таблицы `promo_code`
+--
+ALTER TABLE `promo_code`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `user`
@@ -327,7 +366,8 @@ ALTER TABLE `user`
 -- Ограничения внешнего ключа таблицы `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`promo_code_id`) REFERENCES `promo_code` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `products`
