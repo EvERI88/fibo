@@ -1,6 +1,8 @@
 <template>
   <div class="micro-basket">
-    <div class="micro-basket__empty" v-if="emptyBasket">Корзина пуста</div>
+    <div class="micro-basket__empty" v-if="basketStore.basket.items.length < 1">
+      Корзина пуста
+    </div>
     <div
       v-else
       v-for="item in itemsInBasket"
@@ -81,7 +83,6 @@ const sliderImg: SliderImg[] = [
 const basketStore = useBasketStore();
 const baseUrl: string = "http://api.fibo.local/";
 const itemsInBasket = ref();
-const emptyBasket = ref(false);
 const getProduct = async () => {
   const idProducts: number[] = basketStore.basket.items.reduce<number[]>(
     (array, item) => {

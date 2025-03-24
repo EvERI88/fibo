@@ -137,7 +137,7 @@ const addToBasket = <T extends number>(id: T) => {
   };
   basketStore.addToBasket(item);
   localStorage.setItem("basket", JSON.stringify(basketStore.basket));
-
+  
   emit("updateList", true);
 };
 onMounted(() => {
