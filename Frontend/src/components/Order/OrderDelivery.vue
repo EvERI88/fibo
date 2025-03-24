@@ -2,7 +2,7 @@
   <RootModal @close="closeModal" class="modal">
     <template v-slot:header>
       <div class="modal__header" id="header">
-        <h2 class="modal__title">Куда доставить?</h2>
+        <p class="modal__title">Куда доставить?</p>
       </div>
     </template>
     <template v-slot:body>

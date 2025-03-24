@@ -2,7 +2,7 @@
   <RootModal>
     <template v-slot:header>
       <div class="modal__header" id="header">
-        <h2 class="modal__title">Время доставки</h2>
+        <p class="modal__title">Время доставки</p>
       </div>
     </template>
     <template v-slot:body>

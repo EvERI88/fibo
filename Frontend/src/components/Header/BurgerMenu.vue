@@ -8,7 +8,7 @@
     >
       <template v-slot:header>
         <div class="modal__header" id="header">
-          <h2 class="modal__title">Вход на сайт</h2>
+          <p class="modal__title">Вход на сайт</p>
         </div>
       </template>
       <template v-slot:body>
@@ -84,7 +84,7 @@
     >
       <template v-slot:header>
         <div class="modal__header" id="header">
-          <h2 class="modal__title">Регистрация</h2>
+          <p class="modal__title">Регистрация</p>
         </div>
       </template>
       <template v-slot:body>

@@ -23,7 +23,7 @@
             >
               NEW
             </div>
-            <h3 class="menu-main__list-item-title">{{ product.name }}</h3>
+            <p class="menu-main__list-item-title">{{ product.name }}</p>
             <p class="menu-main__list-item-description">
               {{ product.description }}
             </p>

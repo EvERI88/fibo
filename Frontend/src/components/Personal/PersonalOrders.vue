@@ -50,7 +50,8 @@
                 id=""
                 class="orders__items-item-accordion-products-text-area"
                 :style="{ height: updateProducts(item.id).countSymbol + 'px' }"
-                >{{ updateProducts(item.id).test }}</textarea
+              >
+ {{ updateProducts(item.id).test }}</textarea
               >
             </div>
           </div>
