@@ -39,7 +39,6 @@ const checkBasket = () => {
 
 const getToken = async () => {
   const token = getCookie() ?? "";
-
   const tokenParts = token.split(".");
   const decodedPayload = JSON.parse(atob(tokenParts[1]));
   const decodeSub: string = decodedPayload["sub"];
@@ -53,8 +52,8 @@ const getToken = async () => {
         return response.json();
       })
       .then((data) => {
-        if (data["user"]) {
-          userStore.user = data["user"];
+        if (data.user) {
+          userStore.user = data.user;
           checkBasket();
         } else {
           document.cookie = `token=`;
@@ -63,12 +62,6 @@ const getToken = async () => {
   } catch (err) {
     console.log(err);
   }
-};
-
-const setPathRoute = () => {
-  router.afterEach((to) => {
-    localStorage.setItem("currentRoute", to.fullPath);
-  });
 };
 
 const savePathRoute = () => {

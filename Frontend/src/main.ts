@@ -1,13 +1,14 @@
 import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
-import { createMemoryHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 import MainPage from "./components/MainPage.vue";
 import { createPinia } from "pinia";
 import { useUserStore } from "../stores/useUserStore.ts";
 import { useBasketStore } from "../stores/useBasketStore.ts";
 
 const pinia = createPinia();
+
 const routes = [
   { path: "/", component: MainPage, name: "main" },
   {
@@ -18,27 +19,44 @@ const routes = [
     path: "/basket",
     component: () => import("./components/Basket/Basket.vue"),
     name: "basket",
-    beforeEnter: () => {
-      if (!useUserStore().user?.id || useBasketStore().basket.items.length < 1)
-        return false;
+    afterEnter: (to: any, from: any, next: any) => {
+      const userStore = useUserStore();
+      const basketStore = useBasketStore();
+
+      if (!userStore.user?.id || basketStore.basket.items.length < 1) {
+        next(false);
+      } else {
+        next();
+      }
     },
   },
   {
     path: "/order",
     component: () => import("./components/Order/Order.vue"),
     name: "order",
+    afterEnter: (to: any, from: any, next: any) => {
+      const userStore = useUserStore();
 
-    beforeEnter: () => {
-      if (!useUserStore().user?.id) return false;
+      if (!userStore.user?.id) {
+        next(false);
+      } else {
+        next();
+      }
     },
   },
   {
     path: "/personal",
     component: () => import("./components/Personal/Personal.vue"),
-    beforeEnter: () => {
-      if (!useUserStore().user?.id) return false;
-    },
     name: "personal",
+    afterEnter: (to: any, from: any, next: any) => {
+      const userStore = useUserStore();
+
+      if (!userStore.user?.id) {
+        next(false);
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/personal-order",
@@ -48,8 +66,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 });
 
-createApp(App).use(router).use(pinia).mount("#app");
+createApp(App).use(pinia).use(router).mount("#app");
