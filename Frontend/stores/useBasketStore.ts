@@ -9,7 +9,7 @@ export const useBasketStore = defineStore("basket", () => {
 
   interface Basket {
     allPrice: number;
-    isVisible: boolean;
+    isVisible: true | false;
     items: CartItem[];
   }
 

@@ -132,9 +132,10 @@ legend {
 }
 #app {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   flex-direction: column;
   width: 100%;
+  min-height: 100vh;
 }
 main {
   width: 100%;

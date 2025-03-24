@@ -186,7 +186,10 @@
       </template>
     </RootModal>
     <div class="burger-menu__wrapper">
-      <MicroBasket v-if="basketStore.basket.isVisible && userStore.user?.id" />
+      <MicroBasket
+        @mouseleave="hideBasket"
+        v-if="basketStore.basket.isVisible && userStore.user?.id"
+      />
       <ul
         class="burger-menu__list"
         v-for="navigation in listNavigation"
@@ -230,9 +233,7 @@
       </div>
 
       <div
-        @mouseenter="
-          basketStore.basket.isVisible = !basketStore.basket.isVisible
-        "
+        @mouseenter="showBasket"
         class="burger-menu__function-basket"
         v-if="userStore.user?.id"
       >
@@ -247,7 +248,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from "vue";
+import { nextTick, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import RootModal from "../Modal/RootModal.vue";
 import BlockError from "../UI/BlockError.vue";
 import { useUserStore } from "../../../stores/useUserStore.ts";
@@ -289,7 +290,7 @@ interface ErrorsAuth {
 const userStore = useUserStore();
 
 const basketStore = useBasketStore();
-
+const basketButton = ref(null);
 const lengthBasket = ref(0);
 const openAuth = ref(false);
 const openRegister = ref(false);
@@ -428,19 +429,25 @@ const getLengthBasket = () => {
   lengthBasket.value = basketStore.getTotalItems;
 };
 
-const showMicroBasket = () => {
-  basketStore.basket.isVisible = false;
-};
-
 const redirectHome = () => {
   router.push({ name: "personal" });
+};
+
+const showBasket = () => {
+  basketStore.basket.isVisible = true;
+};
+
+const hideBasket = () => {
+  basketStore.basket.isVisible = false;
 };
 
 watchEffect(getLengthBasket);
 
 onMounted(() => {
-  showMicroBasket();
   getLengthBasket();
+  nextTick(() => {
+    basketStore.basket.isVisible = false;
+  });
 });
 </script>
 <style scoped lang="scss">

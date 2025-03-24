@@ -10,7 +10,7 @@
 import FooterSocial from "./Footer/FooterSocial.vue";
 import FooterMedia from "./Footer/FooterMedia.vue";
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .footer {
   display: flex;
   justify-content: center;
@@ -27,10 +27,5 @@ import FooterMedia from "./Footer/FooterMedia.vue";
     min-height: 66px;
     flex: 0 0 auto;
   }
-  
-  
- 
- 
-  
 }
 </style>
