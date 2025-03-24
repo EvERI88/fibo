@@ -1,5 +1,7 @@
 <template>
-  <p class="title">Корзина</p>
+  <p class="title">
+    {{ itemsInBasket.length < 1 ? "В корзине пусто" : "Корзина" }}
+  </p>
   <div class="basket">
     <div class="basket__wrapper">
       <div class="basket__line"></div>
@@ -193,6 +195,7 @@ onMounted(() => {
   font-size: 36px;
   line-height: 100%;
   color: var(--col-title);
+  padding-top: 20px;
 }
 .basket {
   display: flex;

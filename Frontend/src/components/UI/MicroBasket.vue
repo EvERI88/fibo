@@ -100,9 +100,6 @@ const getProduct = async () => {
         return response.json();
       })
       .then((data) => {
-        if (data.status === "error") {
-          emptyBasket.value = true;
-        }
         data.products
           ? (itemsInBasket.value = data.products)
           : (data.products = []);
@@ -120,9 +117,6 @@ const removeItem = <T extends number | string>(id: T): void => {
     itemsInBasket.value.findIndex((x: { id: number }) => x.id === id),
     1
   );
-  if (itemsInBasket.value.length < 1) {
-    emptyBasket.value = true;
-  }
 };
 
 const minusQuantity = <T extends BasketQuantity>(basketQuantity: T) => {
