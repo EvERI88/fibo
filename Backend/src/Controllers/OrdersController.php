@@ -17,10 +17,14 @@ class OrdersController extends BaseController
     {
         $ordersValidate = new OrdersCreateRequest($this->request);
         $order = new Orders();
-        $allPromo = PromoCode::find();
         $data = $ordersValidate->getData();
 
-        $promo = PromoCode::findFirst($data['promo_code_id']);
+        $promo = PromoCode::findFirst([
+            'conditions' => 'id = ?1 AND status = 1',
+            'bind' => [
+                1 => $data['promo_code_id'],
+            ],
+        ]);
 
         if (!empty($ordersValidate->getErrors())) {
             return [
@@ -29,10 +33,17 @@ class OrdersController extends BaseController
                 'errors' => $ordersValidate->getErrors(),
             ];
         }
-        $promo->status = 0;
 
-        $promo->assign((array)$promo);
-        $promo->update();
+        if ($promo) {
+            $promo->status = 0;
+            if (!$promo->update()) {
+                return [
+                    'status' => 'error',
+                    'message' => 'Ошибка при изменении статуса промокода',
+                    'errors' => $promo->getMessages(),
+                ];
+            }
+        }
 
         $order->assign($data);
 
@@ -51,6 +62,7 @@ class OrdersController extends BaseController
             ];
         }
     }
+
     public function get(): array
     {
 
