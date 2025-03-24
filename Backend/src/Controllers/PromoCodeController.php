@@ -41,46 +41,51 @@ class PromoCodeController extends BaseController
     public function get(): array
     {
 
-        $promoCodeRequest = new PromoCodeGetRequest($this->request);
-        if (!empty($promoCodeRequest->getErrors())) {
-            return [
-                'status' => 'error',
-                'message' => 'Ошибка валидации',
-            ];
-        }
-        $data = $promoCodeRequest->getData();
-        // $promo = $this->modelsManager->createBuilder()
-        //     ->columns([
-        //         'code',
-        //         'status',
-        //         'discount',
-        //     ])
-        //     ->from(PromoCode::class)
-        //     ->where('code = ' . $data['code']);
+        $requestCode = new PromoCodeGetRequest($this->request);
+        $data = $requestCode->getData();
 
-        $promo = $this
-            ->modelsManager
-            ->createBuilder()
-            ->columns([
-                'code',
-                'status',
-                'discount',
-            ])
-            ->from(PromoCode::class)
-            ->where('code = ' . $data['code'])
-            ->getQuery()
-            ->execute();
+        if ($data['code']) {
+            if (!empty($requestCode->getErrors())) {
+                return [
+                    'status' => 'error',
+                    'message' => 'Ошибка валидации',
+                    'error' => 'validate',
+                ];
+            }
 
-        if (count($promo) > 1) {
-            return [
-                'status' => 'success',
-                'message' => 'Успешно активировали код',
-                'code' => $promo
-            ];
+            $code = $this->modelsManager
+                ->createBuilder()
+                ->columns([
+                    'id',
+                    'discount',
+                    'code',
+                    'status',
+                ])
+                ->from(PromoCode::class)
+                ->where('code = ' . $data['code'])
+                ->andWhere('status = 1')
+                ->getQuery()
+                ->execute();
+
+
+            if (count($code)) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Найден код',
+                    'code' => $code
+                ];
+            } else {
+                return [
+                    'error' => 'notFound',
+                    'status' => 'error',
+                    'message' => 'Код не найден',
+                ];
+            }
         } else {
             return [
+                'error' => 'empty',
                 'status' => 'error',
-                'message' => 'Ошибка код не существует',
+                'message' => 'Введите промокод',
             ];
         }
     }
