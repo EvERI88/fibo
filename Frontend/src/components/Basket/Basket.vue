@@ -1,6 +1,6 @@
 <template>
   <p class="title">
-    {{ itemsInBasket.length < 1 ? "В корзине пусто" : "Корзина" }}
+    {{ basketStore.basket.items.length < 1 ? "В корзине пусто" : "Корзина" }}
   </p>
   <div class="basket">
     <div class="basket__wrapper">

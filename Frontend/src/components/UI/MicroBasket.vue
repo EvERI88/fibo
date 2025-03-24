@@ -1,7 +1,7 @@
 <template>
   <div class="micro-basket">
     <div class="micro-basket__empty" v-if="basketStore.basket.items.length < 1">
-      Корзина пуста
+      Пустая корзина
     </div>
     <div
       v-else
